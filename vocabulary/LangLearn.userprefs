@@ -1,0 +1,35 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="LangLearnData/LevelCs.cs">
+    <Files>
+      <File FileName="LangLearnGui/MainWindow.cs" Line="81" Column="1" />
+      <File FileName="LangLearnGui/SignBox.cs" Line="36" Column="16" />
+      <File FileName="LangLearnGui/NewUser.cs" Line="1" Column="1" />
+      <File FileName="LangLearnLogic/SignIn.cs" Line="22" Column="41" />
+      <File FileName="LangLearnLogic/UserManager.cs" Line="40" Column="1" />
+      <File FileName="LangLearnGui/AboutDB.cs" Line="16" Column="3" />
+      <File FileName="LangLearnGui/Main.cs" Line="1" Column="1" />
+      <File FileName="LangLearnData/LevelCs.cs" Line="7" Column="27" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="LangLearnData" expanded="True">
+            <Node name="LevelCs.cs" selected="True" />
+          </Node>
+          <Node name="LangLearnGui" expanded="True" />
+          <Node name="LangLearnLogic" expanded="True" />
+          <Node name="TestsUsingConsole" expanded="True" />
+          <Node name="TestsUsingGtk" expanded="True" />
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
