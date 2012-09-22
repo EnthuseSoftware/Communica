@@ -1,5 +1,6 @@
 using System;
 using LangLearnLogic;
+using System.Threading;
 
 namespace LangLearnGui
 {
@@ -39,7 +40,8 @@ namespace LangLearnGui
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{
 			mwref.User = cmbeUser.ActiveText;
-			mwref.MwTree ();
+			Thread t = new Thread (new ThreadStart (mwref.MwTree));
+			t.Start();
 			this.Hide();
 
 		}

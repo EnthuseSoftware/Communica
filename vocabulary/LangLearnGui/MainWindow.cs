@@ -98,7 +98,7 @@ public partial class MainWindow: Gtk.Window
 			}
 		}
 
-		treeMain.Destroy();
+
 	}
 
 	protected void OnAboutActionActivated (object sender, EventArgs e)
