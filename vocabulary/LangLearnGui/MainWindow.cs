@@ -2,6 +2,7 @@ using System;
 using Gtk;
 using LangLearnGui;
 using LangLearnData;
+using System.Threading;
 
 public partial class MainWindow: Gtk.Window
 {	
@@ -15,7 +16,9 @@ public partial class MainWindow: Gtk.Window
 	{
 		Build ();
 
-		MwTree ();
+		//Thread populates MainWindow tree.
+		Thread t = new Thread (new ThreadStart (MwTree));
+		t.Start ();
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -42,6 +45,7 @@ public partial class MainWindow: Gtk.Window
 
 	public void MwTree ()
 	{
+
 		//Create "Courses" colume title.
 		treeMain.AppendColumn ("Courses", new Gtk.CellRendererText (), "text", 0);
 
@@ -94,6 +98,7 @@ public partial class MainWindow: Gtk.Window
 			}
 		}
 
+		treeMain.Destroy();
 	}
 
 	protected void OnAboutActionActivated (object sender, EventArgs e)
@@ -103,4 +108,9 @@ public partial class MainWindow: Gtk.Window
 		about.Show ();
 	}
 
+//	protected void TreeUpdate ()
+//	{
+//		MwTree();
+//		//Runtime.DispatchService.GuiDispatch (new StatefulMessageHandler (UpdateGui), n);
+//	}
 }
