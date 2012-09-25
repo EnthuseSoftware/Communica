@@ -1,23 +1,23 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="LangLearnData/LevelCs.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LangLearnGui/MainWindow.cs">
     <Files>
-      <File FileName="LangLearnGui/MainWindow.cs" Line="81" Column="1" />
-      <File FileName="LangLearnGui/SignBox.cs" Line="36" Column="16" />
+      <File FileName="LangLearnGui/MainWindow.cs" Line="10" Column="20" />
+      <File FileName="LangLearnGui/SignBox.cs" Line="44" Column="14" />
       <File FileName="LangLearnGui/NewUser.cs" Line="1" Column="1" />
       <File FileName="LangLearnLogic/SignIn.cs" Line="22" Column="41" />
       <File FileName="LangLearnLogic/UserManager.cs" Line="40" Column="1" />
       <File FileName="LangLearnGui/AboutDB.cs" Line="16" Column="3" />
-      <File FileName="LangLearnGui/Main.cs" Line="1" Column="1" />
-      <File FileName="LangLearnData/LevelCs.cs" Line="7" Column="27" />
+      <File FileName="LangLearnGui/Main.cs" Line="3" Column="1" />
+      <File FileName="LangLearnData/LevelCs.cs" Line="8" Column="19" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="LangLearnData" expanded="True">
-            <Node name="LevelCs.cs" selected="True" />
+          <Node name="LangLearnData" expanded="True" />
+          <Node name="LangLearnGui" expanded="True">
+            <Node name="MainWindow.cs" selected="True" />
           </Node>
-          <Node name="LangLearnGui" expanded="True" />
           <Node name="LangLearnLogic" expanded="True" />
           <Node name="TestsUsingConsole" expanded="True" />
           <Node name="TestsUsingGtk" expanded="True" />

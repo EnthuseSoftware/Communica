@@ -45,7 +45,6 @@ public partial class MainWindow: Gtk.Window
 
 	public void MwTree ()
 	{
-
 		//Create "Courses" colume title.
 		treeMain.AppendColumn ("Courses", new Gtk.CellRendererText (), "text", 0);
 
@@ -106,6 +105,11 @@ public partial class MainWindow: Gtk.Window
 		//throw new System.NotImplementedException ();
 		AboutDB about = new AboutDB();
 		about.Show ();
+	}
+
+	protected void TreeClear()
+	{
+		//Gtk.TreeStore.Clear();
 	}
 
 //	protected void TreeUpdate ()
