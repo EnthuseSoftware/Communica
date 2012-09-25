@@ -40,8 +40,7 @@ namespace LangLearnGui
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{
 			mwref.User = cmbeUser.ActiveText;
-			Thread t = new Thread (new ThreadStart (mwref.MwTree));
-			t.Start();
+			mwref.TreeThread();
 			this.Hide();
 
 		}

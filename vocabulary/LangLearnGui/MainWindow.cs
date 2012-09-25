@@ -16,9 +16,8 @@ public partial class MainWindow: Gtk.Window
 	{
 		Build ();
 
-		//Thread populates MainWindow tree.
-		Thread t = new Thread (new ThreadStart (MwTree));
-		t.Start ();
+		//Create "Courses" colume title.
+		treeMain.AppendColumn ("Courses", new Gtk.CellRendererText (), "text", 0);;
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -43,14 +42,10 @@ public partial class MainWindow: Gtk.Window
 		Application.Quit();
 	}
 
-	public void MwTree ()
+	private void MwTree ()
 	{
-		//Create "Courses" colume title.
-		treeMain.AppendColumn ("Courses", new Gtk.CellRendererText (), "text", 0);
 
-		//Create "coursesList" model and assign it to treeMain
-		Gtk.TreeStore coursesList = new Gtk.TreeStore (typeof (string));
-		treeMain.Model = coursesList;
+
 
 //		//Create multi-node tree
 //		Gtk.TreeIter iterCourse = coursesList.AppendValues ("English");
@@ -69,6 +64,13 @@ public partial class MainWindow: Gtk.Window
 //		//Create Level node for Course node.
 //		TreeIter iter2 = coursesList.AppendNode (iterCourse);
 //		coursesList.SetValue (iter2, 0, "Level 2");
+	}
+
+	private void BuildTree ()
+	{
+		//Create "coursesList" model and assign it to treeMain
+		Gtk.TreeStore coursesList = new Gtk.TreeStore (typeof (string));
+		treeMain.Model = coursesList;
 
 		LevelCs userCourse = new LevelCs();
 
@@ -112,6 +114,12 @@ public partial class MainWindow: Gtk.Window
 		//Gtk.TreeStore.Clear();
 	}
 
+	public void TreeThread ()
+	{
+		//Thread populates MainWindow tree.
+		Thread t = new Thread (new ThreadStart (BuildTree));
+		t.Start ();
+	}
 //	protected void TreeUpdate ()
 //	{
 //		MwTree();
