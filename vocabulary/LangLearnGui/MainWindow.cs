@@ -18,6 +18,7 @@ public partial class MainWindow: Gtk.Window
 
 		//Create "Courses" colume title.
 		treeMain.AppendColumn ("Courses", new Gtk.CellRendererText (), "text", 0);;
+		TreeThread ();
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -42,29 +43,6 @@ public partial class MainWindow: Gtk.Window
 		Application.Quit();
 	}
 
-	private void MwTree ()
-	{
-
-
-
-//		//Create multi-node tree
-//		Gtk.TreeIter iterCourse = coursesList.AppendValues ("English");
-//
-//		//Create Level node for Course node.
-//		TreeIter iterLevel1 = coursesList.AppendNode (iterCourse);
-//		coursesList.SetValue (iterLevel1, 0, "Level 1");
-//
-//		//Create Unit node for Level node.
-//		iterLevel1 = coursesList.AppendNode (iterLevel1);
-//		coursesList.SetValue (iterLevel1, 0, "Unit 1");
-//
-//		//Add Lesson to Unit node.
-//		coursesList.AppendValues (iterLevel1, "Lesson 1");
-//		
-//		//Create Level node for Course node.
-//		TreeIter iter2 = coursesList.AppendNode (iterCourse);
-//		coursesList.SetValue (iter2, 0, "Level 2");
-	}
 
 	private void BuildTree ()
 	{
