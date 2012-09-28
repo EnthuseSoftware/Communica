@@ -21,7 +21,7 @@ namespace LangLearnGui
 			w1.Name = "dialog1_VBox";
 			w1.BorderWidth = ((uint)(2));
 			// Container child dialog1_VBox.Gtk.Box+BoxChild
-			this.cmbeUser = new global::Gtk.ComboBoxEntry ();
+			this.cmbeUser = global::Gtk.ComboBoxEntry.NewText ();
 			this.cmbeUser.Name = "cmbeUser";
 			w1.Add (this.cmbeUser);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(w1 [this.cmbeUser]));

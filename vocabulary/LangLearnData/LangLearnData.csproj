@@ -54,6 +54,8 @@
     <Compile Include="Model\Image.cs" />
     <Compile Include="Model\ImageHelper.cs" />
     <Compile Include="UserData.cs" />
+    <Compile Include="UserManager.cs" />
+    <Compile Include="SignIn.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
