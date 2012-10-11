@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/LangLearnGui.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="400 300">
+  <widget class="Gtk.Window" id="MainWindow" design-size="754 523">
     <action-group name="Default">
       <action id="FileAction">
         <property name="Type">Action</property>
@@ -89,6 +89,7 @@
                   <widget class="Gtk.TreeView" id="treeMain">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
+                    <signal name="RowActivated" handler="OnTreeMainRowActivated" />
                   </widget>
                 </child>
               </widget>
@@ -97,16 +98,26 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+              <widget class="Gtk.Fixed" id="fixed1">
                 <property name="MemberName" />
-                <property name="ShadowType">In</property>
+                <property name="HasWindow">False</property>
                 <child>
-                  <widget class="Gtk.TextView" id="textview1">
+                  <widget class="Gtk.Image" id="image1">
                     <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="ShowScrollbars">True</property>
-                    <property name="Text" translatable="yes" />
                   </widget>
+                  <packing>
+                    <property name="X">79</property>
+                    <property name="Y">46</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.Image" id="image2">
+                    <property name="MemberName" />
+                  </widget>
+                  <packing>
+                    <property name="X">202</property>
+                    <property name="Y">39</property>
+                  </packing>
                 </child>
               </widget>
             </child>

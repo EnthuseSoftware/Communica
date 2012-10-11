@@ -1,30 +1,37 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="LangLearnGui/MainWindow.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LangLearnData/DataManager.cs">
     <Files>
-      <File FileName="LangLearnGui/MainWindow.cs" Line="9" Column="22" />
-      <File FileName="LangLearnGui/SignBox.cs" Line="43" Column="23" />
-      <File FileName="LangLearnGui/NewUser.cs" Line="1" Column="1" />
-      <File FileName="LangLearnLogic/SignIn.cs" Line="22" Column="41" />
-      <File FileName="LangLearnLogic/UserManager.cs" Line="40" Column="1" />
-      <File FileName="LangLearnGui/AboutDB.cs" Line="16" Column="3" />
-      <File FileName="LangLearnGui/Main.cs" Line="3" Column="1" />
-      <File FileName="LangLearnData/LevelCs.cs" Line="8" Column="19" />
+      <File FileName="LangLearnGui/MainWindow.cs" Line="123" Column="40" />
+      <File FileName="TestsGtk/MainWindow.cs" Line="83" Column="15" />
+      <File FileName="LangLearnData/LevelCs.cs" Line="45" Column="48" />
+      <File FileName="LangLearnWinForm/frmBoard.cs" Line="45" Column="31" />
+      <File FileName="LangLearnData/DataManager.cs" Line="51" Column="19" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="LangLearnData" expanded="True" />
+          <Node name="LangLearnData" expanded="True">
+            <Node name="DataManager.cs" selected="True" />
+          </Node>
           <Node name="LangLearnGui" expanded="True">
-            <Node name="MainWindow.cs" selected="True" />
+            <Node name="References" expanded="True" />
           </Node>
           <Node name="LangLearnLogic" expanded="True" />
+          <Node name="LangLearnWinForm" expanded="True">
+            <Node name="frmBoard.cs" expanded="True" />
+          </Node>
           <Node name="TestsUsingConsole" expanded="True" />
-          <Node name="TestsUsingGtk" expanded="True" />
+          <Node name="TestsUsingGtk" expanded="True">
+            <Node name="References" expanded="True" />
+          </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

@@ -3,6 +3,9 @@ using Gtk;
 using LangLearnGui;
 using LangLearnData;
 using System.Threading;
+using System.Collections.Generic;
+using System.IO;
+
 
 public partial class MainWindow: Gtk.Window
 {	
@@ -103,4 +106,33 @@ public partial class MainWindow: Gtk.Window
 //		MwTree();
 //		//Runtime.DispatchService.GuiDispatch (new StatefulMessageHandler (UpdateGui), n);
 //	}
+	protected void OnTreeMainRowActivated (object o, RowActivatedArgs args)
+	{
+		//throw new System.NotImplementedException ();
+		string level = "1";
+		string unit = "1";
+		string lesson = "1";
+
+		DataManager picture = new DataManager();
+		List<byte[]> img = picture.LessonImages (level, unit, lesson);
+
+		//byte pic = img[0];
+
+		//MemoryStream ms = new MemoryStream();
+
+		Gdk.Pixbuf pb = new Gdk.Pixbuf(img[0]);
+		//System.Drawing.Bitmap tmp = new System.Drawing.Bitmap(img[0]);
+		
+
+		image1.Pixbuf = pb;
+
+		//image1(img[0]);
+		//image2 = img[2];
+
+
+		//foreach (System.Drawing.Bitmap img in picture.LessonImages (level, unit, lesson)
+
+
+	}
+
 }

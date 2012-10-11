@@ -15,8 +15,9 @@ public partial class MainWindow
 	private global::Gtk.HPaned hpaned1;
 	private global::Gtk.ScrolledWindow scrolledwindow1;
 	private global::Gtk.TreeView treeMain;
-	private global::Gtk.ScrolledWindow GtkScrolledWindow;
-	private global::Gtk.TextView textview1;
+	private global::Gtk.Fixed fixed1;
+	private global::Gtk.Image image1;
+	private global::Gtk.Image image2;
 	
 	protected virtual void Build ()
 	{
@@ -81,18 +82,27 @@ public partial class MainWindow
 		global::Gtk.Paned.PanedChild w4 = ((global::Gtk.Paned.PanedChild)(this.hpaned1 [this.scrolledwindow1]));
 		w4.Resize = false;
 		// Container child hpaned1.Gtk.Paned+PanedChild
-		this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
-		this.GtkScrolledWindow.Name = "GtkScrolledWindow";
-		this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
-		// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
-		this.textview1 = new global::Gtk.TextView ();
-		this.textview1.CanFocus = true;
-		this.textview1.Name = "textview1";
-		this.GtkScrolledWindow.Add (this.textview1);
-		this.hpaned1.Add (this.GtkScrolledWindow);
+		this.fixed1 = new global::Gtk.Fixed ();
+		this.fixed1.Name = "fixed1";
+		this.fixed1.HasWindow = false;
+		// Container child fixed1.Gtk.Fixed+FixedChild
+		this.image1 = new global::Gtk.Image ();
+		this.image1.Name = "image1";
+		this.fixed1.Add (this.image1);
+		global::Gtk.Fixed.FixedChild w5 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.image1]));
+		w5.X = 79;
+		w5.Y = 46;
+		// Container child fixed1.Gtk.Fixed+FixedChild
+		this.image2 = new global::Gtk.Image ();
+		this.image2.Name = "image2";
+		this.fixed1.Add (this.image2);
+		global::Gtk.Fixed.FixedChild w6 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.image2]));
+		w6.X = 202;
+		w6.Y = 39;
+		this.hpaned1.Add (this.fixed1);
 		this.vbox2.Add (this.hpaned1);
-		global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.hpaned1]));
-		w7.Position = 1;
+		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.hpaned1]));
+		w8.Position = 1;
 		this.Add (this.vbox2);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
@@ -102,5 +112,6 @@ public partial class MainWindow
 		this.SigninAction.Activated += new global::System.EventHandler (this.OnSigninActionActivated);
 		this.QuitAction.Activated += new global::System.EventHandler (this.OnQuitActionActivated);
 		this.AboutAction.Activated += new global::System.EventHandler (this.OnAboutActionActivated);
+		this.treeMain.RowActivated += new global::Gtk.RowActivatedHandler (this.OnTreeMainRowActivated);
 	}
 }
