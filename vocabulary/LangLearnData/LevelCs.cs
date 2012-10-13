@@ -37,186 +37,186 @@ namespace LangLearnData
 
         //===================================================
 
-//
-//        //Returns all vocab words =============================
-//        public List<string> AllItemsName()
-//        {
-//            List<string> items = new List<string>();
-//            StreamReader f = File.OpenText("..\\itemsName.txt");
-//            string read = null;
-//            while ((read = f.ReadLine()) != null)
-//            {
-//                items.Add(read);
-//            }
-//            f.Close();
-//            return items;
-//        }
-//        //===================================================
-//
-//
-//        //DS: Get unit, level, lesson which user choose=========
-//		// Returns the last unit number listed in itemsName.txt
-//        public int GetAvailableUnits()
-//        {
-//            string un;
-//            string aun;
-//            int lun = 0;
-//            foreach (object itn in AllItemsName())
-//            {
-//                un = itn.ToString();
-//
-//                if (un.Substring(0, 1) == "#")
-//                {
-//                    aun = un.Substring(1, 1);
-//                    lun = Convert.ToInt16(aun);
-//                }
-//            }
-//            return lun;
-//        }
-//
-//        public int GetAvailableLevelsInCurrentUnit(int unit)
-//        {
-//            string un;
-//            string aun, aln;
-//            int lun = 0, lln = 0;
-//
-//            foreach (object itn in AllItemsName())
-//            {
-//                un = itn.ToString();
-//
-//                if (un.Substring(0, 1) == "#")
-//                {
-//                    aun = un.Substring(1, 1);
-//                    lun = Convert.ToInt16(aun);
-//                    if (lun == unit)
-//                    {
-//                        aln = un.Substring(3, 1);
-//                        lln = Convert.ToInt16(aln);
-//                    }
-//                }
-//            }
-//            return lln;
-//        }
-//
-//        public int GetAvailableLessonsInCurrentLevelUnit(int unit, int level)
-//        {
-//            string un;
-//            string aun, aln;
-//            string ln;
-//            int lun = 0, lln = 0, lni = 0;
-//
-//            foreach (object itn in AllItemsName())
-//            {
-//                un = itn.ToString();
-//
-//                if (un.Substring(0, 1) == "#")
-//                {
-//                    aun = un.Substring(1, 1);
-//                    lun = Convert.ToInt16(aun);
-//                    if (lun == unit)
-//                    {
-//                        aln = un.Substring(3, 1);
-//                        lln = Convert.ToInt16(aln);
-//                        if (lln == level)
-//                        {
-//                            ln = un.Substring(5, 1);
-//                            lni = Convert.ToInt16(ln);
-//                        }
-//                    }
-//                }
-//            }
-//            return lni;
-//        }
-//        //===================================================
-//
-//        //Get item names (unit, level, lesson) which user selected
-//        //This operation returns information to ItemsFormSelectedULL
-//        public void LoadItemsNameOneLesson(string unit, string level, string lesson)
-//        {
-//            string signal;
-//            int p = 0;
-//            string[] sp;
-//            ItemsFromSelectedULL.Clear();
-//            foreach (string itemName in AllItemsName())
-//            {
-//                signal = itemName.Substring(0, 1);
-//                if (signal == "#")
-//                {
-//                    sp = (itemName.Substring(1, itemName.Length - 1)).Split('-');
-//                    if (sp[0] == unit.ToString() && sp[1] == level.ToString() && sp[2] == lesson.ToString()) p = 1; else p = 0;
-//                }
-//                if (p == 1)
-//                {
-//                    if (signal != "#") ItemsFromSelectedULL.Add(itemName);
-//                }
-//            }
-//        }
-//        //===================================================
-//
-//        //Get all items from unit, level which user selected
-//        //This operation returns information to ItemsFormSelectedULL
-//        public void LoadItemsNameAllLesson(string unit, string level)
-//        {
-//            Random rnd = new Random();
-//            int ln = GetAvailableLessonsInCurrentLevelUnit(Convert.ToInt16(unit), Convert.ToInt16(level));
-//            int itn = 0;
-//            List<string> tempIn = new List<string>();
-//            string tin;
-//            while (itn < 12)
-//            {
-//                for (int i = 1; i <= ln; i++)
-//                {
-//                    LoadItemsNameOneLesson(unit, level, i.ToString());
-//                st: tin = ItemsFromSelectedULL[rnd.Next(0, ItemsFromSelectedULL.Count() - 1)];
-//                    foreach (string t in tempIn)
-//                    {
-//                        if (t == tin) { goto st; }
-//                    }
-//                    tempIn.Add(tin);
-//                    itn++; if (itn == 12) { ItemsFromSelectedULL = tempIn; return; }
-//                }
-//            }
-//
-//          /*
-//            Dictionary<string, int> people = new Dictionary<string, int>();
-//            people.Add("Dilshod", 23);
-//            people.Add("Glenn", 38);
-//
-//            int age2 = people["Glenn"];
-//            foreach (int age in people.Values)
-//            {
-//                int x = age;
-//            }
-//            foreach (string name in people.Keys)
-//                name
-//
-//            */
-//
-//        }
-//        //===================================================
-//
-//        //This function for mixing items randomly
-//        public List<string> MixItems(List<string> _itemsN)
-//        {
-//            Random rnd = new Random();
-//            int s = _itemsN.Count();
-//            ArrayList inum = new ArrayList();
-//            List<string> tempin = new List<string>();
-//            int num;
-//            for (int i = 0; i <= s - 1; i++)
-//            {
-//            st: num = rnd.Next(s);
-//                foreach (int n in inum)
-//                {
-//                    if (n == num) { goto st; }
-//                }
-//                inum.Add(num);
-//                tempin.Add(_itemsN[num]);
-//            }
-//            return tempin;
-//        }
-//        //===================================================
-//
+
+        //Returns all vocab words =============================
+        public List<string> AllItemsName()
+        {
+            List<string> items = new List<string>();
+            StreamReader f = File.OpenText("../itemsName.txt");
+            string read = null;
+            while ((read = f.ReadLine()) != null)
+            {
+                items.Add(read);
+            }
+            f.Close();
+            return items;
+        }
+        //===================================================
+
+
+        //DS: Get unit, level, lesson which user choose=========
+		// Returns the last unit number listed in itemsName.txt
+        public int GetAvailableUnits()
+        {
+            string un;
+            string aun;
+            int lun = 0;
+            foreach (object itn in AllItemsName())
+            {
+                un = itn.ToString();
+
+                if (un.Substring(0, 1) == "#")
+                {
+                    aun = un.Substring(1, 1);
+                    lun = Convert.ToInt16(aun);
+                }
+            }
+            return lun;
+        }
+
+        public int GetAvailableLevelsInCurrentUnit(int unit)
+        {
+            string un;
+            string aun, aln;
+            int lun = 0, lln = 0;
+
+            foreach (object itn in AllItemsName())
+            {
+                un = itn.ToString();
+
+                if (un.Substring(0, 1) == "#")
+                {
+                    aun = un.Substring(1, 1);
+                    lun = Convert.ToInt16(aun);
+                    if (lun == unit)
+                    {
+                        aln = un.Substring(3, 1);
+                        lln = Convert.ToInt16(aln);
+                    }
+                }
+            }
+            return lln;
+        }
+
+        public int GetAvailableLessonsInCurrentLevelUnit(int unit, int level)
+        {
+            string un;
+            string aun, aln;
+            string ln;
+            int lun = 0, lln = 0, lni = 0;
+
+            foreach (object itn in AllItemsName())
+            {
+                un = itn.ToString();
+
+                if (un.Substring(0, 1) == "#")
+                {
+                    aun = un.Substring(1, 1);
+                    lun = Convert.ToInt16(aun);
+                    if (lun == unit)
+                    {
+                        aln = un.Substring(3, 1);
+                        lln = Convert.ToInt16(aln);
+                        if (lln == level)
+                        {
+                            ln = un.Substring(5, 1);
+                            lni = Convert.ToInt16(ln);
+                        }
+                    }
+                }
+            }
+            return lni;
+        }
+        //===================================================
+
+        //Get item names (unit, level, lesson) which user selected
+        //This operation returns information to ItemsFormSelectedULL
+        public void LoadItemsNameOneLesson(string unit, string level, string lesson)
+        {
+            string signal;
+            int p = 0;
+            string[] sp;
+            ItemsFromSelectedULL.Clear();
+            foreach (string itemName in AllItemsName())
+            {
+                signal = itemName.Substring(0, 1);
+                if (signal == "#")
+                {
+                    sp = (itemName.Substring(1, itemName.Length - 1)).Split('-');
+                    if (sp[0] == unit.ToString() && sp[1] == level.ToString() && sp[2] == lesson.ToString()) p = 1; else p = 0;
+                }
+                if (p == 1)
+                {
+                    if (signal != "#") ItemsFromSelectedULL.Add(itemName);
+                }
+            }
+        }
+        //===================================================
+
+        //Get all items from unit, level which user selected
+        //This operation returns information to ItemsFormSelectedULL
+        public void LoadItemsNameAllLesson(string unit, string level)
+        {
+            Random rnd = new Random();
+            int ln = GetAvailableLessonsInCurrentLevelUnit(Convert.ToInt16(unit), Convert.ToInt16(level));
+            int itn = 0;
+            List<string> tempIn = new List<string>();
+            string tin;
+            while (itn < 12)
+            {
+                for (int i = 1; i <= ln; i++)
+                {
+                    LoadItemsNameOneLesson(unit, level, i.ToString());
+                st: tin = ItemsFromSelectedULL[rnd.Next(0, ItemsFromSelectedULL.Count() - 1)];
+                    foreach (string t in tempIn)
+                    {
+                        if (t == tin) { goto st; }
+                    }
+                    tempIn.Add(tin);
+                    itn++; if (itn == 12) { ItemsFromSelectedULL = tempIn; return; }
+                }
+            }
+
+          /*
+            Dictionary<string, int> people = new Dictionary<string, int>();
+            people.Add("Dilshod", 23);
+            people.Add("Glenn", 38);
+
+            int age2 = people["Glenn"];
+            foreach (int age in people.Values)
+            {
+                int x = age;
+            }
+            foreach (string name in people.Keys)
+                name
+
+            */
+
+        }
+        //===================================================
+
+        //This function for mixing items randomly
+        public List<string> MixItems(List<string> _itemsN)
+        {
+            Random rnd = new Random();
+            int s = _itemsN.Count();
+            ArrayList inum = new ArrayList();
+            List<string> tempin = new List<string>();
+            int num;
+            for (int i = 0; i <= s - 1; i++)
+            {
+            st: num = rnd.Next(s);
+                foreach (int n in inum)
+                {
+                    if (n == num) { goto st; }
+                }
+                inum.Add(num);
+                tempin.Add(_itemsN[num]);
+            }
+            return tempin;
+        }
+        //===================================================
+
 
 		// ****** Brian's new mehtods **********
 		// 9/5/12: Just stubs so far

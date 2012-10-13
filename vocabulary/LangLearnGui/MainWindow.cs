@@ -106,33 +106,55 @@ public partial class MainWindow: Gtk.Window
 //		MwTree();
 //		//Runtime.DispatchService.GuiDispatch (new StatefulMessageHandler (UpdateGui), n);
 //	}
-	protected void OnTreeMainRowActivated (object o, RowActivatedArgs args)
+//	protected void OnTreeMainRowActivated (object o, RowActivatedArgs args)
+//	{
+//		//throw new System.NotImplementedException ();
+//		string level = "1";
+//		string unit = "1";
+//		string lesson = "1";
+// 
+//		DataManager picture = new DataManager();
+//		List<System.Drawing.Bitmap> img = picture.LessonImages (level, unit, lesson);
+//
+//		System.IO.MemoryStream ms = new System.IO.MemoryStream();
+//
+//		int i=0;
+//		foreach (Gtk.Image image in table3)
+//		{
+//			img[i++].Save (ms, System.Drawing.Imaging.ImageFormat.Bmp);
+//			byte[] data = ms.GetBuffer();
+//
+//			Gdk.Pixbuf pb = new Gdk.Pixbuf(data);
+//
+//			image.Pixbuf = pb;
+//
+//		}
+
+	protected void OnTreeMainSelectCursorRow (object o, SelectCursorRowArgs args)
 	{
 		//throw new System.NotImplementedException ();
 		string level = "1";
 		string unit = "1";
 		string lesson = "1";
-
+ 
 		DataManager picture = new DataManager();
-		List<byte[]> img = picture.LessonImages (level, unit, lesson);
+		List<System.Drawing.Bitmap> img = picture.LessonImages (level, unit, lesson);
 
-		//byte pic = img[0];
+		System.IO.MemoryStream ms = new System.IO.MemoryStream();
 
-		//MemoryStream ms = new MemoryStream();
+		int i=0;
+		foreach (Gtk.Image image in table3)
+		{
+			img[i++].Save (ms, System.Drawing.Imaging.ImageFormat.Bmp);
+			byte[] data = ms.GetBuffer();
 
-		Gdk.Pixbuf pb = new Gdk.Pixbuf(img[0]);
-		//System.Drawing.Bitmap tmp = new System.Drawing.Bitmap(img[0]);
-		
+			Gdk.Pixbuf pb = new Gdk.Pixbuf(data);
 
-		image1.Pixbuf = pb;
-
-		//image1(img[0]);
-		//image2 = img[2];
-
-
-		//foreach (System.Drawing.Bitmap img in picture.LessonImages (level, unit, lesson)
-
-
+			image.Pixbuf = pb;
+		}
 	}
+
+
+
 
 }

@@ -15,9 +15,21 @@ public partial class MainWindow
 	private global::Gtk.HPaned hpaned1;
 	private global::Gtk.ScrolledWindow scrolledwindow1;
 	private global::Gtk.TreeView treeMain;
-	private global::Gtk.Fixed fixed1;
-	private global::Gtk.Image image1;
-	private global::Gtk.Image image2;
+	private global::Gtk.HBox hbox1;
+	private global::Gtk.Table table3;
+	private global::Gtk.Image image10;
+	private global::Gtk.Image image11;
+	private global::Gtk.Image image12;
+	private global::Gtk.Image image13;
+	private global::Gtk.Image image14;
+	private global::Gtk.Image image3;
+	private global::Gtk.Image image4;
+	private global::Gtk.Image image5;
+	private global::Gtk.Image image6;
+	private global::Gtk.Image image7;
+	private global::Gtk.Image image8;
+	private global::Gtk.Image image9;
+	private global::Gtk.VScrollbar vscrollbar2;
 	
 	protected virtual void Build ()
 	{
@@ -82,27 +94,153 @@ public partial class MainWindow
 		global::Gtk.Paned.PanedChild w4 = ((global::Gtk.Paned.PanedChild)(this.hpaned1 [this.scrolledwindow1]));
 		w4.Resize = false;
 		// Container child hpaned1.Gtk.Paned+PanedChild
-		this.fixed1 = new global::Gtk.Fixed ();
-		this.fixed1.Name = "fixed1";
-		this.fixed1.HasWindow = false;
-		// Container child fixed1.Gtk.Fixed+FixedChild
-		this.image1 = new global::Gtk.Image ();
-		this.image1.Name = "image1";
-		this.fixed1.Add (this.image1);
-		global::Gtk.Fixed.FixedChild w5 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.image1]));
-		w5.X = 79;
-		w5.Y = 46;
-		// Container child fixed1.Gtk.Fixed+FixedChild
-		this.image2 = new global::Gtk.Image ();
-		this.image2.Name = "image2";
-		this.fixed1.Add (this.image2);
-		global::Gtk.Fixed.FixedChild w6 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.image2]));
-		w6.X = 202;
-		w6.Y = 39;
-		this.hpaned1.Add (this.fixed1);
+		this.hbox1 = new global::Gtk.HBox ();
+		this.hbox1.Name = "hbox1";
+		this.hbox1.Spacing = 6;
+		// Container child hbox1.Gtk.Box+BoxChild
+		this.table3 = new global::Gtk.Table (((uint)(4)), ((uint)(3)), false);
+		this.table3.Name = "table3";
+		this.table3.RowSpacing = ((uint)(6));
+		this.table3.ColumnSpacing = ((uint)(6));
+		// Container child table3.Gtk.Table+TableChild
+		this.image10 = new global::Gtk.Image ();
+		this.image10.Name = "image10";
+		this.table3.Add (this.image10);
+		global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table3 [this.image10]));
+		w5.TopAttach = ((uint)(2));
+		w5.BottomAttach = ((uint)(3));
+		w5.LeftAttach = ((uint)(1));
+		w5.RightAttach = ((uint)(2));
+		w5.XOptions = ((global::Gtk.AttachOptions)(4));
+		w5.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table3.Gtk.Table+TableChild
+		this.image11 = new global::Gtk.Image ();
+		this.image11.Name = "image11";
+		this.table3.Add (this.image11);
+		global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.table3 [this.image11]));
+		w6.TopAttach = ((uint)(2));
+		w6.BottomAttach = ((uint)(3));
+		w6.LeftAttach = ((uint)(2));
+		w6.RightAttach = ((uint)(3));
+		w6.XOptions = ((global::Gtk.AttachOptions)(4));
+		w6.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table3.Gtk.Table+TableChild
+		this.image12 = new global::Gtk.Image ();
+		this.image12.Name = "image12";
+		this.table3.Add (this.image12);
+		global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.table3 [this.image12]));
+		w7.TopAttach = ((uint)(3));
+		w7.BottomAttach = ((uint)(4));
+		w7.XOptions = ((global::Gtk.AttachOptions)(4));
+		w7.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table3.Gtk.Table+TableChild
+		this.image13 = new global::Gtk.Image ();
+		this.image13.Name = "image13";
+		this.table3.Add (this.image13);
+		global::Gtk.Table.TableChild w8 = ((global::Gtk.Table.TableChild)(this.table3 [this.image13]));
+		w8.TopAttach = ((uint)(3));
+		w8.BottomAttach = ((uint)(4));
+		w8.LeftAttach = ((uint)(1));
+		w8.RightAttach = ((uint)(2));
+		w8.XOptions = ((global::Gtk.AttachOptions)(4));
+		w8.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table3.Gtk.Table+TableChild
+		this.image14 = new global::Gtk.Image ();
+		this.image14.Name = "image14";
+		this.table3.Add (this.image14);
+		global::Gtk.Table.TableChild w9 = ((global::Gtk.Table.TableChild)(this.table3 [this.image14]));
+		w9.TopAttach = ((uint)(3));
+		w9.BottomAttach = ((uint)(4));
+		w9.LeftAttach = ((uint)(2));
+		w9.RightAttach = ((uint)(3));
+		w9.XOptions = ((global::Gtk.AttachOptions)(4));
+		w9.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table3.Gtk.Table+TableChild
+		this.image3 = new global::Gtk.Image ();
+		this.image3.Name = "image3";
+		this.table3.Add (this.image3);
+		global::Gtk.Table.TableChild w10 = ((global::Gtk.Table.TableChild)(this.table3 [this.image3]));
+		w10.XOptions = ((global::Gtk.AttachOptions)(4));
+		w10.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table3.Gtk.Table+TableChild
+		this.image4 = new global::Gtk.Image ();
+		this.image4.Name = "image4";
+		this.table3.Add (this.image4);
+		global::Gtk.Table.TableChild w11 = ((global::Gtk.Table.TableChild)(this.table3 [this.image4]));
+		w11.LeftAttach = ((uint)(1));
+		w11.RightAttach = ((uint)(2));
+		w11.XOptions = ((global::Gtk.AttachOptions)(4));
+		w11.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table3.Gtk.Table+TableChild
+		this.image5 = new global::Gtk.Image ();
+		this.image5.Name = "image5";
+		this.table3.Add (this.image5);
+		global::Gtk.Table.TableChild w12 = ((global::Gtk.Table.TableChild)(this.table3 [this.image5]));
+		w12.LeftAttach = ((uint)(2));
+		w12.RightAttach = ((uint)(3));
+		w12.XOptions = ((global::Gtk.AttachOptions)(4));
+		w12.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table3.Gtk.Table+TableChild
+		this.image6 = new global::Gtk.Image ();
+		this.image6.Name = "image6";
+		this.table3.Add (this.image6);
+		global::Gtk.Table.TableChild w13 = ((global::Gtk.Table.TableChild)(this.table3 [this.image6]));
+		w13.TopAttach = ((uint)(1));
+		w13.BottomAttach = ((uint)(2));
+		w13.XOptions = ((global::Gtk.AttachOptions)(4));
+		w13.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table3.Gtk.Table+TableChild
+		this.image7 = new global::Gtk.Image ();
+		this.image7.Name = "image7";
+		this.table3.Add (this.image7);
+		global::Gtk.Table.TableChild w14 = ((global::Gtk.Table.TableChild)(this.table3 [this.image7]));
+		w14.TopAttach = ((uint)(1));
+		w14.BottomAttach = ((uint)(2));
+		w14.LeftAttach = ((uint)(1));
+		w14.RightAttach = ((uint)(2));
+		w14.XOptions = ((global::Gtk.AttachOptions)(4));
+		w14.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table3.Gtk.Table+TableChild
+		this.image8 = new global::Gtk.Image ();
+		this.image8.Name = "image8";
+		this.table3.Add (this.image8);
+		global::Gtk.Table.TableChild w15 = ((global::Gtk.Table.TableChild)(this.table3 [this.image8]));
+		w15.TopAttach = ((uint)(1));
+		w15.BottomAttach = ((uint)(2));
+		w15.LeftAttach = ((uint)(2));
+		w15.RightAttach = ((uint)(3));
+		w15.XOptions = ((global::Gtk.AttachOptions)(4));
+		w15.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table3.Gtk.Table+TableChild
+		this.image9 = new global::Gtk.Image ();
+		this.image9.Name = "image9";
+		this.table3.Add (this.image9);
+		global::Gtk.Table.TableChild w16 = ((global::Gtk.Table.TableChild)(this.table3 [this.image9]));
+		w16.TopAttach = ((uint)(2));
+		w16.BottomAttach = ((uint)(3));
+		w16.XOptions = ((global::Gtk.AttachOptions)(4));
+		w16.YOptions = ((global::Gtk.AttachOptions)(4));
+		this.hbox1.Add (this.table3);
+		global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.table3]));
+		w17.Position = 0;
+		w17.Expand = false;
+		w17.Fill = false;
+		// Container child hbox1.Gtk.Box+BoxChild
+		this.vscrollbar2 = new global::Gtk.VScrollbar (null);
+		this.vscrollbar2.Name = "vscrollbar2";
+		this.vscrollbar2.Adjustment.Upper = 100;
+		this.vscrollbar2.Adjustment.PageIncrement = 10;
+		this.vscrollbar2.Adjustment.PageSize = 10;
+		this.vscrollbar2.Adjustment.StepIncrement = 1;
+		this.hbox1.Add (this.vscrollbar2);
+		global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.vscrollbar2]));
+		w18.Position = 1;
+		w18.Expand = false;
+		w18.Fill = false;
+		this.hpaned1.Add (this.hbox1);
 		this.vbox2.Add (this.hpaned1);
-		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.hpaned1]));
-		w8.Position = 1;
+		global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.hpaned1]));
+		w20.Position = 1;
 		this.Add (this.vbox2);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
@@ -112,6 +250,5 @@ public partial class MainWindow
 		this.SigninAction.Activated += new global::System.EventHandler (this.OnSigninActionActivated);
 		this.QuitAction.Activated += new global::System.EventHandler (this.OnQuitActionActivated);
 		this.AboutAction.Activated += new global::System.EventHandler (this.OnAboutActionActivated);
-		this.treeMain.RowActivated += new global::Gtk.RowActivatedHandler (this.OnTreeMainRowActivated);
 	}
 }

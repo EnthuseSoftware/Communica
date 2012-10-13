@@ -1,21 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="LangLearnData/DataManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LangLearnGui/MainWindow.cs">
     <Files>
-      <File FileName="LangLearnGui/MainWindow.cs" Line="123" Column="40" />
+      <File FileName="LangLearnGui/MainWindow.cs" Line="126" Column="17" />
       <File FileName="TestsGtk/MainWindow.cs" Line="83" Column="15" />
-      <File FileName="LangLearnData/LevelCs.cs" Line="45" Column="48" />
+      <File FileName="LangLearnData/LevelCs.cs" Line="42" Column="43" />
       <File FileName="LangLearnWinForm/frmBoard.cs" Line="45" Column="31" />
-      <File FileName="LangLearnData/DataManager.cs" Line="51" Column="19" />
+      <File FileName="LangLearnData/DataManager.cs" Line="39" Column="21" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="LangLearnData" expanded="True">
-            <Node name="DataManager.cs" selected="True" />
-          </Node>
+          <Node name="LangLearnData" expanded="True" />
           <Node name="LangLearnGui" expanded="True">
-            <Node name="References" expanded="True" />
+            <Node name="MainWindow.cs" selected="True" />
           </Node>
           <Node name="LangLearnLogic" expanded="True" />
           <Node name="LangLearnWinForm" expanded="True">

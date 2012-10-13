@@ -13,45 +13,45 @@ namespace LangLearnData
 {
     public class DataManager
     {
-//        LevelCs lvl = new LevelCs();
-//        public List<string> ItemsNameREADY = new List<string>();
-//        //Working with pictures===========================
-//        //Function returns picture from Resources which required(by name)
-//        public Bitmap GetIMG(string imageName)
-//        {
-//            //Bitmap im = Properties.Resources.apple;
-//            ResourceManager rm = Properties.Resources.ResourceManager;
-//            Bitmap myImage = (Bitmap)rm.GetObject(imageName);
-//
-//            return myImage;
-//        }
-//
-//		// TODO BB 7/30/12 We need to change the lesson higherarchy to level/unit/lesson
-//		// But, the concepts of levels, lessons, and units probably belongs in the logic layer
-//        
-//		//This operation returns images from ULL which user selected
-//        //for a getting pictures from one lesson or all lessons will be difined here!
-//        public List<Bitmap> LessonImages(string unit,string level,string lesson)
-//        {
-//            List<Bitmap > timg = new List<Bitmap>();
-//            if (lesson == "All lessons")
-//            {
-//                lvl.LoadItemsNameAllLesson(unit, level);
-//            }
-//            else
-//            {
-//                lvl.LoadItemsNameOneLesson(unit, level, lesson);
-//            }
-//            
-//            lvl.ItemsName=lvl.MixItems(lvl.ItemsFromSelectedULL);
-//            ItemsNameREADY = lvl.ItemsName;
-//            foreach (string en in lvl.ItemsName)
-//            {
-//                timg.Add(GetIMG(en));
-//            }
-//            return timg;
-//        }
-//        //=================================================
+        LevelCs lvl = new LevelCs();
+        public List<string> ItemsNameREADY = new List<string>();
+        //Working with pictures===========================
+        //Function returns picture from Resources which required(by name)
+        public Bitmap GetIMG(string imageName)
+        {
+            //Bitmap im = Properties.Resources.apple;
+            ResourceManager rm = Properties.Resources.ResourceManager;
+            Bitmap myImage = (Bitmap)rm.GetObject(imageName);
+
+            return myImage;
+        }
+
+		// TODO BB 7/30/12 We need to change the lesson higherarchy to level/unit/lesson
+		// But, the concepts of levels, lessons, and units probably belongs in the logic layer
+        
+		//This operation returns images from ULL which user selected
+        //for a getting pictures from one lesson or all lessons will be difined here!
+        public List<Bitmap> LessonImages(string unit,string level,string lesson)
+        {
+            List<Bitmap > timg = new List<Bitmap>();
+            if (lesson == "All lessons")
+            {
+                lvl.LoadItemsNameAllLesson(unit, level);
+            }
+            else
+            {
+                lvl.LoadItemsNameOneLesson(unit, level, lesson);
+            }
+            
+            lvl.ItemsName=lvl.MixItems(lvl.ItemsFromSelectedULL);
+            ItemsNameREADY = lvl.ItemsName;
+            foreach (string en in lvl.ItemsName)
+            {
+                timg.Add(GetIMG(en));
+            }
+            return timg;
+        }
+        //=================================================
 
 
 
