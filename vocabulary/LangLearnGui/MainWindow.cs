@@ -101,34 +101,6 @@ public partial class MainWindow: Gtk.Window
 		Thread t = new Thread (new ThreadStart (BuildTree));
 		t.Start ();
 	}
-//	protected void TreeUpdate ()
-//	{
-//		MwTree();
-//		//Runtime.DispatchService.GuiDispatch (new StatefulMessageHandler (UpdateGui), n);
-//	}
-//	protected void OnTreeMainRowActivated (object o, RowActivatedArgs args)
-//	{
-//		//throw new System.NotImplementedException ();
-//		string level = "1";
-//		string unit = "1";
-//		string lesson = "1";
-// 
-//		DataManager picture = new DataManager();
-//		List<System.Drawing.Bitmap> img = picture.LessonImages (level, unit, lesson);
-//
-//		System.IO.MemoryStream ms = new System.IO.MemoryStream();
-//
-//		int i=0;
-//		foreach (Gtk.Image image in table3)
-//		{
-//			img[i++].Save (ms, System.Drawing.Imaging.ImageFormat.Bmp);
-//			byte[] data = ms.GetBuffer();
-//
-//			Gdk.Pixbuf pb = new Gdk.Pixbuf(data);
-//
-//			image.Pixbuf = pb;
-//
-//		}
 
 	protected void OnTreeMainSelectCursorRow (object o, SelectCursorRowArgs args)
 	{
