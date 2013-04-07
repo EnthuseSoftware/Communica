@@ -28,7 +28,8 @@ namespace LangLearnData
 
 		// TODO BB 7/30/12 We need to change the lesson higherarchy to level/unit/lesson
 		// But, the concepts of levels, lessons, and units probably belongs in the logic layer
-        
+		// TODO JR 10/13/12 Need to rewrite LessonImages to return a byte array list.
+
 		//This operation returns images from ULL which user selected
         //for a getting pictures from one lesson or all lessons will be difined here!
         public List<Bitmap> LessonImages(string unit,string level,string lesson)

@@ -2,18 +2,19 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="LangLearnGui/MainWindow.cs">
     <Files>
-      <File FileName="LangLearnGui/MainWindow.cs" Line="126" Column="17" />
-      <File FileName="TestsGtk/MainWindow.cs" Line="83" Column="15" />
+      <File FileName="LangLearnGui/MainWindow.cs" Line="118" Column="38" />
       <File FileName="LangLearnData/LevelCs.cs" Line="42" Column="43" />
       <File FileName="LangLearnWinForm/frmBoard.cs" Line="45" Column="31" />
-      <File FileName="LangLearnData/DataManager.cs" Line="39" Column="21" />
+      <File FileName="LangLearnData/DataManager.cs" Line="31" Column="79" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="LangLearnData" expanded="True" />
           <Node name="LangLearnGui" expanded="True">
-            <Node name="MainWindow.cs" selected="True" />
+            <Node name="References" expanded="True">
+              <Node name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" selected="True" />
+            </Node>
           </Node>
           <Node name="LangLearnLogic" expanded="True" />
           <Node name="LangLearnWinForm" expanded="True">
