@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LangLearnDataModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="LangLearnDataEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="languages" EntityType="LangLearnDataModel.language" />
+    <EntitySet Name="lessons" EntityType="LangLearnDataModel.lesson" />
+    <EntitySet Name="levels" EntityType="LangLearnDataModel.level" />
+    <EntitySet Name="scenes" EntityType="LangLearnDataModel.scene" />
+    <EntitySet Name="sceneitems" EntityType="LangLearnDataModel.sceneitem" />
+    <EntitySet Name="units" EntityType="LangLearnDataModel.unit" />
+    <EntitySet Name="vocabularies" EntityType="LangLearnDataModel.vocabulary" />
+    <EntitySet Name="words" EntityType="LangLearnDataModel.word" />
+    <EntitySet Name="myitems" EntityType="LangLearnDataModel.myitem" />
+    <AssociationSet Name="languagelevel" Association="LangLearnDataModel.languagelevel">
+      <End Role="language" EntitySet="languages" />
+      <End Role="level" EntitySet="levels" />
+    </AssociationSet>
+    <AssociationSet Name="levelunit" Association="LangLearnDataModel.levelunit">
+      <End Role="level" EntitySet="levels" />
+      <End Role="unit" EntitySet="units" />
+    </AssociationSet>
+    <AssociationSet Name="unitlesson" Association="LangLearnDataModel.unitlesson">
+      <End Role="unit" EntitySet="units" />
+      <End Role="lesson" EntitySet="lessons" />
+    </AssociationSet>
+    <AssociationSet Name="lessonscene" Association="LangLearnDataModel.lessonscene">
+      <End Role="lesson" EntitySet="lessons" />
+      <End Role="scene" EntitySet="scenes" />
+    </AssociationSet>
+    <AssociationSet Name="lessonvocabulary" Association="LangLearnDataModel.lessonvocabulary">
+      <End Role="lesson" EntitySet="lessons" />
+      <End Role="vocabulary" EntitySet="vocabularies" />
+    </AssociationSet>
+    <AssociationSet Name="scenesceneitem" Association="LangLearnDataModel.scenesceneitem">
+      <End Role="scene" EntitySet="scenes" />
+      <End Role="sceneitem" EntitySet="sceneitems" />
+    </AssociationSet>
+    <AssociationSet Name="vocabularyword" Association="LangLearnDataModel.vocabularyword">
+      <End Role="vocabulary" EntitySet="vocabularies" />
+      <End Role="word" EntitySet="words" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="language">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="levels" Relationship="LangLearnDataModel.languagelevel" FromRole="language" ToRole="level" />
+  </EntityType>
+  <EntityType Name="lesson">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+    <Property Name="IdUnit" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="unit" Relationship="LangLearnDataModel.unitlesson" FromRole="lesson" ToRole="unit" />
+    <NavigationProperty Name="scenes" Relationship="LangLearnDataModel.lessonscene" FromRole="lesson" ToRole="scene" />
+    <NavigationProperty Name="vocabularies" Relationship="LangLearnDataModel.lessonvocabulary" FromRole="lesson" ToRole="vocabulary" />
+  </EntityType>
+  <EntityType Name="level">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+    <Property Name="IdLanguage" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="language" Relationship="LangLearnDataModel.languagelevel" FromRole="level" ToRole="language" />
+    <NavigationProperty Name="units" Relationship="LangLearnDataModel.levelunit" FromRole="level" ToRole="unit" />
+  </EntityType>
+  <EntityType Name="scene">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+    <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="IdLesson" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="lesson" Relationship="LangLearnDataModel.lessonscene" FromRole="scene" ToRole="lesson" />
+    <NavigationProperty Name="sceneitems" Relationship="LangLearnDataModel.scenesceneitem" FromRole="scene" ToRole="sceneitem" />
+  </EntityType>
+  <EntityType Name="sceneitem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+    <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Sound" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="SoundVol" Type="Int32" />
+    <Property Name="IdScene" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="scene" Relationship="LangLearnDataModel.scenesceneitem" FromRole="sceneitem" ToRole="scene" />
+  </EntityType>
+  <EntityType Name="unit">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+    <Property Name="IdLevel" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="level" Relationship="LangLearnDataModel.levelunit" FromRole="unit" ToRole="level" />
+    <NavigationProperty Name="lessons" Relationship="LangLearnDataModel.unitlesson" FromRole="unit" ToRole="lesson" />
+  </EntityType>
+  <EntityType Name="vocabulary">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+    <Property Name="IdLesson" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="lesson" Relationship="LangLearnDataModel.lessonvocabulary" FromRole="vocabulary" ToRole="lesson" />
+    <NavigationProperty Name="words" Relationship="LangLearnDataModel.vocabularyword" FromRole="vocabulary" ToRole="word" />
+  </EntityType>
+  <EntityType Name="word">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+    <Property Name="IdVocabulary" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Sound" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="SoundVol" Type="Int32" />
+    <NavigationProperty Name="vocabulary" Relationship="LangLearnDataModel.vocabularyword" FromRole="word" ToRole="vocabulary" />
+  </EntityType>
+  <EntityType Name="myitem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="String" Name="Id" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Description" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="IdVocabulary" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Type="Binary" Name="Picture" MaxLength="Max" FixedLength="false" />
+    <Property Type="Binary" Name="Sound" MaxLength="Max" FixedLength="false" />
+    <Property Type="Int32" Name="SoundVol" />
+  </EntityType>
+  <Association Name="languagelevel">
+    <End Type="LangLearnDataModel.language" Role="language" Multiplicity="1" />
+    <End Type="LangLearnDataModel.level" Role="level" Multiplicity="*" />
+  </Association>
+  <Association Name="levelunit">
+    <End Type="LangLearnDataModel.level" Role="level" Multiplicity="1" />
+    <End Type="LangLearnDataModel.unit" Role="unit" Multiplicity="*" />
+  </Association>
+  <Association Name="unitlesson">
+    <End Type="LangLearnDataModel.unit" Role="unit" Multiplicity="1" />
+    <End Type="LangLearnDataModel.lesson" Role="lesson" Multiplicity="*" />
+  </Association>
+  <Association Name="lessonscene">
+    <End Type="LangLearnDataModel.lesson" Role="lesson" Multiplicity="1" />
+    <End Type="LangLearnDataModel.scene" Role="scene" Multiplicity="*" />
+  </Association>
+  <Association Name="lessonvocabulary">
+    <End Type="LangLearnDataModel.lesson" Role="lesson" Multiplicity="1" />
+    <End Type="LangLearnDataModel.vocabulary" Role="vocabulary" Multiplicity="*" />
+  </Association>
+  <Association Name="scenesceneitem">
+    <End Type="LangLearnDataModel.scene" Role="scene" Multiplicity="1" />
+    <End Type="LangLearnDataModel.sceneitem" Role="sceneitem" Multiplicity="*" />
+  </Association>
+  <Association Name="vocabularyword">
+    <End Type="LangLearnDataModel.vocabulary" Role="vocabulary" Multiplicity="1" />
+    <End Type="LangLearnDataModel.word" Role="word" Multiplicity="*" />
+  </Association>
+</Schema>

@@ -1,4 +1,4 @@
-﻿<UserControl xmlns:Controls="clr-namespace:LangInformGUI.Controls"  x:Class="LangInformGUI.Controls.MyItem"
+﻿<UserControl xmlns:Controls="clr-namespace:LangInformGUI.Controls"  x:Class="LangInformGUI.Controls.MyItemControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -15,11 +15,11 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="131*"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="5*"/>
             </Grid.RowDefinitions>
-            <Label Content="⬛" Grid.Row="1" Padding="0" FontSize="20" RenderTransformOrigin="0,0" Margin="0,-4,0,3"/>
-            <Controls:CustomSlider x:Name="track" Height="10" Grid.Row="1" Margin="0,0,5,0" Grid.Column="1" BorderBrush="#FF909DEC" BorderThickness="1" MouseLeftButtonDown="track_MouseLeftButtonDown" />
+            <!--<Label Content="⬛" Grid.Row="1" Padding="0" FontSize="20" RenderTransformOrigin="0,0" Margin="0,-4,0,3"/>-->
+            <Controls:CustomSlider x:Name="track" Grid.Row="1" Margin="0,0,5,0" Grid.Column="1" BorderBrush="#FF909DEC" BorderThickness="1" MouseLeftButtonDown="track_MouseLeftButtonDown" Loaded="track_Loaded" />
         </Grid>
     </Grid>
 </UserControl>

@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -25,6 +26,50 @@ namespace LangInformGUI.Controls
             InitializeComponent();
         }
 
+        static CustomSlider()
+        {
+            PositionProperty = DependencyProperty.Register("Position", typeof(double), typeof(CustomSlider),
+              new FrameworkPropertyMetadata(new PropertyChangedCallback(ChangeValue)));
+
+        }
+
+        public static readonly DependencyProperty PositionProperty;
+
+
+        private static void ChangeValue(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        {
+
+            (source as CustomSlider).UpdateValue(Convert.ToDouble(e.NewValue));
+
+        }
+
+        private void UpdateValue(double newVal)
+        {
+            Position = newVal;
+        }
+
+
+
+        static void valueChangedCallBack(DependencyObject property, DependencyPropertyChangedEventArgs args)
+        {
+            CustomSlider directoryBox = (CustomSlider)property;
+            directoryBox.Position = (double)args.NewValue;
+        }
+
+        public double Position1
+        {
+            get { return (double)GetValue(PositionProperty); }
+            set
+            {
+                SetValue(PositionProperty, value);
+            }
+        }
+
+
+
+
+
+
         double _position;
         /// <summary>
         /// Postion of slider. Postion can not be greater than MaxValue.
@@ -33,15 +78,17 @@ namespace LangInformGUI.Controls
         {
             get
             {
-                return _position;
+                return (double)GetValue(PositionProperty);
             }
             set
             {
                 double oldValue = _position;
                 _position = value;
+                SetValue(PositionProperty, value);
                 if (_position >= MaxValue)
                 {
                     _position = MaxValue;
+                    SetValue(PositionProperty, _position);
                 }
                 ChangePosition();
                 if (PositionChanged != null)
@@ -53,7 +100,7 @@ namespace LangInformGUI.Controls
 
         void ChangePosition()
         {
-            lblProgress.Width = (_position * this.Width) / MaxValue;
+            lblProgress.Width = (_position * length) / MaxValue;
         }
 
         public event EventHandler PositionChanged;
@@ -62,13 +109,29 @@ namespace LangInformGUI.Controls
 
         public double MaxValue { get; set; }
 
+        double length = 0;
+
         private void Grid_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
         {
+            length = this.Width;
+            if (Double.IsNaN(this.Width))
+                length = this.ActualWidth;
             Point p = Mouse.GetPosition(this);
             double oldValue = _position;
-            Position = (p.X * MaxValue) / this.Width;
+            double _newPosition = (p.X * MaxValue) / length;
+            Position = _newPosition;
+            StartAnimation((int)_newPosition, (int)MaxValue);
             if (PositionChangedManually != null)
                 PositionChangedManually(this, new PositionChangedEventArgs() { OldPosition = oldValue, NewPosition = _position });
+        }
+
+        public void StartAnimation(int start, int end)
+        {
+            DoubleAnimation anim = new DoubleAnimation();
+            anim.From = start;
+            anim.To = end;
+            anim.Duration = TimeSpan.FromMilliseconds(end - start);
+            this.BeginAnimation(CustomSlider.PositionProperty, anim);
         }
 
     }

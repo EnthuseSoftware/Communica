@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="60b40723d61a4cdea378db60a9d0314e" Name="Diagram1">
+        <EntityTypeShape EntityType="LangLearnDataModel.language" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LangLearnDataModel.lesson" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LangLearnDataModel.level" Width="1.5" PointX="0.5" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LangLearnDataModel.scene" Width="1.5" PointX="2.625" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="LangLearnDataModel.sceneitem" Width="1.5" PointX="4.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LangLearnDataModel.unit" Width="1.5" PointX="4.5" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="LangLearnDataModel.vocabulary" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LangLearnDataModel.word" Width="1.5" PointX="6.625" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="LangLearnDataModel.myitem" Width="1.5" PointX="0.625" PointY="6.25" />
+        <AssociationConnector Association="LangLearnDataModel.languagelevel" />
+        <AssociationConnector Association="LangLearnDataModel.levelunit" />
+        <AssociationConnector Association="LangLearnDataModel.unitlesson" />
+        <AssociationConnector Association="LangLearnDataModel.lessonscene" />
+        <AssociationConnector Association="LangLearnDataModel.lessonvocabulary" />
+        <AssociationConnector Association="LangLearnDataModel.scenesceneitem" />
+        <AssociationConnector Association="LangLearnDataModel.vocabularyword" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

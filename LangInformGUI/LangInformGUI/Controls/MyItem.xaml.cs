@@ -1,7 +1,11 @@
-﻿using System;
+﻿using LangInformModel;
+using NAudio.Wave;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,23 +24,38 @@ namespace LangInformGUI.Controls
     /// <summary>
     /// Interaction logic for MyItem.xaml
     /// </summary>
-    public partial class MyItem : UserControl
+    public partial class MyItemControl : UserControl
     {
-        public MyItem(Word word)
+
+        public MyItemControl(Word word)
         {
             InitializeComponent();
-            Sound = new MediaPlayer();
-            Sound.Open(new Uri(word.Sound.SoundLocation));
-            Picture = new Image();
-            Picture.Source = ConvertBitmapToImageSource(word.Picture);
+            _word = word;
+            Picture = con.ByteToWPFImage(word.Picture);
+            waveReader = new WaveFileReader(con.byteArrayToStream(_word.Sound));
+            SoundLength = waveReader.TotalTime;
+            //wc = new WaveChannel32(waveReader) { PadWithZeroes = false };
+            wc = new WaveChannel32(waveReader);
+            audioOutput = new DirectSoundOut();
+            audioOutput.Init(wc);
             track.PositionChangedManually += track_PositionChangedManually;
         }
+        Word _word;
+
+        public TimeSpan SoundLength { get; set; }
 
         void track_PositionChangedManually(object sender, EventArgs e)
         {
-            //if (track.Position >= 0)
-            //    Sound.Position = TimeSpan.FromMilliseconds(track.Position);
-            //Sound.
+            if (track.Position >= 0)
+            {
+                CurrentPosition = TimeSpan.FromMilliseconds(track.Position);
+                if (audioOutput.PlaybackState == PlaybackState.Playing)
+                {
+                    audioOutput.Pause();
+                }
+            }
+            audioOutput.Play();
+            play = false;
         }
 
         public void StopHighlighting()
@@ -50,6 +69,8 @@ namespace LangInformGUI.Controls
 
             }
         }
+
+        public TimeSpan CurrentPosition { get { return waveReader.CurrentTime; } set { waveReader.CurrentTime = value; } }
 
         public void StartHighlighting(int stopAfter)
         {
@@ -73,19 +94,57 @@ namespace LangInformGUI.Controls
         }
 
         public bool AllowPlay { get; set; }
+        Converter con = new Converter();
+        
+        WaveFileReader waveReader;
+        DirectSoundOut audioOutput;
+        WaveChannel32 wc;
+
+        bool play = true;
+        public void Play()
+        {
+            if (!play)
+            {
+                play = true;
+                return;
+            }
+            if (audioOutput.PlaybackState == PlaybackState.Playing)
+            {
+                audioOutput.Pause();
+            }
+            waveReader.Position = 0;
+            audioOutput.Play();
+            DoubleAnimation anim = new DoubleAnimation();
+            double from = waveReader.CurrentTime.TotalMilliseconds;
+            double to = waveReader.TotalTime.TotalMilliseconds;
+            anim.From = from;
+            anim.To = to;
+            anim.Duration = new Duration(TimeSpan.FromMilliseconds(to - from));
+        }
+
 
         public System.Windows.Controls.Image Picture { get; set; }
 
-        public System.Windows.Media.Imaging.BitmapSource ConvertBitmapToImageSource(System.Drawing.Bitmap bmp)
+        public System.Windows.Controls.Image ByteToWPFImage(byte[] blob)
         {
-            var bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(),
-                                                                            IntPtr.Zero,
-                                                                            Int32Rect.Empty,
-                                                                            BitmapSizeOptions.FromEmptyOptions());
-            return bitmapSource;
-        }
+            MemoryStream stream = new MemoryStream();
+            stream.Write(blob, 0, blob.Length);
+            stream.Position = 0;
 
-        public MediaPlayer Sound { get; set; }
+            System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+            System.Windows.Media.Imaging.BitmapImage bi = new System.Windows.Media.Imaging.BitmapImage();
+            bi.BeginInit();
+
+            MemoryStream ms = new MemoryStream();
+            img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+            ms.Seek(0, SeekOrigin.Begin);
+            bi.StreamSource = ms;
+            bi.EndInit();
+            System.Windows.Controls.Image image2 = new System.Windows.Controls.Image() { Source = bi };
+            return image2;
+        }
+        
+        //public MediaPlayer Sound { get; set; }
 
         private void image_Loaded(object sender, RoutedEventArgs e)
         {
@@ -122,7 +181,13 @@ namespace LangInformGUI.Controls
 
         private void track_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            //e.Handled = true;
+            double d=track.Position;
+        }
+
+        private void track_Loaded(object sender, RoutedEventArgs e)
+        {
+            track.MaxValue = SoundLength.TotalMilliseconds;
         }
 
     }

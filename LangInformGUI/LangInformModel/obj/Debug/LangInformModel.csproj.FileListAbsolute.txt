@@ -1,0 +1,10 @@
+C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformModel\bin\Debug\LangInformModel.dll.config
+C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformModel\bin\Debug\LangInformModel.dll
+C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformModel\bin\Debug\LangInformModel.pdb
+C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformModel\bin\Debug\EntityFramework.dll
+C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformModel\bin\Debug\System.Data.SQLite.dll
+C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformModel\bin\Debug\System.Data.SQLite.Linq.dll
+C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformModel\bin\Debug\EntityFramework.xml
+C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformModel\obj\Debug\LangInformModel.csprojResolveAssemblyReference.cache
+C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformModel\obj\Debug\LangInformModel.dll
+C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformModel\obj\Debug\LangInformModel.pdb

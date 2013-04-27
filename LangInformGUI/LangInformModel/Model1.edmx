@@ -1,0 +1,411 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="LangLearnDataModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="LangLearnDataModelStoreContainer">
+          <EntitySet Name="language" EntityType="LangLearnDataModel.Store.language" store:Type="Tables" Schema="langlearndata" />
+          <EntitySet Name="lesson" EntityType="LangLearnDataModel.Store.lesson" store:Type="Tables" Schema="langlearndata" />
+          <EntitySet Name="level" EntityType="LangLearnDataModel.Store.level" store:Type="Tables" Schema="langlearndata" />
+          <EntitySet Name="myitem" EntityType="LangLearnDataModel.Store.myitem" store:Type="Tables" Schema="langlearndata" />
+          <EntitySet Name="scene" EntityType="LangLearnDataModel.Store.scene" store:Type="Tables" Schema="langlearndata" />
+          <EntitySet Name="sceneitem" EntityType="LangLearnDataModel.Store.sceneitem" store:Type="Tables" Schema="langlearndata" />
+          <EntitySet Name="unit" EntityType="LangLearnDataModel.Store.unit" store:Type="Tables" Schema="langlearndata" />
+          <EntitySet Name="vocabulary" EntityType="LangLearnDataModel.Store.vocabulary" store:Type="Tables" Schema="langlearndata" />
+          <EntitySet Name="word" EntityType="LangLearnDataModel.Store.word" store:Type="Tables" Schema="langlearndata" />
+        </EntityContainer>
+        <EntityType Name="language">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="lesson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="IdUnit" Type="varchar" MaxLength="36" />
+        </EntityType>
+        <EntityType Name="level">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="IdLanguage" Type="varchar" MaxLength="36" />
+        </EntityType>
+        <EntityType Name="myitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="IdVocabulary" Type="varchar" MaxLength="36" />
+          <Property Name="Picture" Type="blob" />
+          <Property Name="Sound" Type="blob" />
+          <Property Name="SoundVol" Type="int" />
+        </EntityType>
+        <EntityType Name="scene">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="Picture" Type="blob" />
+          <Property Name="IdLesson" Type="varchar" MaxLength="36" />
+        </EntityType>
+        <EntityType Name="sceneitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="Picture" Type="blob" />
+          <Property Name="Sound" Type="blob" />
+          <Property Name="SoundVol" Type="int" />
+          <Property Name="IdScene" Type="varchar" MaxLength="36" />
+        </EntityType>
+        <EntityType Name="unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="IdLevel" Type="varchar" MaxLength="36" />
+        </EntityType>
+        <EntityType Name="vocabulary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="IdLesson" Type="varchar" MaxLength="36" />
+        </EntityType>
+        <EntityType Name="word">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="IdVocabulary" Type="varchar" MaxLength="36" />
+          <Property Name="Picture" Type="blob" />
+          <Property Name="Sound" Type="blob" />
+          <Property Name="SoundVol" Type="int" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LangLearnDataModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="LangLearnDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="languages" EntityType="LangLearnDataModel.language" />
+          <EntitySet Name="lessons" EntityType="LangLearnDataModel.lesson" />
+          <EntitySet Name="levels" EntityType="LangLearnDataModel.level" />
+          <EntitySet Name="scenes" EntityType="LangLearnDataModel.scene" />
+          <EntitySet Name="sceneitems" EntityType="LangLearnDataModel.sceneitem" />
+          <EntitySet Name="units" EntityType="LangLearnDataModel.unit" />
+          <EntitySet Name="vocabularies" EntityType="LangLearnDataModel.vocabulary" />
+          <EntitySet Name="words" EntityType="LangLearnDataModel.word" />
+          <EntitySet Name="myitems" EntityType="LangLearnDataModel.myitem" />
+          <AssociationSet Name="languagelevel" Association="LangLearnDataModel.languagelevel">
+            <End Role="language" EntitySet="languages" />
+            <End Role="level" EntitySet="levels" />
+          </AssociationSet>
+          <AssociationSet Name="levelunit" Association="LangLearnDataModel.levelunit">
+            <End Role="level" EntitySet="levels" />
+            <End Role="unit" EntitySet="units" />
+          </AssociationSet>
+          <AssociationSet Name="unitlesson" Association="LangLearnDataModel.unitlesson">
+            <End Role="unit" EntitySet="units" />
+            <End Role="lesson" EntitySet="lessons" />
+          </AssociationSet>
+          <AssociationSet Name="lessonscene" Association="LangLearnDataModel.lessonscene">
+            <End Role="lesson" EntitySet="lessons" />
+            <End Role="scene" EntitySet="scenes" />
+          </AssociationSet>
+          <AssociationSet Name="lessonvocabulary" Association="LangLearnDataModel.lessonvocabulary">
+            <End Role="lesson" EntitySet="lessons" />
+            <End Role="vocabulary" EntitySet="vocabularies" />
+          </AssociationSet>
+          <AssociationSet Name="scenesceneitem" Association="LangLearnDataModel.scenesceneitem">
+            <End Role="scene" EntitySet="scenes" />
+            <End Role="sceneitem" EntitySet="sceneitems" />
+          </AssociationSet>
+          <AssociationSet Name="vocabularyword" Association="LangLearnDataModel.vocabularyword">
+            <End Role="vocabulary" EntitySet="vocabularies" />
+            <End Role="word" EntitySet="words" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="language">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="levels" Relationship="LangLearnDataModel.languagelevel" FromRole="language" ToRole="level" />
+        </EntityType>
+        <EntityType Name="lesson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="IdUnit" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="unit" Relationship="LangLearnDataModel.unitlesson" FromRole="lesson" ToRole="unit" />
+          <NavigationProperty Name="scenes" Relationship="LangLearnDataModel.lessonscene" FromRole="lesson" ToRole="scene" />
+          <NavigationProperty Name="vocabularies" Relationship="LangLearnDataModel.lessonvocabulary" FromRole="lesson" ToRole="vocabulary" />
+        </EntityType>
+        <EntityType Name="level">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="IdLanguage" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="language" Relationship="LangLearnDataModel.languagelevel" FromRole="level" ToRole="language" />
+          <NavigationProperty Name="units" Relationship="LangLearnDataModel.levelunit" FromRole="level" ToRole="unit" />
+        </EntityType>
+        <EntityType Name="scene">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IdLesson" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="lesson" Relationship="LangLearnDataModel.lessonscene" FromRole="scene" ToRole="lesson" />
+          <NavigationProperty Name="sceneitems" Relationship="LangLearnDataModel.scenesceneitem" FromRole="scene" ToRole="sceneitem" />
+        </EntityType>
+        <EntityType Name="sceneitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Sound" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="SoundVol" Type="Int32" />
+          <Property Name="IdScene" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="scene" Relationship="LangLearnDataModel.scenesceneitem" FromRole="sceneitem" ToRole="scene" />
+        </EntityType>
+        <EntityType Name="unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="IdLevel" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="level" Relationship="LangLearnDataModel.levelunit" FromRole="unit" ToRole="level" />
+          <NavigationProperty Name="lessons" Relationship="LangLearnDataModel.unitlesson" FromRole="unit" ToRole="lesson" />
+        </EntityType>
+        <EntityType Name="vocabulary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="IdLesson" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="lesson" Relationship="LangLearnDataModel.lessonvocabulary" FromRole="vocabulary" ToRole="lesson" />
+          <NavigationProperty Name="words" Relationship="LangLearnDataModel.vocabularyword" FromRole="vocabulary" ToRole="word" />
+        </EntityType>
+        <EntityType Name="word">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="IdVocabulary" Type="String" MaxLength="36" Unicode="false" FixedLength="false" />
+          <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Sound" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="SoundVol" Type="Int32" />
+          <NavigationProperty Name="vocabulary" Relationship="LangLearnDataModel.vocabularyword" FromRole="word" ToRole="vocabulary" />
+        </EntityType>
+        <EntityType Name="myitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="Id" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Description" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="IdVocabulary" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="Binary" Name="Picture" MaxLength="Max" FixedLength="false" />
+          <Property Type="Binary" Name="Sound" MaxLength="Max" FixedLength="false" />
+          <Property Type="Int32" Name="SoundVol" />
+        </EntityType>
+        <Association Name="languagelevel">
+          <End Type="LangLearnDataModel.language" Role="language" Multiplicity="1" />
+          <End Type="LangLearnDataModel.level" Role="level" Multiplicity="*" />
+        </Association>
+        <Association Name="levelunit">
+          <End Type="LangLearnDataModel.level" Role="level" Multiplicity="1" />
+          <End Type="LangLearnDataModel.unit" Role="unit" Multiplicity="*" />
+        </Association>
+        <Association Name="unitlesson">
+          <End Type="LangLearnDataModel.unit" Role="unit" Multiplicity="1" />
+          <End Type="LangLearnDataModel.lesson" Role="lesson" Multiplicity="*" />
+        </Association>
+        <Association Name="lessonscene">
+          <End Type="LangLearnDataModel.lesson" Role="lesson" Multiplicity="1" />
+          <End Type="LangLearnDataModel.scene" Role="scene" Multiplicity="*" />
+        </Association>
+        <Association Name="lessonvocabulary">
+          <End Type="LangLearnDataModel.lesson" Role="lesson" Multiplicity="1" />
+          <End Type="LangLearnDataModel.vocabulary" Role="vocabulary" Multiplicity="*" />
+        </Association>
+        <Association Name="scenesceneitem">
+          <End Type="LangLearnDataModel.scene" Role="scene" Multiplicity="1" />
+          <End Type="LangLearnDataModel.sceneitem" Role="sceneitem" Multiplicity="*" />
+        </Association>
+        <Association Name="vocabularyword">
+          <End Type="LangLearnDataModel.vocabulary" Role="vocabulary" Multiplicity="1" />
+          <End Type="LangLearnDataModel.word" Role="word" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LangLearnDataModelStoreContainer" CdmEntityContainer="LangLearnDataEntities">
+          <EntitySetMapping Name="languages">
+            <EntityTypeMapping TypeName="LangLearnDataModel.language">
+              <MappingFragment StoreEntitySet="language">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="lessons">
+            <EntityTypeMapping TypeName="LangLearnDataModel.lesson">
+              <MappingFragment StoreEntitySet="lesson">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IdUnit" ColumnName="IdUnit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="levels">
+            <EntityTypeMapping TypeName="LangLearnDataModel.level">
+              <MappingFragment StoreEntitySet="level">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IdLanguage" ColumnName="IdLanguage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="scenes">
+            <EntityTypeMapping TypeName="LangLearnDataModel.scene">
+              <MappingFragment StoreEntitySet="scene">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="IdLesson" ColumnName="IdLesson" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sceneitems">
+            <EntityTypeMapping TypeName="LangLearnDataModel.sceneitem">
+              <MappingFragment StoreEntitySet="sceneitem">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="Sound" ColumnName="Sound" />
+                <ScalarProperty Name="SoundVol" ColumnName="SoundVol" />
+                <ScalarProperty Name="IdScene" ColumnName="IdScene" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="units">
+            <EntityTypeMapping TypeName="LangLearnDataModel.unit">
+              <MappingFragment StoreEntitySet="unit">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IdLevel" ColumnName="IdLevel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vocabularies">
+            <EntityTypeMapping TypeName="LangLearnDataModel.vocabulary">
+              <MappingFragment StoreEntitySet="vocabulary">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IdLesson" ColumnName="IdLesson" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="words">
+            <EntityTypeMapping TypeName="LangLearnDataModel.word">
+              <MappingFragment StoreEntitySet="word">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IdVocabulary" ColumnName="IdVocabulary" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="Sound" ColumnName="Sound" />
+                <ScalarProperty Name="SoundVol" ColumnName="SoundVol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="myitems">
+            <EntityTypeMapping TypeName="LangLearnDataModel.myitem">
+              <MappingFragment StoreEntitySet="myitem">
+                <ScalarProperty Name="SoundVol" ColumnName="SoundVol" />
+                <ScalarProperty Name="Sound" ColumnName="Sound" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="IdVocabulary" ColumnName="IdVocabulary" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

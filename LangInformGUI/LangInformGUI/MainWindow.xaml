@@ -1,19 +1,19 @@
 ﻿<Window x:Class="LangInformGUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:LangInformGUI"
+        xmlns:model="clr-namespace:LangInformModel;assembly=LangInformModel"
         Title="MainWindow" Height="520.093" Width="1022.824" Loaded="Window_Loaded_1">
     <Window.Resources>
-        <HierarchicalDataTemplate DataType="{x:Type local:Language}" ItemsSource="{Binding Path=Levels}">
+        <HierarchicalDataTemplate DataType="{x:Type model:Language}" ItemsSource="{Binding Path=Levels}">
             <TextBlock Text="{Binding Path=Name}"/>
         </HierarchicalDataTemplate>
-        <HierarchicalDataTemplate DataType="{x:Type local:Level}" ItemsSource="{Binding Path=Units}">
+        <HierarchicalDataTemplate DataType="{x:Type model:Level}" ItemsSource="{Binding Path=Units}">
             <TextBlock Text="{Binding Path=Name}"/>
         </HierarchicalDataTemplate>
-        <HierarchicalDataTemplate DataType="{x:Type local:Unit}" ItemsSource="{Binding Path=Lessons}">
+        <HierarchicalDataTemplate DataType="{x:Type model:Unit}" ItemsSource="{Binding Path=Lessons}">
             <TextBlock Text="{Binding Path=Name}"/>
         </HierarchicalDataTemplate>
-        <HierarchicalDataTemplate DataType="{x:Type local:Lesson}">
+        <HierarchicalDataTemplate DataType="{x:Type model:Lesson}">
             <TextBlock Text="{Binding Path=Name}"/>
         </HierarchicalDataTemplate>
         
@@ -62,34 +62,35 @@
                 <Grid Grid.Row="1" Name="grdLessonUI">
                     <TabControl>
                         <TabItem Header="Scene" Name="tabScene">
+                            <Border BorderBrush="#FF92D050" BorderThickness="5">
                             <Grid Name="grdScene"></Grid>
+                            </Border>
                         </TabItem>
                         <TabItem Header="Vocabulary" Name="tabVocabulary">
-                            <Grid Name="grdVocabulary" Background="#FFF9DDDD">
-                                <Grid Name="grdWords">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
+                            <Border BorderBrush="#FFFFC000" BorderThickness="5">
+                                <Grid Name="grdVocabulary">
                                 </Grid>
-                            </Grid>
+                            </Border>
                         </TabItem>
                         <TabItem Header="Sentence Structure" Name="tabSentence">
-                            <Grid Name="grdSentence"></Grid>
+                            <Border BorderBrush="#FF00B0F0" BorderThickness="5">
+                                <Grid Name="grdSentence"></Grid>
+                            </Border>
                         </TabItem>
                     </TabControl>
                 </Grid>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="2">
                     <Button Name="btnLoad" Margin="3" Content="Load Test" Click="btnLoad_Click"/>
-                    <Button Content="Button" Height="29" Margin="0,3,0,0" VerticalAlignment="Top" Width="65" Click="Button_Click_1"/>
+                    <Button Content="Button" Margin="0,3" Width="65" Click="Button_Click_1"/>
+                </StackPanel>
+            </Grid>
+            <Grid Name="controlsPanel" Grid.Column="3">
+                <StackPanel>
+                    <Button Content="Learn" Margin="2"/>
+                    <Button Content="Practice" Margin="2"/>
+                    <Button Content="Review" Margin="2"/>
+                    <Button Content="Quiz" Margin="2"/>
                 </StackPanel>
             </Grid>
         </Grid>
