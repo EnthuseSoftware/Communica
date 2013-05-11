@@ -25,7 +25,7 @@ namespace LangInformVM
        //  mainEntities1 entities = new mainEntities1();
         public void InsertLanguage()
         {
-            Converter con = new Converter();
+            // Converter con = new Converter();
 			DataProvider provider = new DataProvider();
 			var entities = provider.GetConnection();
             var language = entities.Table<Language>().FirstOrDefault();
@@ -50,8 +50,8 @@ namespace LangInformVM
                                {
                                    Id = Guid.NewGuid().ToString(),
                                    Name = s.Name.Replace(s.Extension, ""),
-                                   Picture = con.BitmapToByte(new System.Drawing.Bitmap(i.FullName)),
-                                   Sound = con.SoundToByte(s.FullName),
+                                //   Picture = con.BitmapToByte(new System.Drawing.Bitmap(i.FullName)),
+                                //   Sound = con.SoundToByte(s.FullName),
                                    SoundVol = 100,
                                    VocabularyId = vocab.Id
                                };
@@ -60,12 +60,14 @@ namespace LangInformVM
                 }
                 //add Scene to the lesson
                 var sceneDir = new DirectoryInfo("C:\\Lessons\\Scene\\");
+				/*
                 foreach (var file in sceneDir.GetFiles("*.jpeg"))
                 {
                     var scene = new Scene() { Id = Guid.NewGuid().ToString(), Name = file.Name.Replace(file.Extension, ""), LessonId = lesson.Id, 
                         Picture = con.BitmapToByte(new System.Drawing.Bitmap(file.FullName))};
                     lesson.Scenes.Add(scene);
                 }
+                */
                 unit.Lessons.Add(lesson);
                 level.Units.Add(unit);
             }

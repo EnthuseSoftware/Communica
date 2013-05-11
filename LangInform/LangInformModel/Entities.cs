@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+//using System.Data.Entity;
 // The namespace below doesn't exist in Mono- don't use it
 //using System.Data.Entity.ModelConfiguration.Conventions;
 using SQLite;
