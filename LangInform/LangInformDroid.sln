@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangInformDroidUI", "LangInformDroidUI\LangInformDroidUI.csproj", "{15D599F5-3494-44C2-AC3C-B87741CDC275}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangInformModel.Droid", "LangInformModel\LangInformModel.Droid.csproj", "{D83E9AF9-3FAE-42EB-8938-23E231D65C07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangInformVM.Droid", "LangInformVM\LangInformVM.Droid.csproj", "{CD66BD2F-1C43-462A-82E2-1ACB7B81E4B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{940BA6BD-E800-4DF6-A2B1-C74985E2A281}"
+	ProjectSection(SolutionItems) = preProject
+		ModelTests\ModelTests.csproj = ModelTests\ModelTests.csproj
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15D599F5-3494-44C2-AC3C-B87741CDC275}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15D599F5-3494-44C2-AC3C-B87741CDC275}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15D599F5-3494-44C2-AC3C-B87741CDC275}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15D599F5-3494-44C2-AC3C-B87741CDC275}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD66BD2F-1C43-462A-82E2-1ACB7B81E4B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD66BD2F-1C43-462A-82E2-1ACB7B81E4B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD66BD2F-1C43-462A-82E2-1ACB7B81E4B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD66BD2F-1C43-462A-82E2-1ACB7B81E4B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D83E9AF9-3FAE-42EB-8938-23E231D65C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D83E9AF9-3FAE-42EB-8938-23E231D65C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D83E9AF9-3FAE-42EB-8938-23E231D65C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D83E9AF9-3FAE-42EB-8938-23E231D65C07}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = LangInformDroidUI\LangInformDroidUI.csproj
+	EndGlobalSection
+EndGlobal
