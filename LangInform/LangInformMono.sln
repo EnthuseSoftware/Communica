@@ -1,5 +1,5 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangInformModel.Mono", "LangInformModel\LangInformModel.Mono.csproj", "{4826A639-B0A2-4B57-884E-9CDAC034ADA4}"
 EndProject
