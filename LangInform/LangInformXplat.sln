@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangInformDroidUI", "LangInformDroidUI\LangInformDroidUI.csproj", "{15D599F5-3494-44C2-AC3C-B87741CDC275}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{940BA6BD-E800-4DF6-A2B1-C74985E2A281}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangInformWPF", "LangInformWPF\LangInformWPF.csproj", "{2AF59A76-D618-41FA-9A98-C467FBC13740}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangInformModel.Win", "LangInformModel\LangInformModel.Win.csproj", "{86B7220F-91E1-4642-8CEE-1938729E73C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangInformVM.Win", "LangInformVM\LangInformVM.Win.csproj", "{2DD0A1C4-7DA6-4E1D-B76A-2E66E2422B35}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15D599F5-3494-44C2-AC3C-B87741CDC275}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15D599F5-3494-44C2-AC3C-B87741CDC275}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15D599F5-3494-44C2-AC3C-B87741CDC275}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15D599F5-3494-44C2-AC3C-B87741CDC275}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AF59A76-D618-41FA-9A98-C467FBC13740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AF59A76-D618-41FA-9A98-C467FBC13740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AF59A76-D618-41FA-9A98-C467FBC13740}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AF59A76-D618-41FA-9A98-C467FBC13740}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86B7220F-91E1-4642-8CEE-1938729E73C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86B7220F-91E1-4642-8CEE-1938729E73C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86B7220F-91E1-4642-8CEE-1938729E73C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86B7220F-91E1-4642-8CEE-1938729E73C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DD0A1C4-7DA6-4E1D-B76A-2E66E2422B35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DD0A1C4-7DA6-4E1D-B76A-2E66E2422B35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DD0A1C4-7DA6-4E1D-B76A-2E66E2422B35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DD0A1C4-7DA6-4E1D-B76A-2E66E2422B35}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = LangInformDroidUI\LangInformDroidUI.csproj
+	EndGlobalSection
+EndGlobal
