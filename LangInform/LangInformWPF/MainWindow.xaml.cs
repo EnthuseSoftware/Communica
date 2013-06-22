@@ -33,7 +33,7 @@ namespace LangInformGUI
         }
         Logic logic = new Logic();
 
-        mainEntities1 entities = new mainEntities1();
+        MainEntities entities = new MainEntities();
 
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
@@ -198,14 +198,14 @@ namespace LangInformGUI
                 {
                     byte[] binImage = converter.BitmapToByte(new System.Drawing.Bitmap(imageFile.FullName));
                     byte[] binSound = converter.SoundToByte(soundFile.FullName);
-                    MyItem item = new MyItem() { Id = Guid.NewGuid().ToString(), Name = soundFile.Name.Substring(0, soundFile.Name.Length - 4) };
+                    MyItem item = new MyItem() { Id = int.Parse(Guid.NewGuid().ToString()), Name = soundFile.Name.Substring(0, soundFile.Name.Length - 4) };
                     item.Picture = binImage;
                     item.Sound = binSound;
                     item.SoundVol = 100;
                     items.Add(item);
                 }
             }
-            DateProvider entities = new DateProvider();
+            DataProvider entities = new DataProvider();
             entities.AddItems(items);
         }
 

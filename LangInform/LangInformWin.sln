@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangInformVM.Win", "LangInf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangInformWPF", "LangInformWPF\LangInformWPF.csproj", "{2AF59A76-D618-41FA-9A98-C467FBC13740}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTests", "ConsoleTests\ConsoleTests.csproj", "{2A339F48-F9D0-4159-BAD1-9DB082ECA905}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{2AF59A76-D618-41FA-9A98-C467FBC13740}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AF59A76-D618-41FA-9A98-C467FBC13740}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AF59A76-D618-41FA-9A98-C467FBC13740}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A339F48-F9D0-4159-BAD1-9DB082ECA905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A339F48-F9D0-4159-BAD1-9DB082ECA905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A339F48-F9D0-4159-BAD1-9DB082ECA905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A339F48-F9D0-4159-BAD1-9DB082ECA905}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+// The namespaces below doesn't exist in Mono- don't use them
 //using System.Data.Entity;
-// The namespace below doesn't exist in Mono- don't use it
 //using System.Data.Entity.ModelConfiguration.Conventions;
 using SQLite;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace LangInformModel
 {
-/*
-// Not compatible with Mono
-    public class mainEntities1 : DbContext
+
+
+ /*
+  * //     Not compatible with Mono    
+    public class mainEntities1  : DbContext
     {
         public DbSet<Language> Languages { get; set; }
         public DbSet<Level> Levels { get; set; }
@@ -29,7 +32,33 @@ namespace LangInformModel
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }
-*/
+    */    
+
+    public class MainEntities : SQLiteConnection 
+    {
+        public MainEntities()
+            : base(Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "LangInform.db3"))
+        {
+            // Nothing more to do here yet, but if I do, be sure to do it in a private Initialize method
+        }
+
+        public MainEntities(string dbPath)
+            : base(dbPath)
+        {
+        }
+
+        // Simulating DbSets. But should these be read-only?
+        public TableQuery<Language> Languages { get; set; }
+        public TableQuery<Level> Levels { get; set; }
+        public TableQuery<Unit> Units { get; set; }
+        public TableQuery<Lesson> Lessons { get; set; }
+        public TableQuery<Scene> Scenes { get; set; }
+        public TableQuery<SceneItem> SceneItems { get; set; }
+        public TableQuery<Vocabulary> Vocabularies { get; set; }
+        public TableQuery<Word> Words { get; set; }
+        public TableQuery<MyItem> MyItems { get; set; }
+    }
+
 
     public class Language
     {
