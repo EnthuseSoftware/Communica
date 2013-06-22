@@ -8,7 +8,21 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangInformVM", "LangInformVM\LangInformVM.csproj", "{2DD0A1C4-7DA6-4E1D-B76A-2E66E2422B35}"
 EndProject
 Global
-
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://71.58.152.224:8080/tfs/dkcorpsoftware
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = LangInformGUI\\LangInformGUI.csproj
+		SccProjectName1 = LangInformGUI
+		SccLocalPath1 = LangInformGUI
+		SccProjectUniqueName2 = LangInformModel\\LangInformModel.csproj
+		SccProjectName2 = LangInformModel
+		SccLocalPath2 = LangInformModel
+		SccProjectUniqueName3 = LangInformVM\\LangInformVM.csproj
+		SccProjectName3 = LangInformVM
+		SccLocalPath3 = LangInformVM
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

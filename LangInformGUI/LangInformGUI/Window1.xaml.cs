@@ -31,7 +31,7 @@ namespace LangInformGUI
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Word word = new Word();
-            word.Picture = con.BitmapToByte(Properties.Resources._1);
+            //word.Picture = con.BitmapToByte(Properties.Resources._1);
             word.Sound = con.SoundToByte("C:\\LangLearnData\\media3.wav");
             control = new MyItemControl(word);
             control.MouseLeftButtonDown += control_MouseLeftButtonDown;
@@ -41,7 +41,8 @@ namespace LangInformGUI
         void control_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             MyItemControl cont = (MyItemControl)sender;
-            cont.Play();
+            cont.Play(0);
+            cont.StartHighlighting(3000);
         }
     }
 }

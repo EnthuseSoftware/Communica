@@ -7,3 +7,12 @@ C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformVM\bin\Debug\E
 C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformVM\obj\Debug\LangInformVM.csprojResolveAssemblyReference.cache
 C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformVM\obj\Debug\LangInformVM.dll
 C:\builds\DKcorpSoftware\DilshodsProjects\LangInformGUI\LangInformVM\obj\Debug\LangInformVM.pdb
+C:\Users\dilshod\Desktop\LangInformGUI\LangInformVM\bin\Debug\LangInformVM.dll
+C:\Users\dilshod\Desktop\LangInformGUI\LangInformVM\bin\Debug\LangInformVM.pdb
+C:\Users\dilshod\Desktop\LangInformGUI\LangInformVM\bin\Debug\EntityFramework.dll
+C:\Users\dilshod\Desktop\LangInformGUI\LangInformVM\bin\Debug\LangInformModel.dll
+C:\Users\dilshod\Desktop\LangInformGUI\LangInformVM\bin\Debug\LangInformModel.pdb
+C:\Users\dilshod\Desktop\LangInformGUI\LangInformVM\bin\Debug\EntityFramework.xml
+C:\Users\dilshod\Desktop\LangInformGUI\LangInformVM\obj\Debug\LangInformVM.csprojResolveAssemblyReference.cache
+C:\Users\dilshod\Desktop\LangInformGUI\LangInformVM\obj\Debug\LangInformVM.dll
+C:\Users\dilshod\Desktop\LangInformGUI\LangInformVM\obj\Debug\LangInformVM.pdb

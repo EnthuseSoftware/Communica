@@ -32,7 +32,7 @@ namespace LangInformGUI
             }
         }
 
-        DateProvider entities = new DateProvider();
+        DataProvider entities = new DataProvider();
 
 
         //public List<Language> GenerateLanguages()

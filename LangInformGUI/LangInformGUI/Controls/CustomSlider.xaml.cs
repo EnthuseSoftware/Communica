@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,122 +20,116 @@ namespace LangInformGUI.Controls
     /// <summary>
     /// Interaction logic for CustomSlider.xaml
     /// </summary>
-    public partial class CustomSlider : UserControl
+    public partial class CustomSlider : UserControl, INotifyPropertyChanged
     {
+
         public CustomSlider()
         {
             InitializeComponent();
+            this.Loaded += CustomSlider_Loaded;
         }
 
+        //public static readonly DependencyProperty PositionProperty;
+        public static readonly DependencyProperty ValueProperty;
         static CustomSlider()
         {
-            PositionProperty = DependencyProperty.Register("Position", typeof(double), typeof(CustomSlider),
-              new FrameworkPropertyMetadata(new PropertyChangedCallback(ChangeValue)));
-
+            //PositionProperty = DependencyProperty.Register("Position", typeof(double), typeof(CustomSlider), new FrameworkPropertyMetadata());
+            ValueProperty = DependencyProperty.Register("Value", typeof(double), typeof(CustomSlider), new FrameworkPropertyMetadata(new PropertyChangedCallback(
+                (s, e) =>
+                {
+                    CustomSlider slider = (CustomSlider)s;
+                    //if (!slider.animStopped)
+                    //{
+                    //    //slider.BeginAnimation(CustomSlider.ValueProperty, null);
+                    //    slider.animStopped = true;
+                    //}
+                    slider.length = slider.Width;
+                    if (Double.IsNaN(slider.Width))
+                        slider.length = slider.ActualWidth;
+                    slider.Position = ((double)e.NewValue * slider.length) / slider.MaxValue;
+                }
+                )));
         }
 
-        public static readonly DependencyProperty PositionProperty;
 
-
-        private static void ChangeValue(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        public double Value
         {
-
-            (source as CustomSlider).UpdateValue(Convert.ToDouble(e.NewValue));
-
-        }
-
-        private void UpdateValue(double newVal)
-        {
-            Position = newVal;
-        }
-
-
-
-        static void valueChangedCallBack(DependencyObject property, DependencyPropertyChangedEventArgs args)
-        {
-            CustomSlider directoryBox = (CustomSlider)property;
-            directoryBox.Position = (double)args.NewValue;
-        }
-
-        public double Position1
-        {
-            get { return (double)GetValue(PositionProperty); }
+            get
+            {
+                return (double)GetValue(ValueProperty);
+            }
             set
             {
-                SetValue(PositionProperty, value);
+                SetValue(ValueProperty, value);
             }
         }
 
-
-
-
-
-
         double _position;
-        /// <summary>
-        /// Postion of slider. Postion can not be greater than MaxValue.
-        /// </summary>
         public double Position
         {
             get
             {
-                return (double)GetValue(PositionProperty);
+                //return (double)GetValue(PositionProperty);
+                return _position;
             }
             set
             {
-                double oldValue = _position;
+                //SetValue(PositionProperty, value);
                 _position = value;
-                SetValue(PositionProperty, value);
-                if (_position >= MaxValue)
-                {
-                    _position = MaxValue;
-                    SetValue(PositionProperty, _position);
-                }
-                ChangePosition();
-                if (PositionChanged != null)
-                {
-                    PositionChanged(this, new PositionChangedEventArgs() { OldPosition = oldValue, NewPosition = _position });
-                }
+                SetValue(ValueProperty, (double)value * MaxValue / length);
+                NotifyPropertyChanged("Position");
             }
         }
 
-        void ChangePosition()
+        double length = 0;
+
+        void CustomSlider_Loaded(object sender, RoutedEventArgs e)
         {
-            lblProgress.Width = (_position * length) / MaxValue;
+            track.DataContext = this;
         }
-
-        public event EventHandler PositionChanged;
-
-        public event EventHandler PositionChangedManually;
 
         public double MaxValue { get; set; }
 
-        double length = 0;
+        public event EventHandler ValueChangedManually;
 
-        private void Grid_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             length = this.Width;
             if (Double.IsNaN(this.Width))
                 length = this.ActualWidth;
             Point p = Mouse.GetPosition(this);
-            double oldValue = _position;
-            double _newPosition = (p.X * MaxValue) / length;
-            Position = _newPosition;
-            StartAnimation((int)_newPosition, (int)MaxValue);
-            if (PositionChangedManually != null)
-                PositionChangedManually(this, new PositionChangedEventArgs() { OldPosition = oldValue, NewPosition = _position });
+            double pos = (p.X * MaxValue) / length;
+            this.BeginAnimation(CustomSlider.ValueProperty, null);
+            Position = p.X;
+            if (ValueChangedManually != null)
+            {
+                ValueChangedManually(this, new ValueChanged(this.Position));
+            }
         }
 
-        public void StartAnimation(int start, int end)
+        #region INotifyPropertyChanged Members
+        public event PropertyChangedEventHandler PropertyChanged;
+
+
+        private void NotifyPropertyChanged(String info)
         {
-            DoubleAnimation anim = new DoubleAnimation();
-            anim.From = start;
-            anim.To = end;
-            anim.Duration = TimeSpan.FromMilliseconds(end - start);
-            this.BeginAnimation(CustomSlider.PositionProperty, anim);
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(info));
+            }
         }
-
+        #endregion
     }
+
+    public class ValueChanged : EventArgs
+    {
+        public ValueChanged(double position)
+        {
+            Position = position;
+        }
+        public double Position { get; set; }
+    }
+    
     public class PositionChangedEventArgs : EventArgs
     {
         public double OldPosition { get; set; }

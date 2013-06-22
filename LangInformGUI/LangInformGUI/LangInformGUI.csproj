@@ -77,9 +77,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
+    <Compile Include="Controls\CheckTree.xaml.cs">
+      <DependentUpon>CheckTree.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomButton.xaml.cs">
+      <DependentUpon>CustomButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TODOS.cs" />
+    <Compile Include="VocabularySettings.xaml.cs">
+      <DependentUpon>VocabularySettings.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\CheckTree.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CustomButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\CustomSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,13 +121,12 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Window1.xaml">
+    <Page Include="VocabularySettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MockClasses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -144,16 +158,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\close.ico" />
-    <Resource Include="Resources\help.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\1.png" />
-    <Resource Include="Resources\2.png" />
-    <Resource Include="Resources\3.png" />
-    <Resource Include="Resources\4.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\LangInformModel\LangInformModel.csproj">
       <Project>{86b7220f-91e1-4642-8cee-1938729e73c1}</Project>
       <Name>LangInformModel</Name>
@@ -162,6 +166,27 @@
       <Project>{2dd0a1c4-7da6-4e1d-b76a-2e66e2422b35}</Project>
       <Name>LangInformVM</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\right.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wrong.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wrong1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wrong3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wrong4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wrong5.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wrong6.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

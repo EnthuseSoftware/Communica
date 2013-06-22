@@ -8,18 +8,18 @@
     <Grid Name="grdMain" >
         <!--<StackPanel Background="White" Name="bgrd"></StackPanel>-->
         <Image Name="image" Margin="7" Loaded="image_Loaded"/>
-        <Grid Name="grdControls">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="139*"/>
-            </Grid.ColumnDefinitions>
+        <Grid Name="dimmer" Background="Black" Opacity="0"/>
+        <Grid Name="grdControls" Opacity="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="131*"/>
-                <RowDefinition Height="5"/>
-                <RowDefinition Height="5*"/>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="17"/>
+                <RowDefinition Height="255*"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="11*"/>
             </Grid.RowDefinitions>
-            <!--<Label Content="⬛" Grid.Row="1" Padding="0" FontSize="20" RenderTransformOrigin="0,0" Margin="0,-4,0,3"/>-->
-            <Controls:CustomSlider x:Name="track" Grid.Row="1" Margin="0,0,5,0" Grid.Column="1" BorderBrush="#FF909DEC" BorderThickness="1" MouseLeftButtonDown="track_MouseLeftButtonDown" Loaded="track_Loaded" />
+            <Border CornerRadius="2" Name="btnExclude" Width="17" Margin="0,0,10,0" BorderBrush="Black" ToolTip="{Binding Path=IncludeToExamToolTip}" BorderThickness="1" Grid.Row="1" HorizontalAlignment="Right" MouseLeftButtonUp="Border_MouseLeftButtonUp"/>
+            <Controls:CustomSlider x:Name="track" Grid.Row="3" Margin="5,0,5,0" MouseLeftButtonDown="track_MouseLeftButtonDown" Loaded="track_Loaded" />
         </Grid>
+
     </Grid>
 </UserControl>

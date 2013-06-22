@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\DilshodPC\Desktop\LL\LangInformGUI\obj\Debug\
+E:\git_RW\langinform-main\LangInformGUI\LangInformGUI\obj\Debug\
 LangInformGUI
 none
 false
 DEBUG;TRACE
-C:\Users\DilshodPC\Desktop\LL\LangInformGUI\App.xaml
-41822038963
+E:\git_RW\langinform-main\LangInformGUI\LangInformGUI\App.xaml
+6783688755
 
-12502962710
-21907525184
-Controls\CustomSlider.xaml;Controls\MyItem.xaml;MainWindow.xaml;Window1.xaml;
+14-1420755652
+21-981031471
+Controls\CheckTree.xaml;Controls\CustomButton.xaml;Controls\CustomSlider.xaml;Controls\MyItem.xaml;MainWindow.xaml;VocabularySettings.xaml;
 
-False
+True
 

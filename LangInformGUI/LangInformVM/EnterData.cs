@@ -11,15 +11,7 @@ namespace LangInformVM
 {
     public class EnterData
     {
-        //            Language language = new Language() { Id = Guid.NewGuid().ToString(), Name = "Uzbek", };
-        //            language.Description = @"Uzbek (oʻzbek tili or oʻzbekcha in Latin script; ўзбек тили or ўзбекча in Cyrillic script; اوزبیک تیلی or اوزبیکچه in Arabic script) 
-        //                                    is a Turkic language and the official language of Uzbekistan. 
-        //                                    It has anywhere between 30 and 41 million native speakers and is spoken by the Uzbeks in Uzbekistan, 
-        //                                    Afghanistan and elsewhere in Central Asia.";
-        //            language.Levels.Add(new Level() { ID = Guid.NewGuid().ToString(), Name = "Level 1", LanguageId = language.Id, Description = "Basic words and activities." });
-        //            language.Levels.Add(new Level() { ID = Guid.NewGuid().ToString(), Name = "Level 2", LanguageId = language.Id, Description = "Basic words and activities." });
-        //            language.Levels.Add(new Level() { ID = Guid.NewGuid().ToString(), Name = "Level 3", LanguageId = language.Id, Description = "Basic words and activities." });
-        //            ntities.Languages.Add(language);
+
         mainEntities1 entities = new mainEntities1();
         public void InsertLanguage()
         {
@@ -85,6 +77,12 @@ namespace LangInformVM
                 throw;
             }
 
+        }
+
+        public void TestGetData()
+        {
+            DataProvider dp = new DataProvider();
+            dp.GetItems();
         }
     }
 }
