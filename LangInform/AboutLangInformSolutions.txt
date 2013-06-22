@@ -7,7 +7,7 @@ LangInformWin.sln
 - LangInformVM    (X-platform View Model)
 
 LangInformMono.sln
-- Needs to have the GTK GUI project added
+- LangInformGtk	     (GUI using The GIMP Tool Kit)
 - LangInformModel    (X-platform Model)
 - LangInformVM       (X-Platform View Model)
 
