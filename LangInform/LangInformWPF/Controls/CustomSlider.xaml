@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="10" d:DesignWidth="300">
-    <Grid Background="White" MouseLeftButtonDown="Grid_MouseLeftButtonDown_1">
-        <Label Name="lblProgress" Width="0" Background="#FF5656BB" HorizontalAlignment="Left"/>
-        <StackPanel/>
+    <Grid>
+        <Border BorderThickness="0.5" Background="White" BorderBrush="Blue" MouseLeftButtonDown="Border_MouseLeftButtonDown"/>
+        <Label Name="track" Background="#FF4250D8" Width="{Binding Path=Position, Mode=TwoWay}" HorizontalAlignment="Left" MouseLeftButtonDown="Border_MouseLeftButtonDown" />
     </Grid>
 </UserControl>

@@ -189,6 +189,7 @@ namespace LangInformModel
         public byte[] Sound { get; set; }
         public string VocabularyId { get; set; }
         public Nullable<long> SoundVol { get; set; }
+        public Nullable<long> IncludetoExam { get; set; }
 
         public virtual Vocabulary Vocabuluary { get; set; }
     }
