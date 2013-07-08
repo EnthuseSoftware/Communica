@@ -13,7 +13,7 @@ namespace LangInformVM
 
         public VocabLogic VocabLogic{get;set;}
 
-        mainEntities1 entities = new mainEntities1();
+        MainEntities entities = new MainEntities();
 
         Lesson _currentLesson;
         public Lesson CurrentLesson
@@ -38,8 +38,12 @@ namespace LangInformVM
 
         public void SaveChanges()
         {
-            var ch = entities.ChangeTracker;
+          /*
+           * // These methods come from DbContext, which we are no longer using - BB
+           * var ch = entities.ChangeTracker;
             entities.SaveChanges();
+           */
+            // TODO: write code to save changes using SQLiteNet
         }
 
         public IEnumerable<Language> Languages { get; set; }
