@@ -46,7 +46,7 @@
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="NAudio">
-      <HintPath>..\packages\NAudio.1.6\lib\net20\NAudio.dll</HintPath>
+      <HintPath>..\3rdPartyLibraries\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -77,16 +77,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
+    <Compile Include="Controls\CheckTree.xaml.cs">
+      <DependentUpon>CheckTree.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomButton.xaml.cs">
+      <DependentUpon>CustomButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VocabularySettings.xaml.cs">
+      <DependentUpon>VocabularySettings.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\CheckTree.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\CustomSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\MyItem.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -97,18 +111,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\CustomSlider.xaml.cs" />
-    <Compile Include="Controls\MyItem.xaml.cs">
-      <DependentUpon>MyItem.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\MyItem.xaml.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Genrator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Window1.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="VocabularySettings.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

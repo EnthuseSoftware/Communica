@@ -58,7 +58,8 @@ namespace LangInformVM
             }
             try
             {
-                entities.SaveChanges();
+                // TODO: Find an equivalent way to do this with SQLiteNet - BB
+               // entities.SaveChanges();
             }
 
 
