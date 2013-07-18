@@ -1,0 +1,25 @@
+The Language Informat software system is composed of the Xamarin Studio / Visual Studio solutions shown below. Each of the solutions contains the the projects listed. Note that the X-Platform projects are shared between all solutions.
+
+LangInformWin.sln 
+(Visual Studio only)
+- LangInformWPF   (GUI using Windows Presentation Foundation)
+- LangInformModel (X-platform Model)
+- LangInformVM    (X-platform View Model)
+
+LangInformMono.sln
+- LangInformGtk	     (GUI using The GIMP Tool Kit)
+- LangInformModel    (X-platform Model)
+- LangInformVM       (X-Platform View Model)
+
+LangInformDroid.sln  
+(Requires Xamarin.Android license)
+- LangInformDroidUI  (Android UI)
+- LangInformModel    (X-platform Model)
+- LangInformVM       (X-Platform View Model)
+
+LangInformXplat.sln  
+(Visual Studio only, requires Xamarin.Android license)
+- LangInformWPF      (GUI using WPF)
+- LangInformDroidUI  (Android UI)
+- LangInformModel    (X-platform Model)
+- LangInformVM       (X-Platform View Model)

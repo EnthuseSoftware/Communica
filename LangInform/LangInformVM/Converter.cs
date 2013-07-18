@@ -104,6 +104,8 @@ namespace LangInformVM
             return str;
         }
 
+		// No Windows.Controls in Mono
+		/*
         public System.Windows.Controls.Image ByteToWPFImage(byte[] blob)
         {
             MemoryStream stream = new MemoryStream();
@@ -122,5 +124,6 @@ namespace LangInformVM
             System.Windows.Controls.Image image2 = new System.Windows.Controls.Image() { Source = bi };
             return image2;
         }
+        */
     }
 }

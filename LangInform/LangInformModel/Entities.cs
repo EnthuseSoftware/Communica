@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
+// The namespaces below doesn't exist in Mono- don't use them
+//using System.Data.Entity;
+//using System.Data.Entity.ModelConfiguration.Conventions;
+using SQLite;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace LangInformModel
 {
 
-    public class mainEntities1 : DbContext
+
+ /*
+  * //     Not compatible with Mono    
+    public class mainEntities1  : DbContext
     {
         public DbSet<Language> Languages { get; set; }
         public DbSet<Level> Levels { get; set; }
@@ -26,8 +32,35 @@ namespace LangInformModel
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }
+    */    
 
-    public partial class Language
+    public class MainEntities : SQLiteConnection 
+    {
+        public MainEntities()
+            : base(Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "LangInform.db3"))
+        {
+            // Nothing more to do here yet, but if I do, be sure to do it in a private Initialize method
+        }
+
+        public MainEntities(string dbPath)
+            : base(dbPath)
+        {
+        }
+
+        // Simulating DbSets. But should these be read-only?
+        public TableQuery<Language> Languages { get; set; }
+        public TableQuery<Level> Levels { get; set; }
+        public TableQuery<Unit> Units { get; set; }
+        public TableQuery<Lesson> Lessons { get; set; }
+        public TableQuery<Scene> Scenes { get; set; }
+        public TableQuery<SceneItem> SceneItems { get; set; }
+        public TableQuery<Vocabulary> Vocabularies { get; set; }
+        public TableQuery<Word> Words { get; set; }
+        public TableQuery<MyItem> MyItems { get; set; }
+    }
+
+
+    public class Language
     {
         public Language()
         {
@@ -41,7 +74,7 @@ namespace LangInformModel
         public virtual ICollection<Level> Levels { get; set; }
     }
 
-    public partial class Lesson
+    public class Lesson
     {
 
         public Lesson()
@@ -60,7 +93,7 @@ namespace LangInformModel
         public virtual Unit Unit { get; set; }
     }
 
-    public partial class Level
+    public class Level
     {
         public Level()
         { 
@@ -75,16 +108,18 @@ namespace LangInformModel
         public virtual Language Language { get; set; }
     }
 
-    public partial class MyItem
+
+    public class MyItem
     {
-        public string Id { get; set; }
+		[PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
         public string Name { get; set; }
         public byte[] Picture { get; set; }
         public byte[] Sound { get; set; }
         public Nullable<long> SoundVol { get; set; }
     }
 
-    public partial class Scene
+    public class Scene
     {
         public Scene()
         {
@@ -101,7 +136,7 @@ namespace LangInformModel
         public virtual ICollection<SceneItem> SceneItems { get; set; }
     }
 
-    public partial class SceneItem
+    public class SceneItem
     {
         public string Id { get; set; }
         public string Name { get; set; }
@@ -113,7 +148,7 @@ namespace LangInformModel
         public virtual Scene Scene { get; set; }
     }
 
-    public partial class Unit
+    public class Unit
     {
         public Unit()
         {
@@ -129,7 +164,7 @@ namespace LangInformModel
         public virtual Level Level { get; set; }
     }
 
-    public partial class Vocabulary
+    public class Vocabulary
     {
         public Vocabulary()
         {
@@ -145,7 +180,7 @@ namespace LangInformModel
         public virtual ICollection<Word> Words { get; set; }
     }
 
-    public partial class Word
+    public class Word
     {
         public string Id { get; set; }
         public string Name { get; set; }

@@ -32,7 +32,8 @@ namespace LangInformGUI
             }
         }
 
-        DataProvider entities = new DataProvider();
+      // We might not need the DataProvider class -BB
+      //  DataProvider entities = new DataProvider();
 
 
         //public List<Language> GenerateLanguages()

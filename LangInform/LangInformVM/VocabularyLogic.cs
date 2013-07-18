@@ -10,7 +10,8 @@ namespace LangInformVM
 {
     public class VocabularyLogic : INotifyPropertyChanged
     {
-        mainEntities1 entities = new mainEntities1();
+		// Need to replace mainEntities1 with something from SQLiteNet
+       //  mainEntities1 entities = new mainEntities1();
         Random random = new Random(DateTime.Now.Millisecond + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day);
 
         Lesson _selectedLesson;
