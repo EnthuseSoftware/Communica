@@ -9,7 +9,7 @@ using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LangInformGUI
+namespace LangInformWPF
 {
 
 

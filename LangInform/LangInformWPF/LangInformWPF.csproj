@@ -77,9 +77,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
+    <Compile Include="Controls\CheckTree.xaml.cs">
+      <DependentUpon>CheckTree.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomButton.xaml.cs">
+      <DependentUpon>CustomButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow1.xaml.cs">
+      <DependentUpon>MainWindow1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VocabularySettings.xaml.cs">
+      <DependentUpon>VocabularySettings.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\CheckTree.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\CustomSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,9 +123,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Window1.xaml">
+    <Page Include="MainWindow1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VocabularySettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +186,15 @@
       <Project>{2dd0a1c4-7da6-4e1d-b76a-2e66e2422b35}</Project>
       <Name>LangInformVM.Win</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\right.wav" />
+    <Content Include="Resources\wrong.wav" />
+    <Content Include="Resources\wrong1.wav" />
+    <Content Include="Resources\wrong3.wav" />
+    <Content Include="Resources\wrong4.wav" />
+    <Content Include="Resources\wrong5.wav" />
+    <Content Include="Resources\wrong6.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

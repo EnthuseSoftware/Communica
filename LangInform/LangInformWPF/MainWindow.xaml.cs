@@ -1,4 +1,4 @@
-﻿using LangInformGUI.Controls;
+﻿using LangInformWPF.Controls;
 using LangInformModel;
 using LangInformVM;
 using System;
@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using System.Linq;
 
-namespace LangInformGUI
+namespace LangInformWPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,7 +24,7 @@ namespace LangInformGUI
         }
 
         ViewModel vm = new ViewModel();
-        mainEntities1 entities = new mainEntities1();
+        //mainEntities1 entities = new mainEntities1();
 
         VocabularyActivity activity = VocabularyActivity.Learn;
         Vocabulary activeVocab;
@@ -37,12 +37,11 @@ namespace LangInformGUI
         private void Window_Loaded_1(object sender, RoutedEventArgs e)
         {
             vm.CurrentLessonChanged += logic_LessonChanged;
-            rightSound = new SoundPlayer(Properties.Resources.right);
-            wrongSound = new SoundPlayer(Properties.Resources.wrong5);
+            rightSound = new SoundPlayer(LangInformWPF.Properties.Resources.right);
+            wrongSound = new SoundPlayer(LangInformWPF.Properties.Resources.wrong5);
             this.DataContext = vm;
-            treeLessons.ItemsSource = vm.Languages;
-            //Window1 w1 = new Window1(vm);
-            //w1.ShowDialog();
+            //treeLessons.ItemsSource = vm.Languages;
+            
         }
 
         private void btnLoad_Click(object sender, RoutedEventArgs e)
@@ -141,13 +140,13 @@ namespace LangInformGUI
                 myVocabsTab.Items.Add(CreateMixedExam(vm.CurrentLesson.Unit.Level));
             }
             grdVocabulary.Children.Add(myVocabsTab);
-            
+
         }
 
         public TabItem CreateMixedExam(Level level, int max = 30)
         {
             TabItem tabItem = new TabItem();
-            Vocabulary tempVocabularySet = new Vocabulary() { Name = "Mixed"};
+            Vocabulary tempVocabularySet = new Vocabulary() { Name = "Mixed" };
 
             List<Word> allWords = new List<Word>();
             foreach (Unit unit in level.Units)
@@ -164,10 +163,10 @@ namespace LangInformGUI
             {
                 int picked = 0;
                 while (true)
-                { 
-                picked= vm.rnd.Next(0, allWords.Count);
-                if (!checkList.Contains(picked))
-                    break;
+                {
+                    picked = vm.rnd.Next(0, allWords.Count);
+                    if (!checkList.Contains(picked))
+                        break;
                 }
                 checkList.Add(picked);
                 tempVocabularySet.Words.Add(allWords[picked]);

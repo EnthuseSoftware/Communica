@@ -1,4 +1,4 @@
-﻿<UserControl xmlns:Controls="clr-namespace:LangInformGUI.Controls"  x:Class="LangInformGUI.Controls.MyItemControl"
+﻿<UserControl xmlns:Controls="clr-namespace:LangInformWPF.Controls"  x:Class="LangInformWPF.Controls.MyItemControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

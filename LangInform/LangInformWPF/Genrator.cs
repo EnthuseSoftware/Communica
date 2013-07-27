@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LangInformGUI
+namespace LangInformWPF
 {
     /// <summary>
     /// Generates items for testing

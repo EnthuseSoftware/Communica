@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
-namespace LangInformGUI.Controls
+namespace LangInformWPF.Controls
 {
     /// <summary>
     /// Interaction logic for MyItem.xaml

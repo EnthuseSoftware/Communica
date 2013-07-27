@@ -12,7 +12,7 @@ namespace LangInformVM
     public class EnterData
     {
 
-        mainEntities1 entities = new mainEntities1();
+        MainEntities entities = new MainEntities();
         public void InsertLanguage()
         {
             Converter con = new Converter();
@@ -58,7 +58,7 @@ namespace LangInformVM
             }
             try
             {
-                entities.SaveChanges();
+                entities.SaveTransactionPoint();
             }
 
 
