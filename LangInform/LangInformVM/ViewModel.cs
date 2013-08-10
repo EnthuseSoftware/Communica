@@ -11,7 +11,7 @@ namespace LangInformVM
     {
         public Random rnd = new Random();
 
-        public VocabLogic VocabLogic{get;set;}
+        public VocabLogic VocabLogic { get; set; }
 
         MainEntities entities = new MainEntities();
 
@@ -86,9 +86,9 @@ namespace LangInformVM
 
         int wrongAnswers = 0;
 
-        public int GetRandomItemForPractice( int playThis = -1)
+        public int GetRandomItemForPractice(int playThis = -1)
         {
-            int count = CurrentVocabulary.Words.Where(w=>w.IncludetoExam==1).Count();
+            int count = CurrentVocabulary.Words.Where(w => w.IncludetoExam == 1).Count();
             int picked = _rnd.Next(0, count);
             if (playThis != -1)
             {

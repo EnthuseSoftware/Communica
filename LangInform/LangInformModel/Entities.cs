@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-// The namespaces below doesn't exist in Mono- don't use them
-//using System.Data.Entity;
-//using System.Data.Entity.ModelConfiguration.Conventions;
 using SQLite;
 using System.Linq;
 using System.Text;
@@ -10,29 +7,7 @@ using System.IO;
 
 namespace LangInformModel
 {
-
-
- /*
-  * //     Not compatible with Mono    
-    public class mainEntities1  : DbContext
-    {
-        public DbSet<Language> Languages { get; set; }
-        public DbSet<Level> Levels { get; set; }
-        public DbSet<Unit> Units { get; set; }
-        public DbSet<Lesson> Lessons { get; set; }
-        public DbSet<Scene> Scenes { get; set; }
-        public DbSet<SceneItem> SceneItems { get; set; }
-        public DbSet<Vocabulary> Vocabularies { get; set; }
-        public DbSet<Word> Words { get; set; }
-        public DbSet<MyItem> MyItems { get; set; }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            // Chinook Database does not pluralize table names   
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-        }
-    }
-    */    
+ 
 
     public class MainEntities : SQLiteConnection 
     {
@@ -59,12 +34,11 @@ namespace LangInformModel
         public TableQuery<MyItem> MyItems { get; set; }
     }
 
-
     public class Language
     {
         public Language()
         {
-            this.Levels = new List<Level>();
+
         }
 
         public string Id { get; set; }
@@ -107,7 +81,6 @@ namespace LangInformModel
         public virtual ICollection<Unit> Units { get; set; }
         public virtual Language Language { get; set; }
     }
-
 
     public class MyItem
     {
