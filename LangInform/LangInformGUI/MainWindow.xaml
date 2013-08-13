@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:model="clr-namespace:LangInformModel;assembly=LangInformModel"
         x:Class="LangInformGUI.MainWindow"
-        Title="MainWindow" Height="520.093" Width="1022.824" Loaded="Window_Loaded_1">
+        Title="MainWindow" Height="520.093" Width="1022.824" Loaded="Window_Loaded">
     
     <Window.Resources>
         <HierarchicalDataTemplate DataType="{x:Type model:Language}" ItemsSource="{Binding Levels}">
@@ -29,7 +29,7 @@
         <StackPanel Orientation="Horizontal">
             <Menu>
                 <MenuItem Header="File">
-                    <MenuItem Header="Close" Click="menuClose_Click"/>
+                    <MenuItem Header="Close" />
                 </MenuItem>
             </Menu>
             <Menu>
@@ -46,7 +46,7 @@
                 <ColumnDefinition Width="647*"/>
             </Grid.ColumnDefinitions>
             <GridSplitter ResizeDirection="Columns" Grid.Column="1" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <TreeView x:Name="treeLessons" SelectedItemChanged="treeLessons_SelectedItemChanged"/>
+            <TreeView x:Name="treeLessons" />
 
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
@@ -102,11 +102,11 @@
                                                 <RowDefinition Height="1*"/>
                                             </Grid.RowDefinitions>
                                             <StackPanel>
-                                                <RadioButton Content="Learn" IsChecked="True" Margin="3" Click="VocabularyActivityChanged"/>
-                                                <RadioButton Content="Practice" Margin="3" Click="VocabularyActivityChanged"/>
-                                                <RadioButton Content="Review" Margin="3" Click="VocabularyActivityChanged"/>
-                                                <RadioButton Content="Quiz" Margin="3" Click="VocabularyActivityChanged"/>
-                                                <Button Name="vocabSettings" Content="Settings" Margin="0,10,0,0" IsEnabled="False" Width="100" Click="vocabSettings_Click"/>
+                                                <RadioButton Content="Learn" IsChecked="True" Margin="3" />
+                                                <RadioButton Content="Practice" Margin="3" />
+                                                <RadioButton Content="Review" Margin="3" />
+                                                <RadioButton Content="Quiz" Margin="3" />
+                                                <Button Name="vocabSettings" Content="Settings" Margin="0,10,0,0" IsEnabled="False" Width="100" />
                                             </StackPanel>
                                             <StackPanel Grid.Row="1">
                                                 <Label Name="lblTotal" Content="10" FontSize="26" Padding="0" HorizontalAlignment="Center"/>
@@ -135,8 +135,8 @@
                         <ColumnDefinition Width="338*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal" >
-                        <Button x:Name="btnLoad" Margin="3" Content="Load Test" Click="btnLoad_Click"/>
-                        <Button Name="btnTest" Content="Test" Margin="0,3" Width="65" Click="Button_Click_1"/>
+                        <Button x:Name="btnLoad" Margin="3" Content="Load Test" />
+                        <Button Name="btnTest" Content="Test" Margin="0,3" Width="65" />
                     </StackPanel>
                     <Grid Height="15" Grid.Column="1" Name="mainTrackPlaceholder">
                         <!--<Controls:CustomSlider x:Name="mainTrack"/>-->

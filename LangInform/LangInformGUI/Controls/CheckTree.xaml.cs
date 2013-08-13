@@ -164,8 +164,8 @@ namespace LangInformGUI.Controls
             { return _word; }
             set
             {
-                _word = value;
-                this.IsChecked = Word.IncludetoExam == 1 ? true : false;
+                //_word = value;
+                //this.IsChecked = Word.IncludetoExam == 1 ? true : false;
             }
         }
 
@@ -195,7 +195,7 @@ namespace LangInformGUI.Controls
                     val = true;
                 if (_word != null)
                 {
-                    Word.IncludetoExam = val ? 1 : 0;
+                    //Word.IncludetoExam = val ? 1 : 0;
                     //_parent.VerifyCheckState();
                 }
             }

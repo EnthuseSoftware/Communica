@@ -24,8 +24,8 @@ namespace LangInformGUI
         public VocabularySettings(ViewModel viewModel)
         {
             InitializeComponent();
-            _viewModel = viewModel;
-            level = viewModel.CurrentLesson.Unit.Level;
+            //_viewModel = viewModel;
+            //level = viewModel.CurrentLesson.Unit.Level;
         }
 
         Level level = null;
@@ -38,37 +38,38 @@ namespace LangInformGUI
 
         List<MyTreeViewItem> CreateTree(Level level)
         {
-            List<MyTreeViewItem> tree = new List<MyTreeViewItem>();
-            MyTreeViewItem levelBranch = new MyTreeViewItem(level.Name);
-            levelBranch.IsInitiallySelected = true;
-            tree.Add(levelBranch);
-            foreach (Unit unit in level.Units)
-            {
-                var unitBranch = new MyTreeViewItem(unit.Name);
-                foreach (Lesson lesson in unit.Lessons)
-                {
-                    var lessonBranch = new MyTreeViewItem(lesson.Name);
-                    foreach (Vocabulary vocab in lesson.Vocabularies)
-                    {
-                        var vocabBranch = new MyTreeViewItem(vocab.Name);
+            //List<MyTreeViewItem> tree = new List<MyTreeViewItem>();
+            //MyTreeViewItem levelBranch = new MyTreeViewItem(level.Name);
+            //levelBranch.IsInitiallySelected = true;
+            //tree.Add(levelBranch);
+            //foreach (Unit unit in level.Units)
+            //{
+            //    var unitBranch = new MyTreeViewItem(unit.Name);
+            //    foreach (Lesson lesson in unit.Lessons)
+            //    {
+            //        var lessonBranch = new MyTreeViewItem(lesson.Name);
+            //        foreach (Vocabulary vocab in lesson.Vocabularies)
+            //        {
+            //            var vocabBranch = new MyTreeViewItem(vocab.Name);
                         
-                        foreach (Word word in vocab.Words)
-                        {
-                            var wordBranch = new MyTreeViewItem(word.Name, word);
-                            vocabBranch.Children.Add(wordBranch);
-                        }
-                        vocabBranch.IsChecked = vocabBranch.GetState();
-                        lessonBranch.Children.Add(vocabBranch);
-                    }
-                    lessonBranch.IsChecked = lessonBranch.GetState();
-                    unitBranch.Children.Add(lessonBranch);
-                }
-                unitBranch.IsChecked = unitBranch.GetState();
-                levelBranch.Children.Add(unitBranch);
-            }
-            levelBranch.IsChecked = levelBranch.GetState();
-            levelBranch.Initialize();
-            return tree;
+            //            foreach (Word word in vocab.Words)
+            //            {
+            //                var wordBranch = new MyTreeViewItem(word.Name, word);
+            //                vocabBranch.Children.Add(wordBranch);
+            //            }
+            //            vocabBranch.IsChecked = vocabBranch.GetState();
+            //            lessonBranch.Children.Add(vocabBranch);
+            //        }
+            //        lessonBranch.IsChecked = lessonBranch.GetState();
+            //        unitBranch.Children.Add(lessonBranch);
+            //    }
+            //    unitBranch.IsChecked = unitBranch.GetState();
+            //    levelBranch.Children.Add(unitBranch);
+            //}
+            //levelBranch.IsChecked = levelBranch.GetState();
+            //levelBranch.Initialize();
+            //return tree;
+            return null;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

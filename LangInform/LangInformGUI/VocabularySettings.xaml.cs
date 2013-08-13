@@ -21,15 +21,15 @@ namespace LangInformGUI
     /// </summary>
     public partial class VocabularySettings : Window
     {
-        public VocabularySettings(ViewModel viewModel)
+        public VocabularySettings(OldViewModel viewModel)
         {
             InitializeComponent();
-            _viewModel = viewModel;
-            level = viewModel.CurrentLesson.Unit.Level;
+            //_viewModel = viewModel;
+            //level = viewModel.CurrentLesson.Unit.Level;
         }
 
         Level level = null;
-        ViewModel _viewModel;
+        OldViewModel _viewModel;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

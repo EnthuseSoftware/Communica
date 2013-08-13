@@ -22,7 +22,7 @@ namespace LangInformGUI.Controls
         {
             InitializeComponent();
             _word = word;
-            Picture = con.ByteToWPFImage(word.Picture);
+            Picture = null;//con.ByteToWPFImage(word.Picture);
             waveReader = new WaveFileReader(con.byteArrayToStream(_word.Sound));
             SoundLength = waveReader.TotalTime;
             wc = new WaveChannel32(waveReader);
@@ -163,7 +163,7 @@ namespace LangInformGUI.Controls
                 grdMain.Children.Insert(0, bgrd);
             }
             btnExclude.DataContext = this;
-            ChangeIncludeToExam((_word.IncludetoExam == 1 ? true : false));
+            //ChangeIncludeToExam((_word.IncludetoExam == 1 ? true : false));
         }
 
         void ChangeIncludeToExam(bool included, bool change = false)
@@ -174,8 +174,8 @@ namespace LangInformGUI.Controls
                 IncludeToExam = true;
                 dimmer.Opacity = 0;
                 btnExclude.Background = new SolidColorBrush(Colors.White);
-                if (change)
-                    _word.IncludetoExam = 1;
+                //if (change)
+                //    _word.IncludetoExam = 1;
             }
             else
             {
@@ -183,8 +183,8 @@ namespace LangInformGUI.Controls
                 IncludeToExamToolTip = "Include to exam";
                 dimmer.Opacity = .1;
                 btnExclude.Background = new SolidColorBrush(Colors.Blue);
-                if (change)
-                    _word.IncludetoExam = 0;
+                //if (change)
+                //    _word.IncludetoExam = 0;
             }
         }
 

@@ -7,13 +7,13 @@ using System.Text;
 
 namespace LangInformVM
 {
-    public class ViewModel
+    public class OldViewModel
     {
         public Random rnd = new Random();
 
-        public VocabLogic VocabLogic { get; set; }
+        public OldVocabLogic VocabLogic { get; set; }
 
-        MainEntities entities = new MainEntities();
+        MainEntities entities = null;//new MainEntities();
 
         Lesson _currentLesson;
         public Lesson CurrentLesson
@@ -30,10 +30,10 @@ namespace LangInformVM
         }
 
 
-        public ViewModel()
+        public OldViewModel()
         {
-            Languages = entities.Languages.ToList();
-            VocabLogic = new VocabLogic(this);
+            //Languages = entities.Languages.ToList();
+            VocabLogic = new OldVocabLogic(this);
         }
 
         public void SaveChanges()
@@ -54,7 +54,7 @@ namespace LangInformVM
 
     }
 
-    public class VocabLogic : INotifyPropertyChanged
+    public class OldVocabLogic : INotifyPropertyChanged
     {
 
         int _total;
@@ -72,9 +72,9 @@ namespace LangInformVM
         Vocabulary _currentVocabulary;
         public Vocabulary CurrentVocabulary { get { return _currentVocabulary; } set { _currentVocabulary = value; Total = _currentVocabulary.Words.Count; } }
 
-        ViewModel _viewModel = null;
+        OldViewModel _viewModel = null;
 
-        public VocabLogic(ViewModel viewModel)
+        public OldVocabLogic(OldViewModel viewModel)
         {
             _rnd = viewModel.rnd;
             _viewModel = viewModel;
@@ -86,73 +86,73 @@ namespace LangInformVM
 
         int wrongAnswers = 0;
 
-        public int GetRandomItemForPractice(int playThis = -1)
-        {
-            int count = CurrentVocabulary.Words.Where(w => w.IncludetoExam == 1).Count();
-            int picked = _rnd.Next(0, count);
-            if (playThis != -1)
-            {
-                picked = playThis;
-            }
-            currentPlaying = picked;
-            return currentPlaying;
-        }
+        //public int GetRandomItemForPractice(int playThis = -1)
+        //{
+        //    int count = CurrentVocabulary.Words.Where(w => w.IncludetoExam == 1).Count();
+        //    int picked = _rnd.Next(0, count);
+        //    if (playThis != -1)
+        //    {
+        //        picked = playThis;
+        //    }
+        //    currentPlaying = picked;
+        //    return currentPlaying;
+        //}
 
         List<int> alreadyAsked = new List<int>();
 
-        public int GetRandomItemForQuiz(out bool done)
-        {
-            int count = CurrentVocabulary.Words.Where(w => w.IncludetoExam == 1).Count();
-            int picked = _rnd.Next(0, count);
-            if (count == alreadyAsked.Count)
-            {
-                done = true;
-                return -1;
-            }
-            while (true)
-            {
-                if (!alreadyAsked.Contains(picked))
-                {
-                    break;
-                }
-                picked = _rnd.Next(0, count);
-            }
-            alreadyAsked.Add(picked);
-            currentPlaying = picked;
-            done = false;
-            return currentPlaying;
-        }
+        //public int GetRandomItemForQuiz(out bool done)
+        //{
+        //    int count = CurrentVocabulary.Words.Where(w => w.IncludetoExam == 1).Count();
+        //    int picked = _rnd.Next(0, count);
+        //    if (count == alreadyAsked.Count)
+        //    {
+        //        done = true;
+        //        return -1;
+        //    }
+        //    while (true)
+        //    {
+        //        if (!alreadyAsked.Contains(picked))
+        //        {
+        //            break;
+        //        }
+        //        picked = _rnd.Next(0, count);
+        //    }
+        //    alreadyAsked.Add(picked);
+        //    currentPlaying = picked;
+        //    done = false;
+        //    return currentPlaying;
+        //}
 
-        public Result CheckAnswer(int selectedItemNo)
-        {
-            Result result = new Result();
-            result.Highlight = false;
-            if (selectedItemNo == currentPlaying)
-            {
-                if (Currentactivity == VocabularyActivity.Quiz)
-                {
-                    RightAnswers++;
-                }
-                wrongAnswers = 0;
-                result.Correct = true;
-                return result;
-            }
-            else
-            {
-                if (Currentactivity == VocabularyActivity.Quiz)
-                {
-                    WrongAnswers++;
-                }
-                wrongAnswers++;
-                result.Correct = false;
-                if (wrongAnswers == 3)
-                {
-                    result.Highlight = true;
-                    wrongAnswers = 0;
-                }
-                return result;
-            }
-        }
+        //public Result CheckAnswer(int selectedItemNo)
+        //{
+        //    Result result = new Result();
+        //    result.Highlight = false;
+        //    if (selectedItemNo == currentPlaying)
+        //    {
+        //        if (Currentactivity == VocabularyActivity.Quiz)
+        //        {
+        //            RightAnswers++;
+        //        }
+        //        wrongAnswers = 0;
+        //        result.Correct = true;
+        //        return result;
+        //    }
+        //    else
+        //    {
+        //        if (Currentactivity == VocabularyActivity.Quiz)
+        //        {
+        //            WrongAnswers++;
+        //        }
+        //        wrongAnswers++;
+        //        result.Correct = false;
+        //        if (wrongAnswers == 3)
+        //        {
+        //            result.Highlight = true;
+        //            wrongAnswers = 0;
+        //        }
+        //        return result;
+        //    }
+        //}
 
         #region INotifyPropertyChanged Members
         public event PropertyChangedEventHandler PropertyChanged;

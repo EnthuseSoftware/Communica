@@ -1,6 +1,8 @@
 ﻿using LangInformModel;
+using LangInformVM;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +30,11 @@ namespace ModelAndVMTest
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MainEntities entities = new MainEntities();
+            //this is just temporary project 
+            DirectoryInfo dir = new DirectoryInfo("..\\..\\..\\");
+            FileInfo databaseFile = dir.GetFiles().FirstOrDefault(f => f.Name == "LangData.3db");
+            ViewModel vm = new ViewModel(databaseFile.FullName);
+            var langs = vm.Languages;
         }
     }
 }
