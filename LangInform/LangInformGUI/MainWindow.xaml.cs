@@ -26,7 +26,7 @@ namespace LangInformGUI
            
         }
 
-        ViewModel vm;
+        public static ViewModel vm;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -34,6 +34,64 @@ namespace LangInformGUI
             FileInfo databaseFile = dir.GetFiles().FirstOrDefault(f => f.Name == "LangData.3db");
             vm = new ViewModel(databaseFile.FullName);
             treeLessons.ItemsSource = vm.Languages;
+            //temporary
+            var lesson = vm.GetData<Lesson>("SELECT * FROM Lesson WHERE Name='Lesson 2'").FirstOrDefault();
+            AddScene addScene = new AddScene(lesson);
+            addScene.ShowDialog();
+            //end temporary
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = sender as MenuItem;
+            var parent = ((ContextMenu)item.Parent).PlacementTarget as TextBlock;
+            if (item.Header.ToString() == "Add Language")
+            {
+                string newLanguageName = MetroInputBox.Show(this, "Please enter new Language name","");
+                if (!string.IsNullOrEmpty(newLanguageName))
+                {
+                    string description = MetroInputBox.Show(this, "Description of the new language", "");
+                    vm.InsertData(new Language() { Name = newLanguageName, Description = description}, typeof(Language));
+                    vm.IsLanguagesDirty=true;
+                }
+            }
+            else if (item.Header.ToString() == "Delete this Language")
+            {
+                
+                MessageResult result = MetroMessage.Show(this, "Deleting language", "Are you sure you want to delete language \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
+                if (result == MessageResult.Yes)
+                {
+                    var obj = parent.DataContext;
+                    vm.DeleteData(obj);
+                }
+            }
+            else if (item.Header == "Add Level")
+            {
+
+            }
+            else if (item.Header == "Add Unit")
+            {
+
+            }
+            else if (item.Header == "Add Lesson")
+            {
+
+            }
+            else if (item.Header.ToString() == "Add Scene")
+            {
+
+                AddScene addScene = new AddScene(parent.DataContext as Lesson);
+                addScene.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Please be patient! This feature is not implemented yet. Thanks!");
+            }
+        }
+
+        private void btnTest_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
 

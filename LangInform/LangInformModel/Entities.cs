@@ -87,7 +87,7 @@ namespace LangInformModel
         {
             get
             {
-                if (_db == null) 
+                if (_db == null)
                     throw new Exception("Instance of MainEntities not created yet.");
                 return _db;
             }
@@ -109,12 +109,12 @@ namespace LangInformModel
         [Ignore]
         public IList<Level> Levels
         {
-            get 
+            get
             {
                 if (_levels == null)
                 {
-                   _levels = ModelManager.Db.Query<Level>
-                       ("select lev.Id, lev.Name, lev.Description from languagetolevel as ll inner join level as lev on ll.levelid=lev.id where ll.languageid=" + this.Id);
+                    _levels = ModelManager.Db.Query<Level>
+                        ("select lev.Id, lev.Name, lev.Description from languagetolevel as ll inner join level as lev on ll.levelid=lev.id where ll.languageid=" + this.Id);
                 }
                 return _levels;
             }
@@ -136,13 +136,17 @@ namespace LangInformModel
 
         List<Unit> _units = null;
         [Ignore]
-        public IList<Unit> Units { get {
-            if (_units == null)
+        public IList<Unit> Units
+        {
+            get
             {
-                _units = ModelManager.Db.Query<Unit>("select u.Id, u.Name, u.Description from LevelToUnit as lu inner join unit as u on lu.unitid=u.id where lu.Levelid=" + this.ID);
+                if (_units == null)
+                {
+                    _units = ModelManager.Db.Query<Unit>("select u.Id, u.Name, u.Description from LevelToUnit as lu inner join unit as u on lu.unitid=u.id where lu.Levelid=" + this.ID);
+                }
+                return _units;
             }
-            return _units;
-        } }
+        }
         //public Language Language { get; set; }
     }
 
@@ -190,11 +194,50 @@ namespace LangInformModel
         public string Description { get; set; }
         //public string UnitId { get; set; }
 
-        public IList<Scene> Scenes = new List<Scene>();
+        List<Scene> _scenes = null;
+        [Ignore]
+        public IList<Scene> Scenes
+        {
+            get
+            {
+                if (_scenes == null)
+                {
+                    _scenes = ModelManager.Db.Query<Scene>("select s.id, s.Name, s.Description, s.PictureId from LessonToActivity as ls " +
+                        "inner join Scene as s on ls.SceneId = s.Id where ls.LessonId = " + this.Id + " and ls.SceneId is not null");
+                }
+                return _scenes;
+            }
+        }
 
-        public IList<Vocabulary> Vocabularies = new List<Vocabulary>();
+        List<Vocabulary> _vocabularies = null;
+        [Ignore]
+        public IList<Vocabulary> Vocabularies
+        {
+            get
+            {
+                if (_vocabularies == null)
+                {
+                    _vocabularies = ModelManager.Db.Query<Vocabulary>("select v.id, v.Name, v.Description from LessonToActivity as ls " +
+                        "inner join Vocabulary as v on ls.VocabularyId = v.Id where ls.LessonId = " + this.Id + " and ls.VocabularyId is not null;");
+                }
+                return _vocabularies;
+            }
+        }
 
-        public IList<SentenceBuilding> SentenceBuildings = new List<SentenceBuilding>();
+        List<SentenceBuilding> _sentenceBuildings = null;
+        [Ignore]
+        public IList<SentenceBuilding> SentenceBuildings
+        {
+            get
+            {
+                if (_sentenceBuildings == null)
+                {
+                    _sentenceBuildings = ModelManager.Db.Query<SentenceBuilding>("select s.id, s.Name, s.Description from LessonToActivity as ls " +
+                        "inner join SentenceBuilding as s on ls.SentBuildingId = s.Id where ls.LessonId = " + this.Id + " and ls.SentBuildingId is not null;");
+                }
+                return _sentenceBuildings;
+            }
+        }
     }
 
     public class LessonToActivity
@@ -211,19 +254,12 @@ namespace LangInformModel
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
-        public int PictureId
-        {
-            get;
-            set;
-        }
-
+        public int PictureId { get; set; }
+        [Ignore]
         public ScenePicture ScenePicture { get; set; }
-
-        public IList<SceneItem> SceneItems = new List<SceneItem>();
-        //public string LessonId { get; set; }
-        //public virtual Lesson Lesson { get; set; }
-        //public virtual ICollection<SceneItem> SceneItems { get; set; }
+        [Ignore]
+        public IList<SceneItem> SceneItems { get; set; }
+        
     }
 
     public class ScenePicture
@@ -231,7 +267,6 @@ namespace LangInformModel
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         public byte[] Picture { get; set; }
-        public int SceneId { get; set; }
     }
 
     public class SceneItem
@@ -240,8 +275,11 @@ namespace LangInformModel
         public int Id { get; set; }
         public double XPos { get; set; }
         public double YPos { get; set; }
-        public int ScenePictureId { get; set; }
+        public int Size { get; set; }
+        public bool IsRound { get; set; }
+        public int SceneId { get; set; }
         public int PhraseId { get; set; }
+        [Ignore]
         public Phrase Phrase { get; set; }
     }
 

@@ -35,6 +35,8 @@ namespace ModelAndVMTest
             FileInfo databaseFile = dir.GetFiles().FirstOrDefault(f => f.Name == "LangData.3db");
             ViewModel vm = new ViewModel(databaseFile.FullName);
             var langs = vm.Languages;
+            var v = langs.FirstOrDefault().Levels.FirstOrDefault().Units.FirstOrDefault().Lessons.FirstOrDefault().Vocabularies;
+
         }
     }
 }

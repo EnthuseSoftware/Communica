@@ -7,16 +7,50 @@
     
     <Window.Resources>
         <HierarchicalDataTemplate DataType="{x:Type model:Language}" ItemsSource="{Binding Levels}">
-            <TextBlock Text="{Binding Name}"/>
+            <TextBlock Text="{Binding Name}">
+                <TextBlock.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Language" Click="MenuItem_Click"/>
+                        <MenuItem Header="Add Level" Click="MenuItem_Click"/>
+                        <MenuItem Header="Delete this Language" Click="MenuItem_Click"/>
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
+            </TextBlock>
         </HierarchicalDataTemplate>
         <HierarchicalDataTemplate DataType="{x:Type model:Level}" ItemsSource="{Binding Units}">
-            <TextBlock Text="{Binding Name}"/>
+            <TextBlock Text="{Binding Name}">
+                <TextBlock.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Level" Click="MenuItem_Click"/>
+                        <MenuItem Header="Add Unit" Click="MenuItem_Click"/>
+                        <MenuItem Header="Delete this Level" Click="MenuItem_Click"/>
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
+            </TextBlock>
         </HierarchicalDataTemplate>
         <HierarchicalDataTemplate DataType="{x:Type model:Unit}" ItemsSource="{Binding Lessons}">
-            <TextBlock Text="{Binding Name}"/>
+            <TextBlock Text="{Binding Name}">
+                <TextBlock.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Unit" Click="MenuItem_Click"/>
+                        <MenuItem Header="Add Lesson" Click="MenuItem_Click"/>
+                        <MenuItem Header="Delete this Unit" Click="MenuItem_Click"/>
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
+            </TextBlock>
         </HierarchicalDataTemplate>
         <HierarchicalDataTemplate DataType="{x:Type model:Lesson}">
-            <TextBlock Text="{Binding Name}"/>
+            <TextBlock Text="{Binding Name}">
+                <TextBlock.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Lesson" Click="MenuItem_Click"/>
+                        <MenuItem Header="Add Scene" Click="MenuItem_Click"/>
+                        <MenuItem Header="Add Vocabulary" Click="MenuItem_Click"/>
+                        <MenuItem Header="Add Sentence building" Click="MenuItem_Click"/>
+                        <MenuItem Header="Delete this Level" Click="MenuItem_Click"/>
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
+            </TextBlock>
         </HierarchicalDataTemplate>
 
     </Window.Resources>
@@ -136,7 +170,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal" >
                         <Button x:Name="btnLoad" Margin="3" Content="Load Test" />
-                        <Button Name="btnTest" Content="Test" Margin="0,3" Width="65" />
+                        <Button Name="btnTest" Content="Test" Margin="0,3" Width="65" Click="btnTest_Click" />
                     </StackPanel>
                     <Grid Height="15" Grid.Column="1" Name="mainTrackPlaceholder">
                         <!--<Controls:CustomSlider x:Name="mainTrack"/>-->

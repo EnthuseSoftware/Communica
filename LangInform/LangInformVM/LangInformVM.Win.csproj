@@ -60,7 +60,7 @@
     <Compile Include="EnterData.cs" />
     <Compile Include="OldViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VievModel.cs" />
+    <Compile Include="ViewModel.cs" />
     <Compile Include="VocabLogic.cs" />
   </ItemGroup>
   <ItemGroup>

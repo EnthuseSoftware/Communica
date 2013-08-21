@@ -77,16 +77,51 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddScene.xaml.cs">
+      <DependentUpon>AddScene.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AppCode\Point.cs" />
+    <Compile Include="Controls\CButton.xaml.cs">
+      <DependentUpon>CButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CheckTree.xaml.cs">
       <DependentUpon>CheckTree.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomButton.xaml.cs">
       <DependentUpon>CustomButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\InputBox.xaml.cs">
+      <DependentUpon>InputBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MetroInputBox.cs" />
+    <Compile Include="Controls\MetroMessage.cs" />
+    <Compile Include="Icons\Error.xaml.cs">
+      <DependentUpon>Error.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Icons\ExclamationMark.xaml.cs">
+      <DependentUpon>ExclamationMark.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Icons\InformationMark.xaml.cs">
+      <DependentUpon>InformationMark.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Icons\QuestionMark.xaml.cs">
+      <DependentUpon>QuestionMark.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TODOS.cs" />
     <Compile Include="VocabularySettings.xaml.cs">
       <DependentUpon>VocabularySettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Pictures.xaml.cs">
+      <DependentUpon>Pictures.xaml</DependentUpon>
+    </Compile>
+    <Page Include="AddScene.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\CheckTree.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -99,9 +134,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\InputBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\MyItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Icons\Error.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Icons\ExclamationMark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Icons\InformationMark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Icons\QuestionMark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -122,6 +177,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="VocabularySettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Pictures.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -158,16 +217,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LangInformModel\LangInformModel.Win.csproj">
-      <Project>{86b7220f-91e1-4642-8cee-1938729e73c1}</Project>
-      <Name>LangInformModel.Win</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LangInformVM\LangInformVM.Win.csproj">
-      <Project>{2dd0a1c4-7da6-4e1d-b76a-2e66e2422b35}</Project>
-      <Name>LangInformVM.Win</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\right.wav" />
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +236,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\wrong6.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LangInformModel\LangInformModel.Win.csproj">
+      <Project>{86b7220f-91e1-4642-8cee-1938729e73c1}</Project>
+      <Name>LangInformModel.Win</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LangInformVM\LangInformVM.Win.csproj">
+      <Project>{2dd0a1c4-7da6-4e1d-b76a-2e66e2422b35}</Project>
+      <Name>LangInformVM.Win</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
