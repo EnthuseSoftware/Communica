@@ -12,6 +12,16 @@ namespace LangInformVM
     public class Assistant
     {
 
+        public static Byte[] SoundToByte(string soundPath)
+        {
+            FileStream fs = new FileStream(soundPath, FileMode.Open);
+            System.IO.Stream stream;
+            stream = fs;
+            Byte[] blob;
+            blob = StreamHelper.ReadToEnd(stream);
+            return blob;
+        }
+
         public static BitmapImage GetBitmapImageFrom(string fileName)
         {
             BitmapImage bmpImage = new BitmapImage();

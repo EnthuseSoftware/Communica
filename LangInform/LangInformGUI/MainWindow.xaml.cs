@@ -23,7 +23,7 @@ namespace LangInformGUI
         public MainWindow()
         {
             InitializeComponent();
-           
+
         }
 
         public static ViewModel vm;
@@ -36,8 +36,8 @@ namespace LangInformGUI
             treeLessons.ItemsSource = vm.Languages;
             //temporary
             var lesson = vm.GetData<Lesson>("SELECT * FROM Lesson WHERE Name='Lesson 2'").FirstOrDefault();
-            AddScene addScene = new AddScene(lesson);
-            addScene.ShowDialog();
+            //AddScene addScene = new AddScene(lesson);
+            //addScene.ShowDialog();
             //end temporary
         }
 
@@ -47,17 +47,16 @@ namespace LangInformGUI
             var parent = ((ContextMenu)item.Parent).PlacementTarget as TextBlock;
             if (item.Header.ToString() == "Add Language")
             {
-                string newLanguageName = MetroInputBox.Show(this, "Please enter new Language name","");
+                string newLanguageName = MetroInputBox.Show(this, "Please enter new Language name", "");
                 if (!string.IsNullOrEmpty(newLanguageName))
                 {
                     string description = MetroInputBox.Show(this, "Description of the new language", "");
-                    vm.InsertData(new Language() { Name = newLanguageName, Description = description}, typeof(Language));
-                    vm.IsLanguagesDirty=true;
+                    vm.InsertData(new Language() { Name = newLanguageName, Description = description }, typeof(Language));
+                    vm.IsLanguagesDirty = true;
                 }
             }
             else if (item.Header.ToString() == "Delete this Language")
             {
-                
                 MessageResult result = MetroMessage.Show(this, "Deleting language", "Are you sure you want to delete language \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
                 if (result == MessageResult.Yes)
                 {
@@ -65,17 +64,50 @@ namespace LangInformGUI
                     vm.DeleteData(obj);
                 }
             }
-            else if (item.Header == "Add Level")
+            else if (item.Header.ToString() == "Add Level")
             {
-
+                string newLevelName = MetroInputBox.Show(this, "Please enter new Level name", "");
+                if (!string.IsNullOrEmpty(newLevelName))
+                {
+                    Language language = parent.DataContext as Language;
+                    if (language != null)
+                    {
+                        string description = MetroInputBox.Show(this, "Description of the new level", "");
+                        var level = new Level() { ID = Guid.NewGuid(), Name = newLevelName, Description = description };
+                        vm.InsertData(level, typeof(Level));
+                        vm.InsertData(new LanguageToLevel() { LanguageId = language.Id, LevelId = level.ID }, typeof(LanguageToLevel));
+                    }
+                }
             }
-            else if (item.Header == "Add Unit")
+            else if (item.Header.ToString() == "Add Unit")
             {
-
+                string newUnitName = MetroInputBox.Show(this, "Please enter new Unit name", "");
+                if (!string.IsNullOrEmpty(newUnitName))
+                {
+                    Level level = parent.DataContext as Level;
+                    if (level != null)
+                    {
+                        string description = MetroInputBox.Show(this, "Description of the new unit", "");
+                        var unit = new Unit() { Id = Guid.NewGuid(), Name = newUnitName, Description = description };
+                        vm.InsertData(unit, typeof(Unit));
+                        vm.InsertData(new LevelToUnit() {LevelId = level.ID, UnitId = unit.Id }, typeof(LevelToUnit));
+                    }
+                }
             }
-            else if (item.Header == "Add Lesson")
+            else if (item.Header.ToString() == "Add Lesson")
             {
-
+                string newUnitName = MetroInputBox.Show(this, "Please enter new Lesson name", "");
+                if (!string.IsNullOrEmpty(newUnitName))
+                {
+                    Unit unit = parent.DataContext as Unit;
+                    if (unit != null)
+                    {
+                        string description = MetroInputBox.Show(this, "Description of the new lesson", "");
+                        var lesson = new Lesson() { Id = Guid.NewGuid(), Name = newUnitName, Description = description };
+                        vm.InsertData(lesson, typeof(Lesson));
+                        vm.InsertData(new UnitToLesson() {UnitId = unit.Id, LessonId = lesson.Id }, typeof(UnitToLesson));
+                    }
+                }
             }
             else if (item.Header.ToString() == "Add Scene")
             {
@@ -92,6 +124,11 @@ namespace LangInformGUI
         private void btnTest_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            vm.CloseSession();
         }
 
 

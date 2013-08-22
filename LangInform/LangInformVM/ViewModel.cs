@@ -18,10 +18,14 @@ namespace LangInformVM
         }
         MainEntities db;
 
-        public string InsertData(object obj, Type type)
+        public void CloseSession()
         {
-            db.Insert(obj, type);
-            return db.SaveTransactionPoint();
+            db.Close();
+        }
+
+        public int InsertData(object obj, Type type)
+        {
+            return db.Insert(obj, type);
         }
 
         public int DeleteData(object obj)

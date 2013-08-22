@@ -25,15 +25,6 @@ namespace LangInformModel
             List<Language> languages = this.Query<Language>("SELECT * FROM Language");
         }
 
-        public void InsertData()
-        {
-            Language lang = new Language();
-            lang.Name = "Uzbek";
-            lang.Description = "Uzbek is a Turkish based language. Exist since 1500";
-            this.Insert(lang);
-            this.SaveTransactionPoint();
-        }
-
         // Simulating DbSets. But should these be read-only?
         //public TableQuery<Language> Languages { get; set; }
         //public TableQuery<Level> Levels { get; set; }
@@ -100,8 +91,8 @@ namespace LangInformModel
 
     public class Language
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -113,8 +104,15 @@ namespace LangInformModel
             {
                 if (_levels == null)
                 {
-                    _levels = ModelManager.Db.Query<Level>
-                        ("select lev.Id, lev.Name, lev.Description from languagetolevel as ll inner join level as lev on ll.levelid=lev.id where ll.languageid=" + this.Id);
+                    try
+                    {
+                        _levels = ModelManager.Db.Query<Level>
+                            ("select lev.Id, lev.Name, lev.Description from languagetolevel as ll inner join level as lev on ll.levelid=lev.id where ll.languageid='" + this.Id.ToString() + "'");
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
                 }
                 return _levels;
             }
@@ -123,14 +121,14 @@ namespace LangInformModel
 
     public class LanguageToLevel
     {
-        public int LanguageId { get; set; }
-        public int LevelId { get; set; }
+        public Guid LanguageId { get; set; }
+        public Guid LevelId { get; set; }
     }
 
     public class Level
     {
-        [PrimaryKey, AutoIncrement]
-        public int ID { get; set; }
+        [PrimaryKey]
+        public Guid ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -142,7 +140,7 @@ namespace LangInformModel
             {
                 if (_units == null)
                 {
-                    _units = ModelManager.Db.Query<Unit>("select u.Id, u.Name, u.Description from LevelToUnit as lu inner join unit as u on lu.unitid=u.id where lu.Levelid=" + this.ID);
+                    _units = ModelManager.Db.Query<Unit>("select u.Id, u.Name, u.Description from LevelToUnit as lu inner join unit as u on lu.unitid=u.id where lu.Levelid='" + this.ID + "'");
                 }
                 return _units;
             }
@@ -152,14 +150,14 @@ namespace LangInformModel
 
     public class LevelToUnit
     {
-        public int LevelId { get; set; }
-        public int UnitId { get; set; }
+        public Guid LevelId { get; set; }
+        public Guid UnitId { get; set; }
     }
 
     public class Unit
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         //public string LevelId { get; set; }
@@ -172,7 +170,7 @@ namespace LangInformModel
             {
                 if (_lessons == null)
                 {
-                    _lessons = ModelManager.Db.Query<Lesson>("select l.Id, l.Name, l.Description from unittolesson as ul inner join lesson as l on ul.LessonId = l.id where ul.UnitId = " + this.Id);
+                    _lessons = ModelManager.Db.Query<Lesson>("select l.Id, l.Name, l.Description from unittolesson as ul inner join lesson as l on ul.LessonId = l.id where ul.UnitId = '" + this.Id + "'");
                 }
                 return _lessons;
             }
@@ -182,14 +180,14 @@ namespace LangInformModel
 
     public class UnitToLesson
     {
-        public int UnitId { get; set; }
-        public int LessonId { get; set; }
+        public Guid UnitId { get; set; }
+        public Guid LessonId { get; set; }
     }
 
     public class Lesson
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         //public string UnitId { get; set; }
@@ -203,7 +201,7 @@ namespace LangInformModel
                 if (_scenes == null)
                 {
                     _scenes = ModelManager.Db.Query<Scene>("select s.id, s.Name, s.Description, s.PictureId from LessonToActivity as ls " +
-                        "inner join Scene as s on ls.SceneId = s.Id where ls.LessonId = " + this.Id + " and ls.SceneId is not null");
+                        "inner join Scene as s on ls.SceneId = s.Id where ls.LessonId = '" + this.Id + "' and ls.SceneId is not null");
                 }
                 return _scenes;
             }
@@ -218,7 +216,7 @@ namespace LangInformModel
                 if (_vocabularies == null)
                 {
                     _vocabularies = ModelManager.Db.Query<Vocabulary>("select v.id, v.Name, v.Description from LessonToActivity as ls " +
-                        "inner join Vocabulary as v on ls.VocabularyId = v.Id where ls.LessonId = " + this.Id + " and ls.VocabularyId is not null;");
+                        "inner join Vocabulary as v on ls.VocabularyId = v.Id where ls.LessonId = '" + this.Id + "' and ls.VocabularyId is not null;");
                 }
                 return _vocabularies;
             }
@@ -233,7 +231,7 @@ namespace LangInformModel
                 if (_sentenceBuildings == null)
                 {
                     _sentenceBuildings = ModelManager.Db.Query<SentenceBuilding>("select s.id, s.Name, s.Description from LessonToActivity as ls " +
-                        "inner join SentenceBuilding as s on ls.SentBuildingId = s.Id where ls.LessonId = " + this.Id + " and ls.SentBuildingId is not null;");
+                        "inner join SentenceBuilding as s on ls.SentBuildingId = s.Id where ls.LessonId = '" + this.Id + "' and ls.SentBuildingId is not null;");
                 }
                 return _sentenceBuildings;
             }
@@ -242,19 +240,19 @@ namespace LangInformModel
 
     public class LessonToActivity
     {
-        public int LessonId { get; set; }
-        public int VocabularyId { get; set; }
-        public int SceneId { get; set; }
-        public int SentBuildingId { get; set; }
+        public Guid LessonId { get; set; }
+        public Guid VocabularyId { get; set; }
+        public Guid SceneId { get; set; }
+        public Guid SentBuildingId { get; set; }
     }
 
     public class Scene
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int PictureId { get; set; }
+        public Guid PictureId { get; set; }
         [Ignore]
         public ScenePicture ScenePicture { get; set; }
         [Ignore]
@@ -264,29 +262,29 @@ namespace LangInformModel
 
     public class ScenePicture
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public byte[] Picture { get; set; }
     }
 
     public class SceneItem
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public double XPos { get; set; }
         public double YPos { get; set; }
         public int Size { get; set; }
         public bool IsRound { get; set; }
-        public int SceneId { get; set; }
-        public int PhraseId { get; set; }
+        public Guid SceneId { get; set; }
+        public Guid PhraseId { get; set; }
         [Ignore]
         public Phrase Phrase { get; set; }
     }
 
     public class Phrase
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public string Text { get; set; }
         public byte[] Sound { get; set; }
     }
@@ -295,8 +293,8 @@ namespace LangInformModel
 
     public class Vocabulary
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -305,15 +303,15 @@ namespace LangInformModel
 
     public class VocabularyToWord
     {
-        public int VocabularyId { get; set; }
-        public int WordId { get; set; }
+        public Guid VocabularyId { get; set; }
+        public Guid WordId { get; set; }
         public bool DoNotIncludeToExam { get; set; }
     }
 
     public class Word
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public byte[] Sound { get; set; }
@@ -324,14 +322,14 @@ namespace LangInformModel
 
     public class WordToMeaning
     {
-        public int WordId { get; set; }
-        public int MeaningId { get; set; }
+        public Guid WordId { get; set; }
+        public Guid MeaningId { get; set; }
     }
 
     public class Meaning
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public byte[] Picture { get; set; }
@@ -343,8 +341,8 @@ namespace LangInformModel
 
     public class SentenceBuilding
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -353,8 +351,8 @@ namespace LangInformModel
 
     public class SentenceBuildingItemPicture
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public byte[] Picture { get; set; }
@@ -362,8 +360,8 @@ namespace LangInformModel
 
     public class SentenceBuildingItem
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public int Guid { get; set; }
 
         public string Name
         {
@@ -388,9 +386,9 @@ namespace LangInformModel
             get;
             set;
         }
-
+        [Ignore]
         public SentenceBuildingItemPicture Picture { get; set; }
-
+        [Ignore]
         public Phrase Phrase { get; set; }
         public IList<Word> Words = new List<Word>();
 
@@ -398,7 +396,7 @@ namespace LangInformModel
 
     public class SentenceToWord
     {
-        public int SentenceBuildingItemId { get; set; }
-        public int WordId { get; set; }
+        public Guid SentenceBuildingItemId { get; set; }
+        public Guid WordId { get; set; }
     }
 }
