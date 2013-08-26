@@ -279,6 +279,11 @@ namespace LangInformModel
         public Guid PhraseId { get; set; }
         [Ignore]
         public Phrase Phrase { get; set; }
+
+        public override string ToString()
+        {
+            return Convert.ToInt32(XPos) + " - " + Convert.ToInt32(YPos);
+        }
     }
 
     public class Phrase

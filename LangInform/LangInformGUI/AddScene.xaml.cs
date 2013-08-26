@@ -121,7 +121,11 @@ namespace LangInformGUI
         /// <param name="e"></param>
         void DeleteDot_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            MenuItem menu = (MenuItem)sender;
+            var border = menu.Tag as Border;
+            var point = myPoints.FirstOrDefault(p => p.ToString() == border.Tag.ToString());
+            myPoints.Remove(point);
+            grdPoints.Children.Remove(border);
         }
 
         /// <summary>
@@ -134,41 +138,49 @@ namespace LangInformGUI
             OpenFileDialog fopen = new OpenFileDialog();
             fopen.Filter = "WAV(*.WAV)|*.WAV";
             fopen.ShowDialog();
-            var point = ((MenuItem)sender).Tag as MyPoint;
-            if (point != null)
+            if (!string.IsNullOrEmpty(fopen.FileName) && new FileInfo(fopen.FileName).Exists)
             {
-                point.PathToSound = fopen.FileName;
+                var border = ((MenuItem)sender).Tag as Border;
+                var point = border.Tag as SceneItem;
+                if (point != null)
+                {
+                    point.Phrase = new Phrase() { Id = Guid.NewGuid(), Sound = Assistant.SoundToByte(fopen.FileName) };
+                }
             }
         }
 
-        MyPoint CreatePoint(Border border, double x, double y)
+        private void MoveTheDots()
         {
-            MyPoint point = new MyPoint();
-            point.X = x;
-            point.Y = y;
-            point.Size = Convert.ToInt32(border.Width);
-            point.PathToSound = null;
-            //point.ID = (Guid)border.Tag;
-            point.IsRound = false;
-            if (border.CornerRadius.BottomLeft > 0)
-                point.IsRound = true;
-            return point;
+            //(p.X - currentDot.Width / 2, p.Y - currentDot.Height / 2, 0, 0)
+            var width = sceneImage.ActualWidth;
+            var height = sceneImage.ActualHeight;
+            foreach (var child in grdPoints.Children)
+            {
+                var dot = child as Border;
+                if (dot == null) continue;
+                var point = dot.Tag as SceneItem;
+                dot.Margin = new Thickness((point.XPos * width / 100) - dot.Width / 2, (point.YPos * height / 100) - dot.Height / 2, 0, 0);
+            }
         }
 
         private void grdLayer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (currentDot == null) return;
             System.Windows.Point p = Mouse.GetPosition(grdLayer);
-            currentDot.Margin = new Thickness(p.X - currentDot.Width / 2, p.Y - currentDot.Height / 2, 0, 0);
+            var width = sceneImage.ActualWidth;
+            var height = sceneImage.ActualHeight;
 
             SceneItem point = new SceneItem()
             {
-                XPos = p.X,
-                YPos = p.Y,
-                Id = Guid.NewGuid(),
+                XPos = (p.X * 100)/width,
+                YPos = (p.Y*100)/height,
+                Id = (Guid)currentDot.Tag,
                 Size = Convert.ToInt32(currentDot.Width),
                 IsRound = (currentDot.CornerRadius.BottomLeft > 0 ? true : false)
             };
+
+            currentDot.Margin = new Thickness((point.XPos * width / 100) - currentDot.Width / 2, (point.YPos * height / 100) - currentDot.Height / 2, 0, 0);
+            //new Thickness(p.X - currentDot.Width / 2, p.Y - currentDot.Height / 2, 0, 0);
 
             currentDot.Tag = point;
             grdPoints.Children.Add(currentDot);
@@ -180,7 +192,7 @@ namespace LangInformGUI
                 fopen.ShowDialog();
                 fname = fopen.FileName;
             }
-            if (new FileInfo(fname).Exists)
+            if (!string.IsNullOrEmpty(fname) && new FileInfo(fname).Exists)
             {
                 point.Phrase = new Phrase() { Id = Guid.NewGuid(), Sound = Assistant.SoundToByte(fname) };
                 point.PhraseId = point.Phrase.Id;
@@ -222,7 +234,7 @@ namespace LangInformGUI
             border.Background = new SolidColorBrush(Colors.Red);
             border.Opacity = .4;
             border.VerticalAlignment = VerticalAlignment.Top;
-            //border.Tag = Guid.NewGuid();
+            border.Tag = Guid.NewGuid();
             System.Windows.Controls.ContextMenu menu = new System.Windows.Controls.ContextMenu();
 
             System.Windows.Controls.MenuItem item1 = new System.Windows.Controls.MenuItem();
@@ -274,6 +286,11 @@ namespace LangInformGUI
                 vm.InsertData(sceneItem, typeof(SceneItem));
             }
 
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            MoveTheDots();
         }
 
 
