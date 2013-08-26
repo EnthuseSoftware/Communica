@@ -1,4 +1,5 @@
-﻿using LangInformModel;
+﻿using LangInformGUI.Controls;
+using LangInformModel;
 using LangInformVM;
 using System;
 using System.Collections.Generic;
@@ -21,14 +22,26 @@ namespace LangInformGUI.Windows
     /// </summary>
     public partial class Pictures : Window, INotifyPropertyChanged
     {
-        public Pictures()
+        public Pictures(AddScene _addScene)
         {
             InitializeComponent();
+            addSceneWindow = _addScene;
         }
+
+        AddScene addSceneWindow;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            if (listPictures.SelectedItem != null)
+            {
+                Image img = listPictures.SelectedItem as Image;
+                addSceneWindow.sceneImage.Source = img.Source;
+                this.Close();
+            }
+            else
+            {
+                MetroMessage.Show(this, "Image is not selected", "Please select image from the list.");
+            }
         }
 
         ViewModel vm = MainWindow.vm;
@@ -50,7 +63,7 @@ namespace LangInformGUI.Windows
                 listPictures.Items.Add(image);
             }
         }
-        
+
         public void NotifyPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
@@ -60,5 +73,20 @@ namespace LangInformGUI.Windows
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            ImageWidth += 5;
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            ImageWidth -= 5;
+        }
     }
 }

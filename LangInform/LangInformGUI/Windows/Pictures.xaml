@@ -4,6 +4,10 @@
         Title="Pictures" Height="380" Width="688" Loaded="Window_Loaded">
     <Grid>
         <Grid Name="grdMain">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="321*"/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="21*"/>
                 <RowDefinition Height="50"/>
@@ -15,8 +19,13 @@
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel Grid.Column="1">
+                <Button Content="⊕" FontSize="20" Height="40" Click="Button_Click_2"/>
+                <Button Content="⊖" Height="40" FontSize="20" Click="Button_Click_3"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Grid.ColumnSpan="2">
                 <Button Content="OK" Width="80" Margin="3" Click="Button_Click"/>
+                <Button Content="Cancel" Width="80" Margin="3" Click="Button_Click_1"/>
             </StackPanel>
         </Grid>
     </Grid>

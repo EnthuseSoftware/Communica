@@ -1,7 +1,7 @@
 ﻿<Window xmlns:Controls="clr-namespace:LangInformGUI.Controls"  x:Class="LangInformGUI.AddScene"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AddScene" Height="566.524" Width="897.425" Loaded="Window_Loaded" SizeChanged="Window_SizeChanged">
+        Title="AddScene" Height="566.524" Width="897.425" Loaded="Window_Loaded" SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown">
     <Grid>
         <Grid Name="mainGrid">
             <Grid.ColumnDefinitions>
@@ -12,7 +12,7 @@
                 <RowDefinition Height="43*"/>
                 <RowDefinition Height="494*"/>
             </Grid.RowDefinitions>
-            <TextBox Name="txtPath" FontSize="17" Margin="5,5,0,5" MouseDoubleClick="txtPath_MouseDoubleClick"/>
+            <TextBox Name="txtPath" FontSize="17" Margin="5,5,0,5" MouseDoubleClick="txtPath_MouseDoubleClick" IsEnabled="False"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <Button Width="35" Content=". . ." Margin="0,5,2,5" Click="getFileAndShow"/>
                 <Button  Content="Select from DB" Margin="5" Width="100" Click="FromDB_Click"/>

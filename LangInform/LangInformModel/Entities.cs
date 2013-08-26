@@ -4,6 +4,8 @@ using SQLite;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace LangInformModel
 {
@@ -271,8 +273,10 @@ namespace LangInformModel
     {
         [PrimaryKey]
         public Guid Id { get; set; }
-        public double XPos { get; set; }
-        public double YPos { get; set; }
+        double _xPos;
+        double _yPos;
+        public double XPos { get { return _xPos; } set { _xPos = value; NotifyPropertyChanged(); } }
+        public double YPos { get { return _yPos; } set { _yPos = value; NotifyPropertyChanged(); } }
         public int Size { get; set; }
         public bool IsRound { get; set; }
         public Guid SceneId { get; set; }
@@ -284,6 +288,22 @@ namespace LangInformModel
         {
             return Convert.ToInt32(XPos) + " - " + Convert.ToInt32(YPos);
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, e);
+            }
+        }
+
     }
 
     public class Phrase
