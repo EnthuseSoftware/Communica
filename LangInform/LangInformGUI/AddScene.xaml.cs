@@ -369,6 +369,11 @@ namespace LangInformGUI
             }
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var scenes = _lesson.Scenes;
+        }
+
 
 
 

@@ -80,7 +80,7 @@
                 <ColumnDefinition Width="647*"/>
             </Grid.ColumnDefinitions>
             <GridSplitter ResizeDirection="Columns" Grid.Column="1" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <TreeView x:Name="treeLessons" />
+            <TreeView x:Name="treeLessons" SelectedItemChanged="treeLessons_SelectedItemChanged"/>
 
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
@@ -94,7 +94,7 @@
                 </StackPanel>
                 <Grid Grid.Row="1" x:Name="grdLessonUI">
                     <TabControl>
-                        <TabItem Header="Scene" x:Name="tabScene">
+                        <TabItem Header="Scene" x:Name="mainTabScene">
                             <Border BorderBrush="#FF92D050" BorderThickness="5">
                                 <Grid x:Name="grdScene"/>
                             </Border>

@@ -255,11 +255,39 @@ namespace LangInformModel
         public string Name { get; set; }
         public string Description { get; set; }
         public Guid PictureId { get; set; }
+
+        ScenePicture _scenePicture;
         [Ignore]
-        public ScenePicture ScenePicture { get; set; }
+        public ScenePicture ScenePicture
+        {
+            get
+            {
+                if (_scenePicture == null)
+                {
+                    _scenePicture = ModelManager.Db.Query<ScenePicture>("select * from ScenePicture where id = '" + PictureId.ToString() + "';").FirstOrDefault();
+                }
+                return _scenePicture;
+            }
+            set
+            {
+                _scenePicture = value;
+            }
+        }
+
+        List<SceneItem> _sceneItems;
         [Ignore]
-        public IList<SceneItem> SceneItems { get; set; }
-        
+        public IList<SceneItem> SceneItems
+        {
+            get
+            {
+                if (_sceneItems == null)
+                {
+                    _sceneItems = ModelManager.Db.Query<SceneItem>("select * from SceneItem where SceneId = '" + Id.ToString() + "';");
+                }
+                return _sceneItems;
+            }
+        }
+
     }
 
     public class ScenePicture
@@ -281,8 +309,23 @@ namespace LangInformModel
         public bool IsRound { get; set; }
         public Guid SceneId { get; set; }
         public Guid PhraseId { get; set; }
+        Phrase _phrase;
         [Ignore]
-        public Phrase Phrase { get; set; }
+        public Phrase Phrase
+        {
+            get
+            {
+                if (_phrase == null)
+                {
+                    _phrase = ModelManager.Db.Query<Phrase>("select * from Phrase where Id = '" + PhraseId.ToString() + "';").FirstOrDefault();
+                }
+                return _phrase;
+            }
+            set
+            {
+                _phrase = value;
+            }
+        }
 
         public override string ToString()
         {

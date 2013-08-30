@@ -12,6 +12,7 @@ using System.Linq;
 using System.Windows.Media;
 using LangInformGUI.Controls;
 using System.IO;
+using System.Windows.Data;
 
 namespace LangInformGUI
 {
@@ -36,8 +37,8 @@ namespace LangInformGUI
             treeLessons.ItemsSource = vm.Languages;
             //temporary
             var lesson = vm.GetData<Lesson>("SELECT * FROM Lesson WHERE Name='Lesson 2'").FirstOrDefault();
-            AddScene addScene = new AddScene(lesson);
-            addScene.ShowDialog();
+            //AddScene addScene = new AddScene(lesson);
+            //addScene.ShowDialog();
             //end temporary
         }
 
@@ -90,7 +91,7 @@ namespace LangInformGUI
                         string description = MetroInputBox.Show(this, "Description of the new unit", "");
                         var unit = new Unit() { Id = Guid.NewGuid(), Name = newUnitName, Description = description };
                         vm.InsertData(unit, typeof(Unit));
-                        vm.InsertData(new LevelToUnit() {LevelId = level.ID, UnitId = unit.Id }, typeof(LevelToUnit));
+                        vm.InsertData(new LevelToUnit() { LevelId = level.ID, UnitId = unit.Id }, typeof(LevelToUnit));
                     }
                 }
             }
@@ -105,7 +106,7 @@ namespace LangInformGUI
                         string description = MetroInputBox.Show(this, "Description of the new lesson", "");
                         var lesson = new Lesson() { Id = Guid.NewGuid(), Name = newUnitName, Description = description };
                         vm.InsertData(lesson, typeof(Lesson));
-                        vm.InsertData(new UnitToLesson() {UnitId = unit.Id, LessonId = lesson.Id }, typeof(UnitToLesson));
+                        vm.InsertData(new UnitToLesson() { UnitId = unit.Id, LessonId = lesson.Id }, typeof(UnitToLesson));
                     }
                 }
             }
@@ -131,7 +132,67 @@ namespace LangInformGUI
             vm.CloseSession();
         }
 
+        private void treeLessons_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (e.NewValue is Lesson)
+            {
+                Lesson selectedLesson = e.NewValue as Lesson;
+                CreateSceneTabs(selectedLesson);
+            }
+        }
 
+        private void CreateSceneTabs(Lesson lesson)
+        {
+            TabControl scenesTab = new TabControl();
+            grdScene.Children.Add(scenesTab);
+
+            foreach (Scene scene in lesson.Scenes)
+            {
+                TabItem sceneTab = new TabItem() { Header = scene.Name };
+                sceneTab.DataContext = scene;
+                //grid that will contain the image and the grid that contains points.
+                Grid sceneBack = new Grid();
+
+                Image sceneImage = new Image() { Source = Assistant.ByteToBitmapSource(scene.ScenePicture.Picture), DataContext = scene };
+                sceneImage.Loaded += new RoutedEventHandler((s, args) =>
+                {
+                    Image image = s as Image;
+                    var width = image.ActualWidth;
+                    var height = image.ActualHeight;
+
+                    var grid = image.Tag as Grid;
+                    //add the points
+                    foreach (SceneItem sceneItem in scene.SceneItems)
+                    {
+                        Border dot = new Border() { CornerRadius = new CornerRadius((sceneItem.IsRound ? 90 : 0)) };
+                        dot.Width = sceneItem.Size;
+                        dot.Height = sceneItem.Size;
+                        double x = ((sceneItem.XPos * width) / 100);// -(dot.Width / 2);
+                        double y = ((sceneItem.YPos * height) / 100);// -(dot.Height / 2);
+                        dot.Margin = new Thickness(x,y , 0, 0);
+                        dot.Background = new SolidColorBrush(Colors.Red);
+                        dot.Opacity = 1;
+                        grid.Children.Add(dot);
+                    }
+                });
+                //grid that will contain the actual points
+                Grid sceneFront = new Grid();
+                sceneImage.Tag = sceneFront;
+                //binding the front grid height and width with the image height and width
+                sceneFront.DataContext = sceneImage;
+                sceneFront.SetBinding(Grid.HeightProperty, new Binding("ActualHeight") { Mode = BindingMode.OneWay });
+                sceneFront.SetBinding(Grid.WidthProperty, new Binding("ActualWidth") { Mode = BindingMode.OneWay });
+                sceneFront.Background = new SolidColorBrush(Colors.Blue);
+                sceneFront.Opacity = .2;
+
+                sceneBack.Children.Add(sceneImage);
+                sceneBack.Children.Add(sceneFront);
+                sceneTab.Content = sceneBack;
+                scenesTab.Items.Add(sceneTab);
+
+
+            }
+        }
 
 
 
