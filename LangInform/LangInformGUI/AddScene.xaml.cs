@@ -1,25 +1,18 @@
-﻿using LangInformGUI.AppCode;
-using LangInformGUI.Controls;
+﻿using LangInformGUI.Controls;
 using LangInformGUI.Windows;
 using LangInformModel;
 using LangInformVM;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace LangInformGUI
 {
@@ -183,7 +176,6 @@ namespace LangInformGUI
             };
 
             newCreatedDot.Margin = new Thickness((point.XPos * width / 100) - newCreatedDot.Width / 2, (point.YPos * height / 100) - newCreatedDot.Height / 2, 0, 0);
-            //new Thickness(p.X - currentDot.Width / 2, p.Y - currentDot.Height / 2, 0, 0);
 
             newCreatedDot.Tag = point;
             grdPoints.Children.Add(newCreatedDot);

@@ -13,7 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+#pragma warning restore
 namespace LangInformGUI
 {
     /// <summary>
@@ -77,3 +77,4 @@ namespace LangInformGUI
         }
     }
 }
+#pragma warning restore

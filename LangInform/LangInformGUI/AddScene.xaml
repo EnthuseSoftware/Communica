@@ -32,7 +32,7 @@
                         <ColumnDefinition Width="156"/>
                     </Grid.ColumnDefinitions>
                     <Image Name="sceneImage"/>
-                    <Grid Name="grdLayer" Background="Black"  Opacity="0.05" MouseLeftButtonUp="grdLayer_MouseLeftButtonUp" Height="{Binding ActualHeight, ElementName=sceneImage, Mode=OneWay}" Width="{Binding ActualWidth, ElementName=sceneImage, Mode=OneWay}"></Grid>
+                    <Grid Name="grdLayer" Background="Black"  Opacity="0.3" MouseLeftButtonUp="grdLayer_MouseLeftButtonUp" Height="{Binding ActualHeight, ElementName=sceneImage, Mode=OneWay}" Width="{Binding ActualWidth, ElementName=sceneImage, Mode=OneWay}"></Grid>
                     <Grid Name="grdPoints" Height="{Binding ActualHeight, ElementName=sceneImage, Mode=OneWay}" Width="{Binding ActualWidth, ElementName=sceneImage, Mode=OneWay}">
                         
                     </Grid>

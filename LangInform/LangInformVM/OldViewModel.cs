@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
+#pragma warning disable
 namespace LangInformVM
 {
     public class OldViewModel
@@ -13,7 +14,7 @@ namespace LangInformVM
 
         public OldVocabLogic VocabLogic { get; set; }
 
-        MainEntities entities = null;//new MainEntities();
+        //MainEntities entities = null;//new MainEntities();
 
         Lesson _currentLesson;
         public Lesson CurrentLesson
@@ -182,3 +183,4 @@ namespace LangInformVM
         Quiz = 3
     }
 }
+#pragma warning restore

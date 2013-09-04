@@ -161,15 +161,17 @@ namespace LangInformGUI
                     var height = image.ActualHeight;
 
                     var grid = image.Tag as Grid;
+                   
                     //add the points
                     foreach (SceneItem sceneItem in scene.SceneItems)
                     {
                         Border dot = new Border() { CornerRadius = new CornerRadius((sceneItem.IsRound ? 90 : 0)) };
                         dot.Width = sceneItem.Size;
                         dot.Height = sceneItem.Size;
+                        //newCreatedDot.Margin = new Thickness((point.XPos * width / 100) - newCreatedDot.Width / 2, (point.YPos * height / 100) - newCreatedDot.Height / 2, 0, 0);
                         double x = ((sceneItem.XPos * width) / 100);// -(dot.Width / 2);
                         double y = ((sceneItem.YPos * height) / 100);// -(dot.Height / 2);
-                        dot.Margin = new Thickness(x,y , 0, 0);
+                        dot.Margin = new Thickness((sceneItem.XPos * width / 100) - dot.Width / 2, (sceneItem.YPos * height / 100) - dot.Height / 2, 0, 0);
                         dot.Background = new SolidColorBrush(Colors.Red);
                         dot.Opacity = 1;
                         grid.Children.Add(dot);
