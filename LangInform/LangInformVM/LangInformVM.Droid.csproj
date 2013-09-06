@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="EnterData.cs" />
-    <Compile Include="VocabularyLogic.cs" />
+    <Compile Include="VocabLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
