@@ -46,6 +46,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="LangInformVM, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="NAudio">
       <HintPath>..\3rdPartyLibraries\NAudio.dll</HintPath>
     </Reference>
@@ -82,6 +83,7 @@
       <DependentUpon>AddScene.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppCode\Point.cs" />
+    <Compile Include="AppCode\WPFConverter.cs" />
     <Compile Include="Controls\CButton.xaml.cs">
       <DependentUpon>CButton.xaml</DependentUpon>
     </Compile>

@@ -6,6 +6,7 @@ using System.Text;
 using System.IO;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using NAudio.Wave;
 
 namespace LangInformModel
 {
@@ -297,7 +298,7 @@ namespace LangInformModel
         public byte[] Picture { get; set; }
     }
 
-    public class SceneItem
+    public class SceneItem: INotifyPropertyChanged
     {
         [PrimaryKey]
         public Guid Id { get; set; }
@@ -327,6 +328,8 @@ namespace LangInformModel
             }
         }
 
+        
+
         public override string ToString()
         {
             return Convert.ToInt32(XPos) + " - " + Convert.ToInt32(YPos);
@@ -355,6 +358,44 @@ namespace LangInformModel
         public Guid Id { get; set; }
         public string Text { get; set; }
         public byte[] Sound { get; set; }
+
+        #region NAudio stuff
+
+        [Ignore]
+        public TimeSpan SoundLength { get; set; }
+
+        public void Play(int playFrom=0)
+        {
+            if (audioOutput == null)
+                PrepareAudio();
+            if (audioOutput.PlaybackState == PlaybackState.Playing)
+            {
+                audioOutput.Pause();
+            }
+            waveReader.CurrentTime = TimeSpan.FromMilliseconds(playFrom);
+            audioOutput.Play();
+        }
+
+        public void StopPlaying()
+        {
+            if (audioOutput.PlaybackState != PlaybackState.Stopped)
+            {
+                audioOutput.Pause();
+            }
+        }
+
+        private DirectSoundOut audioOutput;
+        private WaveFileReader waveReader;
+        void PrepareAudio()
+        {
+            waveReader = new WaveFileReader(Helper.byteArrayToStream(this.Sound));
+            SoundLength = waveReader.TotalTime;
+            var wc = new WaveChannel32(waveReader);
+            audioOutput = new DirectSoundOut();
+            audioOutput.Init(wc);
+        }
+        #endregion
+
     }
 
 
@@ -466,5 +507,14 @@ namespace LangInformModel
     {
         public Guid SentenceBuildingItemId { get; set; }
         public Guid WordId { get; set; }
+    }
+
+    public class Helper
+    {
+        public static Stream byteArrayToStream(Byte[] bytes)
+        {
+            Stream str = new MemoryStream(bytes);
+            return str;
+        }
     }
 }

@@ -37,8 +37,8 @@ namespace LangInformGUI
             treeLessons.ItemsSource = vm.Languages;
             //temporary
             var lesson = vm.GetData<Lesson>("SELECT * FROM Lesson WHERE Name='Lesson 2'").FirstOrDefault();
-            //AddScene addScene = new AddScene(lesson);
-            //addScene.ShowDialog();
+            AddScene addScene = new AddScene(lesson);
+            addScene.ShowDialog();
             //end temporary
         }
 
@@ -161,42 +161,71 @@ namespace LangInformGUI
                     var height = image.ActualHeight;
 
                     var grid = image.Tag as Grid;
-                   
                     //add the points
                     foreach (SceneItem sceneItem in scene.SceneItems)
                     {
-                        Border dot = new Border() { CornerRadius = new CornerRadius((sceneItem.IsRound ? 90 : 0)) };
+                        Border dot = new Border() { CornerRadius = new CornerRadius((sceneItem.IsRound ? 90 : 0)), VerticalAlignment = VerticalAlignment.Top, HorizontalAlignment = HorizontalAlignment.Left };
+                        dot.Tag = sceneItem;
+                        dot.MouseLeftButtonDown += dot_MouseLeftButtonDown;
                         dot.Width = sceneItem.Size;
                         dot.Height = sceneItem.Size;
-                        //newCreatedDot.Margin = new Thickness((point.XPos * width / 100) - newCreatedDot.Width / 2, (point.YPos * height / 100) - newCreatedDot.Height / 2, 0, 0);
-                        double x = ((sceneItem.XPos * width) / 100);// -(dot.Width / 2);
-                        double y = ((sceneItem.YPos * height) / 100);// -(dot.Height / 2);
+                        double x = ((sceneItem.XPos * width) / 100) - (dot.Width / 2);
+                        double y = ((sceneItem.YPos * height) / 100) - (dot.Height / 2);
                         dot.Margin = new Thickness((sceneItem.XPos * width / 100) - dot.Width / 2, (sceneItem.YPos * height / 100) - dot.Height / 2, 0, 0);
-                        dot.Background = new SolidColorBrush(Colors.Red);
-                        dot.Opacity = 1;
+                        dot.Background = new SolidColorBrush(Colors.Green);
+                        dot.Opacity = .5;
                         grid.Children.Add(dot);
                     }
                 });
                 //grid that will contain the actual points
                 Grid sceneFront = new Grid();
+                sceneFront.Tag = sceneImage;
+                sceneFront.SizeChanged += new SizeChangedEventHandler((s, args) =>
+                {
+                    var grd = s as Grid;
+                    MoveTheDots(grd, grd.Tag as Image);
+                });
                 sceneImage.Tag = sceneFront;
                 //binding the front grid height and width with the image height and width
                 sceneFront.DataContext = sceneImage;
                 sceneFront.SetBinding(Grid.HeightProperty, new Binding("ActualHeight") { Mode = BindingMode.OneWay });
                 sceneFront.SetBinding(Grid.WidthProperty, new Binding("ActualWidth") { Mode = BindingMode.OneWay });
-                sceneFront.Background = new SolidColorBrush(Colors.Blue);
-                sceneFront.Opacity = .2;
-
                 sceneBack.Children.Add(sceneImage);
                 sceneBack.Children.Add(sceneFront);
                 sceneTab.Content = sceneBack;
                 scenesTab.Items.Add(sceneTab);
-
-
             }
         }
 
+        void dot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SceneItem sceneItem = (sender as Border).Tag as SceneItem;
+            sceneItem.Phrase.Play();
+        }
 
+        /// <summary>
+        /// Moving the dots when picture resized
+        /// </summary>
+        private void MoveTheDots(Grid grd, Image img)
+        {
+            //(p.X - currentDot.Width / 2, p.Y - currentDot.Height / 2, 0, 0)
+            var width = img.ActualWidth;
+            var height = img.ActualHeight;
+            foreach (var child in grd.Children)
+            {
+                var dot = child as Border;
+                if (dot == null) continue;
+                var point = dot.Tag as SceneItem;
+                dot.Margin = new Thickness((point.XPos * width / 100) - dot.Width / 2, (point.YPos * height / 100) - dot.Height / 2, 0, 0);
+            }
+        }
+
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        
 
 
 

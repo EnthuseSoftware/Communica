@@ -36,6 +36,8 @@ namespace LangInformGUI.Windows
             {
                 Image img = listPictures.SelectedItem as Image;
                 addSceneWindow.sceneImage.Source = img.Source;
+                addSceneWindow.pictureFromdatabase = true;
+                addSceneWindow.sceneImage.Tag = img.Tag;
                 this.Close();
             }
             else
@@ -60,6 +62,7 @@ namespace LangInformGUI.Windows
                 image.DataContext = this;
                 image.SetBinding(Image.WidthProperty, new Binding("ImageWidth"));
                 image.Source = Assistant.ByteToBitmapSource(picture.Picture);
+                image.Tag = picture;
                 listPictures.Items.Add(image);
             }
         }
