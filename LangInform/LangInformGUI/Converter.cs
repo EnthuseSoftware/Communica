@@ -4,61 +4,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Media.Imaging;
+using System.Threading.Tasks;
 
-namespace LangInformVM
+namespace LangInformGUI
 {
-
-    public class Assistant
-    {
-
-        public static Byte[] SoundToByte(string soundPath)
-        {
-            FileStream fs = new FileStream(soundPath, FileMode.Open);
-            System.IO.Stream stream;
-            stream = fs;
-            Byte[] blob;
-            blob = StreamHelper.ReadToEnd(stream);
-            return blob;
-        }
-
-        public static BitmapImage GetBitmapImageFrom(string fileName)
-        {
-            BitmapImage bmpImage = new BitmapImage();
-            bmpImage.BeginInit();
-            bmpImage.UriSource = new Uri(fileName);
-            bmpImage.EndInit();
-            return bmpImage;
-        }
-
-        public static byte[] BitmapToByte(string fileName)
-        {
-            return BitmapImageToByte(GetBitmapImageFrom(fileName));
-        }
-
-        public static byte[] BitmapImageToByte(BitmapImage bitmapImg)
-        {
-            // Encode the image in JPEG format, then save it to a stream
-            PngBitmapEncoder encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(bitmapImg));
-            MemoryStream stream = new MemoryStream();
-            encoder.Save(stream);
-            // Put the image in the Meaning table
-            byte[] blob = stream.ToArray();
-            return blob;
-        }
-
-        public static BitmapSource ByteToBitmapSource(byte[] blob)
-        {
-            byte[] picture = blob;
-            MemoryStream stream = new MemoryStream();
-            stream.Write(picture, 0, picture.Length);
-            PngBitmapDecoder bmpDecoder = new PngBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
-            return (BitmapSource)bmpDecoder.Frames[0];
-        }
-
-    }
-
     public class StreamHelper
     {
         public static byte[] ReadToEnd(System.IO.Stream stream)
@@ -175,6 +124,4 @@ namespace LangInformVM
             return image2;
         }
     }
-
-
 }

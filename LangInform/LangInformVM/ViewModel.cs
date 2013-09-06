@@ -1,7 +1,9 @@
 ﻿using LangInformModel;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 
@@ -9,180 +11,46 @@ namespace LangInformVM
 {
     public class ViewModel
     {
-        public Random rnd = new Random();
-
-        public VocabLogic VocabLogic{get;set;}
-
-        MainEntities entities = new MainEntities();
-
-        Lesson _currentLesson;
-        public Lesson CurrentLesson
+        public ViewModel(string dataPath)
         {
-            get { return _currentLesson; }
-            set
+            db = new MainEntities(dataPath);
+            IsLanguagesDirty = true;
+        }
+        MainEntities db;
+
+        public void CloseSession()
+        {
+            db.Close();
+        }
+
+        public int InsertData(object obj, Type type)
+        {
+            return db.Insert(obj, type);
+        }
+
+        public int DeleteData(object obj)
+        {
+            return db.Delete(obj);
+        }
+
+        public bool IsLanguagesDirty { get; set; }
+
+        public List<T> GetData<T>(string query) where T: new()
+        {
+            return db.Query<T>(query);
+        }
+
+        private ObservableCollection<Language> _languages = null;
+        public ObservableCollection<Language> Languages
+        {
+            get
             {
-                _currentLesson = value;
-                if (CurrentLessonChanged != null)
+                if (IsLanguagesDirty || _languages == null)
                 {
-                    CurrentLessonChanged(this, null);
+                    _languages = new ObservableCollection<Language>(db.Query<Language>("select * from language"));
                 }
+                return _languages;
             }
         }
-
-
-        public ViewModel()
-        {
-            Languages = entities.Languages.ToList();
-            VocabLogic = new VocabLogic(this);
-        }
-
-        public void SaveChanges()
-        {
-          /*
-           * // These methods come from DbContext, which we are no longer using - BB
-           * var ch = entities.ChangeTracker;
-            entities.SaveChanges();
-           */
-            // TODO: write code to save changes using SQLiteNet
-        }
-
-        public IEnumerable<Language> Languages { get; set; }
-
-        public Language CurrentLanguage { get; set; }
-
-        public Level CurrentLevel { get; set; }
-
-        public Unit CurrentUnit { get; set; }
-
-        public event EventHandler CurrentLessonChanged;
-
-    }
-
-    public class VocabLogic : INotifyPropertyChanged
-    {
-
-        int _total;
-        public int Total { get { return _total; } set { _total = value; NotifyPropertyChanged("Total"); } }
-
-        int _rightAnswers;
-        public int RightAnswers { get { return _rightAnswers; } set { _rightAnswers = value; NotifyPropertyChanged("RightAnswers"); } }
-
-        int _wrongAnswers;
-        public int WrongAnswers { get { return _wrongAnswers; } set { _wrongAnswers = value; NotifyPropertyChanged("WrongAnswers"); } }
-
-        VocabularyActivity _currentActivity = VocabularyActivity.Learn;
-        public VocabularyActivity Currentactivity { get { return _currentActivity; } set { _currentActivity = value; alreadyAsked.Clear(); } }
-
-        Vocabulary _currentVocabulary;
-        public Vocabulary CurrentVocabulary { get { return _currentVocabulary; } set { _currentVocabulary = value; Total = _currentVocabulary.Words.Count; } }
-
-        ViewModel _viewModel = null;
-
-        public VocabLogic(ViewModel viewModel)
-        {
-            _rnd = viewModel.rnd;
-            _viewModel = viewModel;
-        }
-
-        Random _rnd;
-
-        int currentPlaying = -1;
-
-        int wrongAnswers = 0;
-
-        public int GetRandomItemForPractice( int playThis = -1)
-        {
-            int count = CurrentVocabulary.Words.Where(w=>w.IncludetoExam==1).Count();
-            int picked = _rnd.Next(0, count);
-            if (playThis != -1)
-            {
-                picked = playThis;
-            }
-            currentPlaying = picked;
-            return currentPlaying;
-        }
-
-        List<int> alreadyAsked = new List<int>();
-
-        public int GetRandomItemForQuiz(out bool done)
-        {
-            int count = CurrentVocabulary.Words.Where(w => w.IncludetoExam == 1).Count();
-            int picked = _rnd.Next(0, count);
-            if (count == alreadyAsked.Count)
-            {
-                done = true;
-                return -1;
-            }
-            while (true)
-            {
-                if (!alreadyAsked.Contains(picked))
-                {
-                    break;
-                }
-                picked = _rnd.Next(0, count);
-            }
-            alreadyAsked.Add(picked);
-            currentPlaying = picked;
-            done = false;
-            return currentPlaying;
-        }
-
-        public Result CheckAnswer(int selectedItemNo)
-        {
-            Result result = new Result();
-            result.Highlight = false;
-            if (selectedItemNo == currentPlaying)
-            {
-                if (Currentactivity == VocabularyActivity.Quiz)
-                {
-                    RightAnswers++;
-                }
-                wrongAnswers = 0;
-                result.Correct = true;
-                return result;
-            }
-            else
-            {
-                if (Currentactivity == VocabularyActivity.Quiz)
-                {
-                    WrongAnswers++;
-                }
-                wrongAnswers++;
-                result.Correct = false;
-                if (wrongAnswers == 3)
-                {
-                    result.Highlight = true;
-                    wrongAnswers = 0;
-                }
-                return result;
-            }
-        }
-
-        #region INotifyPropertyChanged Members
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged(String info)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
-        }
-        #endregion
-    }
-
-    public class Result
-    {
-        public bool Correct { get; set; }
-
-        public bool Highlight { get; set; }
-    }
-
-    public enum VocabularyActivity
-    {
-        Learn = 0,
-        Practice = 1,
-        Review = 2,
-        Quiz = 3
     }
 }
