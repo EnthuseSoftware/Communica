@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Converter.cs" />
     <Compile Include="EnterData.cs" />
+    <Compile Include="ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

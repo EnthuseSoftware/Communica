@@ -24,7 +24,7 @@ namespace LangInformGUI
         }
 
         ViewModel vm = new ViewModel();
-        mainEntities1 entities = new mainEntities1();
+        MainEntities entities = new MainEntities();
 
         VocabularyActivity activity = VocabularyActivity.Learn;
         Vocabulary activeVocab;
