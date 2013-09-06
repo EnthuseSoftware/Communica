@@ -32,7 +32,6 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <ConsolePause>false</ConsolePause>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -53,9 +52,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\LangInformModel\LangInformModel.PCL.csproj">
-      <Project>{66D5224B-BA83-4FD8-A937-A7803F862670}</Project>
-      <Name>LangInformModel.PCL</Name>
+    <ProjectReference Include="..\LangInformModel\LangInformModel.Droid.csproj">
+      <Project>{D83E9AF9-3FAE-42EB-8938-23E231D65C07}</Project>
+      <Name>LangInformModel.Droid</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

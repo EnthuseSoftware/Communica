@@ -32,7 +32,6 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <ConsolePause>false</ConsolePause>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,16 +43,7 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="DataProvider.cs" />
     <Compile Include="Entities.cs" />
-    <Compile Include="language.cs" />
-    <Compile Include="lesson.cs" />
-    <Compile Include="level.cs" />
-    <Compile Include="myitem.cs" />
-    <Compile Include="scene.cs" />
-    <Compile Include="sceneitem.cs" />
     <Compile Include="SQLite.cs" />
-    <Compile Include="unit.cs" />
-    <Compile Include="vocabulary.cs" />
-    <Compile Include="word.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
