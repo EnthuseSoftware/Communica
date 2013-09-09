@@ -37,8 +37,8 @@ namespace LangInformGUI
             treeLessons.ItemsSource = vm.Languages;
             //temporary
             var lesson = vm.GetData<Lesson>("SELECT * FROM Lesson WHERE Name='Lesson 2'").FirstOrDefault();
-            AddScene addScene = new AddScene(lesson);
-            addScene.ShowDialog();
+            //AddScene addScene = new AddScene(lesson);
+            //addScene.ShowDialog();
             //end temporary
         }
 

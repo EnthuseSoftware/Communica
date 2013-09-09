@@ -46,7 +46,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="LangInformVM, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="NAudio">
       <HintPath>..\3rdPartyLibraries\NAudio.dll</HintPath>
     </Reference>
@@ -79,7 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddScene.xaml.cs">
+    <Compile Include="Windows\AddScene.xaml.cs">
       <DependentUpon>AddScene.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppCode\Point.cs" />
@@ -110,14 +109,13 @@
     <Compile Include="Icons\QuestionMark.xaml.cs">
       <DependentUpon>QuestionMark.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TODOS.cs" />
-    <Compile Include="VocabularySettings.xaml.cs">
+    <Compile Include="Windows\VocabularySettings.xaml.cs">
       <DependentUpon>VocabularySettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Pictures.xaml.cs">
       <DependentUpon>Pictures.xaml</DependentUpon>
     </Compile>
-    <Page Include="AddScene.xaml">
+    <Page Include="Windows\AddScene.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -179,7 +177,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="VocabularySettings.xaml">
+    <Page Include="Windows\VocabularySettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
