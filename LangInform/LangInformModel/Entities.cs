@@ -12,11 +12,6 @@ namespace LangInformModel
 {
     public class MainEntities : SQLiteConnection
     {
-        //public MainEntities()
-        //    : base(Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "LangInform.db3"))
-        //{
-        //    // Nothing more to do here yet, but if I do, be sure to do it in a private Initialize method
-        //}
 
         public object GetData<T>(string query)
         {
@@ -28,20 +23,7 @@ namespace LangInformModel
             List<Language> languages = this.Query<Language>("SELECT * FROM Language");
         }
 
-        // Simulating DbSets. But should these be read-only?
-        //public TableQuery<Language> Languages { get; set; }
-        //public TableQuery<Level> Levels { get; set; }
-        //public TableQuery<Unit> Units { get; set; }
-        //public TableQuery<Lesson> Lessons { get; set; }
-        //public TableQuery<Scene> Scenes { get; set; }
-        //public TableQuery<SceneItem> SceneItems { get; set; }
-        //public TableQuery<Vocabulary> Vocabularies { get; set; }
-        //public TableQuery<Word> Words { get; set; }
-        //public TableQuery<Word> Meanings { get; set; }
-        //public TableQuery<Word> SentenceBuildings { get; set; }
-        //public TableQuery<Word> SentenceBuildingItems { get; set; }
-        //public TableQuery<Word> SentenceBuildingItemPictures { get; set; }
-
+    
         public MainEntities(string dbPath)
             : base(dbPath)
         {
