@@ -12,17 +12,6 @@ namespace LangInformModel
 {
     public class MainEntities : SQLiteConnection
     {
-
-        public object GetData<T>(string query)
-        {
-            return null;// db.Query<T>(query);
-        }
-
-        public void GetLanguages()
-        {
-            List<Language> languages = this.Query<Language>("SELECT * FROM Language");
-        }
-
     
         public MainEntities(string dbPath)
             : base(dbPath)
