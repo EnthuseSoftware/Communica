@@ -4,6 +4,7 @@ using LangInformModel;
 using LangInformVM;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -42,6 +43,8 @@ namespace LangInformGUI
         private void txtPath_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             txtPath.Text = GetFilePath();
+            if (txtPath.Text == "")
+                return;
             FileInfo file = new FileInfo(txtPath.Text);
             if (file.Exists)
             {
@@ -62,6 +65,8 @@ namespace LangInformGUI
             fileDialog.Filter = "Image File (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
             fileDialog.Multiselect = false;
             fileDialog.ShowDialog();
+            if (string.IsNullOrEmpty(fileDialog.FileName))
+                return "";
             return fileDialog.FileName;
         }
 
@@ -74,6 +79,8 @@ namespace LangInformGUI
         private void getFileAndShow(object sender, RoutedEventArgs e)
         {
             txtPath.Text = GetFilePath();
+            if (txtPath.Text == "")
+                return;
             FileInfo file = new FileInfo(txtPath.Text);
             if (file.Exists)
             {
@@ -107,10 +114,8 @@ namespace LangInformGUI
             Border selectedBorder = (Border)sender;
             DeSelectAll();
             selectedBorder.BorderThickness = new Thickness(2, 2, 2, 2);
-            CreateNewBorder(selectedBorder);
+            CreateNewDot(selectedBorder);
         }
-
-
 
         /// <summary>
         /// Deletes the the created dot
@@ -125,6 +130,39 @@ namespace LangInformGUI
             MyPoints.Remove(point);
             grdPoints.Children.Remove(border);
             EnumerateTheDots();
+        }
+
+        void PlayAudio_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = (MenuItem)sender;
+            var border = menu.Tag as Border;
+            var point = border.Tag as SceneItem;
+            StopAllPlaying(MyPoints.ToList());
+            point.Phrase.Play();
+        }
+
+        void ResetTheDotNumber_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = (MenuItem)sender;
+            var dot = menu.Tag as Border;
+            var point = dot.Tag as SceneItem;
+            int oldIndex = MyPoints.IndexOf(point);
+            string number = MetroInputBox.Show(this, "resetting the dot numbers", "Please enter number you want to set");
+            if (!string.IsNullOrEmpty(number))
+            {
+                int newIndex = Convert.ToInt32(number);
+                if (newIndex >= 1 && newIndex <= MyPoints.Count)
+                {
+                    MyPoints.Move(oldIndex, newIndex-1);
+                    grdPoints.Children.Remove(dot);
+                    grdPoints.Children.Insert(newIndex-1, dot);
+                    EnumerateTheDots();
+                }
+            }
+            else
+            {
+                MetroMessage.Show(this, "resetting the dot numbers", "Please enter integer numbers between 0 and " + MyPoints.Count + ".", MessageButtons.OK, MessageIcon.Exclamation);
+            }
         }
 
         /// <summary>
@@ -162,6 +200,10 @@ namespace LangInformGUI
                 var dot = child as Border;
                 if (dot == null) continue;
                 var point = dot.Tag as SceneItem;
+                dot.Height = (point.Size*height)/100;
+                dot.Width = (point.Size * height) / 100;
+                if (dot.Height < 10) dot.Height = 10;
+                if (dot.Width < 10) dot.Width = 10;
                 dot.Margin = new Thickness((point.XPos * width / 100) - dot.Width / 2, (point.YPos * height / 100) - dot.Height / 2, 0, 0);
             }
         }
@@ -178,7 +220,7 @@ namespace LangInformGUI
                 XPos = (p.X * 100) / width,
                 YPos = (p.Y * 100) / height,
                 Id = (Guid)newCreatedDot.Tag,
-                Size = Convert.ToInt32(newCreatedDot.Width),
+                Size = Math.Ceiling((newCreatedDot.Width*100)/height),
                 IsRound = (newCreatedDot.CornerRadius.BottomLeft > 0 ? true : false)
             };
 
@@ -207,7 +249,7 @@ namespace LangInformGUI
 
             MyPoints.Add(point);
             EnumerateTheDots();
-            CreateNewBorder(newCreatedDot);//!!!This method needs to be reviewed
+            CreateNewDot(newCreatedDot);//!!!This method needs to be reviewed
         }
 
         private void EnumerateTheDots()
@@ -229,9 +271,6 @@ namespace LangInformGUI
             listPoints.SetBinding(ListBox.ItemsSourceProperty, new Binding("MyPoints"));
         }
 
-
-
-
         void DeSelectAll()
         {
             foreach (var child in stcBorders.Children)
@@ -243,7 +282,7 @@ namespace LangInformGUI
             }
         }
 
-        void CreateNewBorder(Border sample)
+        void CreateNewDot(Border sample)
         {
             Border border = new Border() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left };
             border.Height = sample.Height;
@@ -267,6 +306,19 @@ namespace LangInformGUI
             item2.Tag = border;
             item2.Click += DeleteDot_Click;
             menu.Items.Add(item2);
+
+            System.Windows.Controls.MenuItem item3 = new System.Windows.Controls.MenuItem();
+            item3.Header = "Play";
+            item3.Tag = border;
+            item3.Click+= PlayAudio_Click;
+            menu.Items.Add(item3);
+
+            System.Windows.Controls.MenuItem item4 = new System.Windows.Controls.MenuItem();
+            item4.Header = "Reset the order";
+            item4.Tag = border;
+            item4.Click += ResetTheDotNumber_Click;
+            menu.Items.Add(item4);
+
             border.ContextMenu = menu;
             newCreatedDot = border;
         }
@@ -292,6 +344,13 @@ namespace LangInformGUI
             }
         }
 
+        void StopAllPlaying(List<SceneItem> items)
+        {
+            foreach (var item in items)
+            {
+                item.Phrase.StopPlaying();
+            }
+        }
 
         private void Button_Save(object sender, RoutedEventArgs e)
         {
@@ -407,6 +466,5 @@ namespace LangInformGUI
         {
             var scenes = _lesson.Scenes;
         }
-
     }
 }

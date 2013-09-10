@@ -306,7 +306,7 @@ namespace LangInformModel
         double _yPos;
         public double XPos { get { return _xPos; } set { _xPos = value; NotifyPropertyChanged(); } }
         public double YPos { get { return _yPos; } set { _yPos = value; NotifyPropertyChanged(); } }
-        public int Size { get; set; }
+        public double Size { get; set; }
         public bool IsRound { get; set; }
         public Guid SceneId { get; set; }
         public Guid PhraseId { get; set; }
@@ -357,7 +357,9 @@ namespace LangInformModel
         [PrimaryKey]
         public Guid Id { get; set; }
         public string Text { get; set; }
-        public byte[] Sound { get; set; }
+
+        byte[] _sound;
+        public byte[] Sound { get { return _sound; } set { _sound = value; if (_sound != null) { PrepareAudio(); } } }
 
         #region NAudio stuff
 
@@ -366,8 +368,10 @@ namespace LangInformModel
 
         public void Play(int playFrom=0)
         {
-            if (audioOutput == null)
-                PrepareAudio();
+            if (_sound == null)
+            {
+                throw new InvalidOperationException("Phrase.Sound is not initialized yet.");
+            }
             if (audioOutput.PlaybackState == PlaybackState.Playing)
             {
                 audioOutput.Pause();
@@ -378,6 +382,9 @@ namespace LangInformModel
 
         public void StopPlaying()
         {
+            if (_sound == null)
+                return;
+
             if (audioOutput.PlaybackState != PlaybackState.Stopped)
             {
                 audioOutput.Pause();
