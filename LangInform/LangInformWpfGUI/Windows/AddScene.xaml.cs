@@ -136,8 +136,11 @@ namespace LangInformGUI
             MenuItem menu = (MenuItem)sender;
             var border = menu.Tag as Border;
             var point = border.Tag as SceneItem;
-            StopAllPlaying(MyPoints.ToList());
-            point.Phrase.Play();
+            if (point.Phrase != null)
+            {
+                StopAllPlaying(MyPoints.ToList());
+                point.Phrase.Play();
+            }
         }
 
         void ResetTheDotNumber_Click(object sender, RoutedEventArgs e)

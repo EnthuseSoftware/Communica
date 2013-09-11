@@ -74,7 +74,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddScene.xaml.cs">
+    <Compile Include="Windows\AddScene.xaml.cs">
       <DependentUpon>AddScene.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppCode\Point.cs" />
@@ -105,14 +105,13 @@
     <Compile Include="Icons\QuestionMark.xaml.cs">
       <DependentUpon>QuestionMark.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TODOS.cs" />
-    <Compile Include="VocabularySettings.xaml.cs">
+    <Compile Include="Windows\VocabularySettings.xaml.cs">
       <DependentUpon>VocabularySettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Pictures.xaml.cs">
       <DependentUpon>Pictures.xaml</DependentUpon>
     </Compile>
-    <Page Include="AddScene.xaml">
+    <Page Include="Windows\AddScene.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,7 +173,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="VocabularySettings.xaml">
+    <Page Include="Windows\VocabularySettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,7 +201,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using LangInformGUI.Controls;
 using System.IO;
 using System.Windows.Data;
+using System.Windows.Media.Animation;
 
 namespace LangInformGUI
 {
@@ -39,8 +40,8 @@ namespace LangInformGUI
             treeLessons.ItemsSource = vm.Languages;
             //temporary
             var lesson = vm.GetData<Lesson>("SELECT * FROM Lesson WHERE Name='Lesson 2'").FirstOrDefault();
-            AddScene addScene = new AddScene(lesson);
-            addScene.ShowDialog();
+            //AddScene addScene = new AddScene(lesson);
+            //addScene.ShowDialog();
             //end temporary
         }
 
@@ -176,7 +177,7 @@ namespace LangInformGUI
                         double y = ((sceneItem.YPos * height) / 100) - (dot.Height / 2);
                         dot.Margin = new Thickness((sceneItem.XPos * width / 100) - dot.Width / 2, (sceneItem.YPos * height / 100) - dot.Height / 2, 0, 0);
                         dot.Background = new SolidColorBrush(Colors.Green);
-                        dot.Opacity = .5;
+                        dot.Opacity = .4;
                         grid.Children.Add(dot);
                     }
                 });
@@ -191,6 +192,7 @@ namespace LangInformGUI
                 sceneImage.Tag = sceneFront;
                 //binding the front grid height and width with the image height and width
                 sceneFront.DataContext = sceneImage;
+                sceneFront.Name = "grdFront";
                 sceneFront.SetBinding(Grid.HeightProperty, new Binding("ActualHeight") { Mode = BindingMode.OneWay });
                 sceneFront.SetBinding(Grid.WidthProperty, new Binding("ActualWidth") { Mode = BindingMode.OneWay });
                 sceneBack.Children.Add(sceneImage);
@@ -204,7 +206,7 @@ namespace LangInformGUI
 
         void scenesTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            activeSceneTab = e.AddedItems as TabItem;
+            activeSceneTab = e.AddedItems[0] as TabItem;
         }
 
         void dot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -245,20 +247,59 @@ namespace LangInformGUI
             if (sceneActivity == SceneActivity.PlayAll)
             {
                 Scene scene = activeSceneTab.Tag as Scene;
-                isPlayAll = true;
-                PlayAll(scene.SceneItems.ToList());
+                var grdBack = activeSceneTab.Content as Grid;
+                var grdFront = grdBack.Children[1] as Grid;
+                List<Border> borders = new List<Border>();
+                foreach (var item in grdFront.Children)
+                { 
+                    var border = item as Border;
+                    if (border != null)
+                        borders.Add(border);
+                }
+                PlayAll(borders);
             }
         }
 
-        bool isPlayAll = false;
-
-        void PlayAll(List<SceneItem> items)
+        void PlayAll(List<Border> items)
         {
             var sortedItems = items;
-            if (playRandomly.IsChecked == true)
+            int counter = 0;
+            sortedItems = MixItems<Border>(items);
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(500);
+            timer.Tick += new EventHandler((s, e) =>
             {
-                sortedItems = MixItems<SceneItem>(items);
-            }
+                
+                var sceneItem = sortedItems[counter].Tag as SceneItem;
+                sceneItem.Phrase.Play();
+                if (showPlaying.IsChecked)
+                {
+                    int previous = counter - 1;
+                    if (previous < 0) previous = items.Count - 1;
+                    sortedItems[previous].BeginAnimation(Border.OpacityProperty, null);
+                    sortedItems[previous].Opacity = 0.4;
+                    sortedItems[previous].Background = new SolidColorBrush(Colors.Green);
+                    DoubleAnimation anim = new DoubleAnimation();
+                    anim.From = 0;
+                    anim.To = 1;
+                    anim.RepeatBehavior = RepeatBehavior.Forever;
+                    anim.Duration = TimeSpan.FromMilliseconds(700);
+                    anim.AutoReverse = true;
+                    sortedItems[counter].Background = new SolidColorBrush(Colors.Red);
+                    sortedItems[counter].BeginAnimation(Border.OpacityProperty, anim);
+                }
+                timer.Interval = sceneItem.Phrase.SoundLength + TimeSpan.FromMilliseconds(500);
+                counter++;
+                if (counter == sortedItems.Count - 1)
+                {
+                    if (playRandomly.IsChecked)
+                        sortedItems = MixItems<Border>(items);
+                    else
+                        sortedItems = items;
+                    counter = 0;
+                }
+            });
+            timer.Start();
 
         }
 
@@ -297,6 +338,7 @@ namespace LangInformGUI
             {
                 sceneActivity = SceneActivity.PlayAll;
             }
+            SceneActivityChange();
         }
     }
 
