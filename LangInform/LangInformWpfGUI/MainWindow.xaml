@@ -132,16 +132,17 @@
                                                 <RowDefinition Height="1*"/>
                                             </Grid.RowDefinitions>
                                             <StackPanel>
-                                                <Button Content="Learn" Margin="2"/>
-                                                <Button Content="Practice" Margin="2"/>
-                                                <Button Margin="2">
-                                                    <StackPanel>
-                                                        <TextBlock Text="Play all" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                                        <CheckBox Content="Play randomly" Margin="2,2,2,2"/>
-                                                        <CheckBox Content="Show playing" Margin="2,2,2,2"/>
-                                                        <CheckBox Content="Loop" Margin="2,2,2,2"/>
-                                                    </StackPanel>
-                                                </Button>
+                                                <RadioButton Content="Learn" Name="sceneLearn" Margin="4" Checked="RadioButton_Checked" IsChecked="True"/>
+                                                <RadioButton Content="Practice" Name="scenePractice" Margin="4" Checked="RadioButton_Checked"/>
+                                                <RadioButton Content="Play All" Name="scenePlayAll" Margin="4" Checked="RadioButton_Checked" ToolTip="Right click to see more options">
+                                                    <RadioButton.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Name="playRandomly" Header="Play randomly" IsCheckable="True"/>
+                                                            <MenuItem Name="showPlaying" Header="Show playing" IsCheckable="True"/>
+                                                            <MenuItem Name="loop" Header="Loop" IsCheckable="True"/>
+                                                        </ContextMenu>
+                                                    </RadioButton.ContextMenu>
+                                                </RadioButton>
                                             </StackPanel>
                                         </Grid>
                                     </Border>

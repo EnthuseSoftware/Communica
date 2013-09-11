@@ -12,35 +12,6 @@ namespace LangInformModel
 {
     public class MainEntities : SQLiteConnection
     {
-        //public MainEntities()
-        //    : base(Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "LangInform.db3"))
-        //{
-        //    // Nothing more to do here yet, but if I do, be sure to do it in a private Initialize method
-        //}
-
-        public object GetData<T>(string query)
-        {
-            return null;// db.Query<T>(query);
-        }
-
-        public void GetLanguages()
-        {
-            List<Language> languages = this.Query<Language>("SELECT * FROM Language");
-        }
-
-        // Simulating DbSets. But should these be read-only?
-        //public TableQuery<Language> Languages { get; set; }
-        //public TableQuery<Level> Levels { get; set; }
-        //public TableQuery<Unit> Units { get; set; }
-        //public TableQuery<Lesson> Lessons { get; set; }
-        //public TableQuery<Scene> Scenes { get; set; }
-        //public TableQuery<SceneItem> SceneItems { get; set; }
-        //public TableQuery<Vocabulary> Vocabularies { get; set; }
-        //public TableQuery<Word> Words { get; set; }
-        //public TableQuery<Word> Meanings { get; set; }
-        //public TableQuery<Word> SentenceBuildings { get; set; }
-        //public TableQuery<Word> SentenceBuildingItems { get; set; }
-        //public TableQuery<Word> SentenceBuildingItemPictures { get; set; }
 
         public MainEntities(string dbPath)
             : base(dbPath)
@@ -298,7 +269,7 @@ namespace LangInformModel
         public byte[] Picture { get; set; }
     }
 
-    public class SceneItem: INotifyPropertyChanged
+    public class SceneItem : INotifyPropertyChanged
     {
         [PrimaryKey]
         public Guid Id { get; set; }
@@ -306,7 +277,7 @@ namespace LangInformModel
         double _yPos;
         public double XPos { get { return _xPos; } set { _xPos = value; NotifyPropertyChanged(); } }
         public double YPos { get { return _yPos; } set { _yPos = value; NotifyPropertyChanged(); } }
-        public int Size { get; set; }
+        public double Size { get; set; }
         public bool IsRound { get; set; }
         public Guid SceneId { get; set; }
         public Guid PhraseId { get; set; }
@@ -328,7 +299,7 @@ namespace LangInformModel
             }
         }
 
-        
+
 
         public override string ToString()
         {
@@ -357,17 +328,21 @@ namespace LangInformModel
         [PrimaryKey]
         public Guid Id { get; set; }
         public string Text { get; set; }
-        public byte[] Sound { get; set; }
+
+        byte[] _sound;
+        public byte[] Sound { get { return _sound; } set { _sound = value; if (_sound != null) { PrepareAudio(); } } }
 
         #region NAudio stuff
 
         [Ignore]
         public TimeSpan SoundLength { get; set; }
 
-        public void Play(int playFrom=0)
+        public void Play(int playFrom = 0)
         {
-            if (audioOutput == null)
-                PrepareAudio();
+            if (_sound == null)
+            {
+                throw new InvalidOperationException("Phrase.Sound is not initialized yet.");
+            }
             if (audioOutput.PlaybackState == PlaybackState.Playing)
             {
                 audioOutput.Pause();
@@ -378,6 +353,9 @@ namespace LangInformModel
 
         public void StopPlaying()
         {
+            if (_sound == null)
+                return;
+
             if (audioOutput.PlaybackState != PlaybackState.Stopped)
             {
                 audioOutput.Pause();

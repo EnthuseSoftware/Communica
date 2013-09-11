@@ -4,6 +4,7 @@ using LangInformModel;
 using LangInformVM;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -13,7 +14,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
 namespace LangInformGUI
 {
     /// <summary>
@@ -42,6 +42,8 @@ namespace LangInformGUI
         private void txtPath_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             txtPath.Text = GetFilePath();
+            if (txtPath.Text == "")
+                return;
             FileInfo file = new FileInfo(txtPath.Text);
             if (file.Exists)
             {
@@ -62,6 +64,8 @@ namespace LangInformGUI
             fileDialog.Filter = "Image File (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
             fileDialog.Multiselect = false;
             fileDialog.ShowDialog();
+            if (string.IsNullOrEmpty(fileDialog.FileName))
+                return "";
             return fileDialog.FileName;
         }
 
@@ -74,11 +78,15 @@ namespace LangInformGUI
         private void getFileAndShow(object sender, RoutedEventArgs e)
         {
             txtPath.Text = GetFilePath();
+            if (txtPath.Text == "")
+                return;
             FileInfo file = new FileInfo(txtPath.Text);
             if (file.Exists)
             {
                 var image = Assistant.GetBitmapImageFrom(file.FullName);
                 sceneImage.Source = image;
+                sceneImage.Tag = null;
+                MetroMessage.Show(this, "add scene", "Please check the pictures from the Database for not to saving the same picture in the database twice.", MessageButtons.OK, MessageIcon.Information);
             }
         }
 
@@ -105,10 +113,8 @@ namespace LangInformGUI
             Border selectedBorder = (Border)sender;
             DeSelectAll();
             selectedBorder.BorderThickness = new Thickness(2, 2, 2, 2);
-            CreateNewBorder(selectedBorder);
+            CreateNewDot(selectedBorder);
         }
-
-
 
         /// <summary>
         /// Deletes the the created dot
@@ -123,6 +129,39 @@ namespace LangInformGUI
             MyPoints.Remove(point);
             grdPoints.Children.Remove(border);
             EnumerateTheDots();
+        }
+
+        void PlayAudio_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = (MenuItem)sender;
+            var border = menu.Tag as Border;
+            var point = border.Tag as SceneItem;
+            StopAllPlaying(MyPoints.ToList());
+            point.Phrase.Play();
+        }
+
+        void ResetTheDotNumber_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = (MenuItem)sender;
+            var dot = menu.Tag as Border;
+            var point = dot.Tag as SceneItem;
+            int oldIndex = MyPoints.IndexOf(point);
+            string number = MetroInputBox.Show(this, "resetting the dot numbers", "Please enter number you want to set");
+            if (!string.IsNullOrEmpty(number))
+            {
+                int newIndex = Convert.ToInt32(number);
+                if (newIndex >= 1 && newIndex <= MyPoints.Count)
+                {
+                    MyPoints.Move(oldIndex, newIndex - 1);
+                    grdPoints.Children.Remove(dot);
+                    grdPoints.Children.Insert(newIndex - 1, dot);
+                    EnumerateTheDots();
+                }
+            }
+            else
+            {
+                MetroMessage.Show(this, "resetting the dot numbers", "Please enter integer numbers between 0 and " + MyPoints.Count + ".", MessageButtons.OK, MessageIcon.Exclamation);
+            }
         }
 
         /// <summary>
@@ -160,6 +199,10 @@ namespace LangInformGUI
                 var dot = child as Border;
                 if (dot == null) continue;
                 var point = dot.Tag as SceneItem;
+                dot.Height = (point.Size * height) / 100;
+                dot.Width = (point.Size * height) / 100;
+                if (dot.Height < 10) dot.Height = 10;
+                if (dot.Width < 10) dot.Width = 10;
                 dot.Margin = new Thickness((point.XPos * width / 100) - dot.Width / 2, (point.YPos * height / 100) - dot.Height / 2, 0, 0);
             }
         }
@@ -176,12 +219,12 @@ namespace LangInformGUI
                 XPos = (p.X * 100) / width,
                 YPos = (p.Y * 100) / height,
                 Id = (Guid)newCreatedDot.Tag,
-                Size = Convert.ToInt32(newCreatedDot.Width),
+                Size = Math.Ceiling((newCreatedDot.Width * 100) / height),
                 IsRound = (newCreatedDot.CornerRadius.BottomLeft > 0 ? true : false)
             };
 
             newCreatedDot.Margin = new Thickness((point.XPos * width / 100) - newCreatedDot.Width / 2, (point.YPos * height / 100) - newCreatedDot.Height / 2, 0, 0);
-            
+
             newCreatedDot.Tag = point;
             grdPoints.Children.Add(newCreatedDot);
             SelectBorder(newCreatedDot);
@@ -205,19 +248,19 @@ namespace LangInformGUI
 
             MyPoints.Add(point);
             EnumerateTheDots();
-            CreateNewBorder(newCreatedDot);//!!!This method needs to be reviewed
+            CreateNewDot(newCreatedDot);//!!!This method needs to be reviewed
         }
 
         private void EnumerateTheDots()
         {
-            int counter=0;
+            int counter = 0;
             foreach (var point in grdPoints.Children)
             {
                 counter++;
-               var dot = point as Border;
-              
-               dot.Child = new TextBlock() { Text = counter.ToString(), FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
-                
+                var dot = point as Border;
+
+                dot.Child = new TextBlock() { Text = counter.ToString(), FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+
             }
         }
 
@@ -226,9 +269,6 @@ namespace LangInformGUI
             listPoints.DataContext = this;
             listPoints.SetBinding(ListBox.ItemsSourceProperty, new Binding("MyPoints"));
         }
-
-
-
 
         void DeSelectAll()
         {
@@ -241,7 +281,7 @@ namespace LangInformGUI
             }
         }
 
-        void CreateNewBorder(Border sample)
+        void CreateNewDot(Border sample)
         {
             Border border = new Border() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left };
             border.Height = sample.Height;
@@ -265,6 +305,19 @@ namespace LangInformGUI
             item2.Tag = border;
             item2.Click += DeleteDot_Click;
             menu.Items.Add(item2);
+
+            System.Windows.Controls.MenuItem item3 = new System.Windows.Controls.MenuItem();
+            item3.Header = "Play";
+            item3.Tag = border;
+            item3.Click += PlayAudio_Click;
+            menu.Items.Add(item3);
+
+            System.Windows.Controls.MenuItem item4 = new System.Windows.Controls.MenuItem();
+            item4.Header = "Reset the order";
+            item4.Tag = border;
+            item4.Click += ResetTheDotNumber_Click;
+            menu.Items.Add(item4);
+
             border.ContextMenu = menu;
             newCreatedDot = border;
         }
@@ -290,6 +343,13 @@ namespace LangInformGUI
             }
         }
 
+        void StopAllPlaying(List<SceneItem> items)
+        {
+            foreach (var item in items)
+            {
+                item.Phrase.StopPlaying();
+            }
+        }
 
         private void Button_Save(object sender, RoutedEventArgs e)
         {
@@ -306,7 +366,7 @@ namespace LangInformGUI
                 if (string.IsNullOrEmpty(sceneName))
                 {
                     var res = MetroMessage.Show(this, "add acene", "Scene name cannot be empty. Do you want to enter?", MessageButtons.YesNo, MessageIcon.Exclamation);
-                    if(res == MessageResult.No) return;
+                    if (res == MessageResult.No) return;
                 }
                 if (sceneName != "")
                     break;
@@ -322,16 +382,15 @@ namespace LangInformGUI
             }
             //Saving the Scene Image
             Guid pictureId;
-            if (pictureFromdatabase)
+            ScenePicture scenePicture;
+            if ((scenePicture = sceneImage.Tag as ScenePicture) != null)
             {
-                pictureId = (sceneImage.Tag as ScenePicture).Id;
+                pictureId = scenePicture.Id;
             }
             else
             {
                 var pic = Assistant.BitmapImageToByte(sceneImage.Source as BitmapImage);
-                ScenePicture scenePicture = new ScenePicture() { Id = Guid.NewGuid(), Picture = pic };
-                var hash1 = pic.GetHashCode();
-                var hash2 = sceneImage.Source.GetHashCode();
+                scenePicture = new ScenePicture() { Id = Guid.NewGuid(), Picture = pic };
                 pictureId = scenePicture.Id;
                 vm.InsertData(scenePicture, typeof(ScenePicture));
             }
@@ -349,6 +408,7 @@ namespace LangInformGUI
                 Phrase phrase = sceneItem.Phrase;
                 vm.InsertData(phrase, typeof(Phrase));
                 sceneItem.PhraseId = phrase.Id;
+                sceneItem.SceneId = scene.Id;
                 vm.InsertData(sceneItem, typeof(SceneItem));
             }
 
@@ -379,13 +439,13 @@ namespace LangInformGUI
                 if (e.Key == Key.Right)
                 {
                     var oldThickness = _selectedDot.Margin;
-                    _selectedDot.Margin = new Thickness(oldThickness.Left+1, oldThickness.Top, 0, 0);
+                    _selectedDot.Margin = new Thickness(oldThickness.Left + 1, oldThickness.Top, 0, 0);
                     changed = true;
                 }
                 if (e.Key == Key.Left)
                 {
                     var oldThickness = _selectedDot.Margin;
-                    _selectedDot.Margin = new Thickness(oldThickness.Left-1, oldThickness.Top, 0, 0);
+                    _selectedDot.Margin = new Thickness(oldThickness.Left - 1, oldThickness.Top, 0, 0);
                     changed = true;
                 }
                 if (changed)
@@ -393,10 +453,10 @@ namespace LangInformGUI
                     var width = sceneImage.ActualWidth;
                     var height = sceneImage.ActualHeight;
                     SceneItem point = _selectedDot.Tag as SceneItem;
-                    point.XPos = ((_selectedDot.Margin.Left + (_selectedDot.Width / 2))*100)/width;
+                    point.XPos = ((_selectedDot.Margin.Left + (_selectedDot.Width / 2)) * 100) / width;
                     point.YPos = ((_selectedDot.Margin.Top + (_selectedDot.Height / 2)) * 100) / height;
                     listPoints.GetBindingExpression(ListBox.ItemsSourceProperty).UpdateTarget();
-                        
+
                 }
             }
         }
@@ -405,7 +465,6 @@ namespace LangInformGUI
         {
             var scenes = _lesson.Scenes;
         }
-
-
     }
 }
+
