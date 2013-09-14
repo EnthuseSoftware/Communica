@@ -377,7 +377,7 @@ namespace LangInformGUI
             Scene scene = new Scene() { Id = Guid.NewGuid(), Name = sceneName };
             foreach (SceneItem point in MyPoints)
             {
-                if (point.PhraseId == null)
+                if (point.Phrase == null)
                 {
                     MetroMessage.Show(this, "Not completed points", "Some created point(s) doesn't have the sound file attached yet. They are marked yellow. Please attach sound files before you save it.");
                     return;

@@ -21,7 +21,6 @@
             <TextBlock Text="{Binding Name}">
                 <TextBlock.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add Level" Click="MenuItem_Click"/>
                         <MenuItem Header="Add Unit" Click="MenuItem_Click"/>
                         <MenuItem Header="Delete this Level" Click="MenuItem_Click"/>
                     </ContextMenu>
@@ -32,7 +31,6 @@
             <TextBlock Text="{Binding Name}">
                 <TextBlock.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add Unit" Click="MenuItem_Click"/>
                         <MenuItem Header="Add Lesson" Click="MenuItem_Click"/>
                         <MenuItem Header="Delete this Unit" Click="MenuItem_Click"/>
                     </ContextMenu>
@@ -43,7 +41,6 @@
             <TextBlock Text="{Binding Name}">
                 <TextBlock.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add Lesson" Click="MenuItem_Click"/>
                         <MenuItem Header="Add Scene" Click="MenuItem_Click"/>
                         <MenuItem Header="Add Vocabulary" Click="MenuItem_Click"/>
                         <MenuItem Header="Add Sentence building" Click="MenuItem_Click"/>
@@ -94,7 +91,7 @@
                 </StackPanel>
                 <Grid Grid.Row="1" x:Name="grdLessonUI">
                     <TabControl>
-                        <TabItem Header="Scene" x:Name="mainTabScene">
+                        <TabItem Header="Scene" x:Name="mainTabScene" HorizontalAlignment="Right" Width="47">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="131*"/>

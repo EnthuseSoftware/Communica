@@ -18,7 +18,7 @@ namespace LangInformGUI.Controls
         /// <param name="prompt">Required param. Message prompt</param>
         /// <param name="messageButtons">Optional param. Message buttons. Default OK</param>
         /// <returns></returns>
-        public static string Show(Window mainWindow, string title, string prompt)
+        public static string Show(Window mainWindow, string title, string prompt, string defaultText = "")
         {
             _mainWindow = mainWindow;
             emptyWindow = new Window();
@@ -45,7 +45,7 @@ namespace LangInformGUI.Controls
                 cd.Width = new GridLength(10, GridUnitType.Star);
                 base_grid.RowDefinitions.Add(rd);
                 base_grid.ColumnDefinitions.Add(cd);
-                CreateMainGrid(emptyWindow, title, prompt);
+                CreateMainGrid(emptyWindow, title, prompt, defaultText);
                 base_grid.Children.Add(main_grid);
                 emptyWindow.Content = base_grid;
                 emptyWindow.ShowDialog();
@@ -74,7 +74,7 @@ namespace LangInformGUI.Controls
         /// <param name="title"></param>
         /// <param name="prompt"></param>
         /// <param name="messageButtons"></param>
-        static void CreateMainGrid(Window window, string title, string prompt)
+        static void CreateMainGrid(Window window, string title, string prompt, string defaultText)
         {
             main_grid = new Grid();
             RowDefinition rd = new RowDefinition();
@@ -87,7 +87,7 @@ namespace LangInformGUI.Controls
             main_grid.RowDefinitions.Add(rd1);
             main_grid.RowDefinitions.Add(rd2);
             CreateBackgroundGrid();
-            CreateContentGrid(title, prompt, window);
+            CreateContentGrid(title, prompt,defaultText, window);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace LangInformGUI.Controls
         /// <param name="_title"></param>
         /// <param name="_message"></param>
         /// <param name="window"></param>
-        static void CreateContentGrid(string _title, string _message, Window window)
+        static void CreateContentGrid(string _title, string _message,string defaultText, Window window)
         {
             content_grid = new Grid();
             content_grid.Background = new SolidColorBrush(Colors.White);
@@ -148,9 +148,33 @@ namespace LangInformGUI.Controls
             //Creating message
             StackPanel stc = new StackPanel();
             Grid.SetRow(stc, 1);
+            
             txtInput = new TextBox() { Margin = new Thickness(5, 5, 5, 5), FontSize = 16, TextWrapping = TextWrapping.Wrap };
             //message.MaxHeight = _mainWindow.Height - 120;
-            txtInput.Text = _message;
+            txtInput.GotFocus += new RoutedEventHandler((s, e) => {
+                if (txtInput.Text == _message && txtInput.Tag.ToString() == "1")
+                {
+                    txtInput.Text = "";
+                    txtInput.Foreground = new SolidColorBrush(Colors.Black);
+                    txtInput.Tag = 0;
+                }
+            });
+            txtInput.LostFocus += new RoutedEventHandler((s, e) => {
+                if (!string.IsNullOrEmpty(_message) && txtInput.Text == "")
+                {
+                    txtInput.Text = _message;
+                    txtInput.Foreground = new SolidColorBrush(Colors.Gray);
+                    txtInput.Tag = 1;
+                }
+            });
+            if (!string.IsNullOrEmpty(defaultText))
+                txtInput.Text = defaultText;
+            else
+            {
+                txtInput.Text = _message;
+                txtInput.Foreground = new SolidColorBrush(Colors.Gray);
+            }
+            txtInput.Tag = 1;
             txtInput.TextWrapping = TextWrapping.Wrap;
             ScrollViewer scroll = new ScrollViewer();
             scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
