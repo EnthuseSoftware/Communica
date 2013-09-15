@@ -90,7 +90,7 @@
                     <Label x:Name="lblMap" Content="" FontSize="16"/>
                 </StackPanel>
                 <Grid Grid.Row="1" x:Name="grdLessonUI">
-                    <TabControl>
+                    <TabControl SelectionChanged="mainTab_SelectionChanged">
                         <TabItem Header="Scene" x:Name="mainTabScene" HorizontalAlignment="Right" Width="47">
                             <Grid>
                                 <Grid.ColumnDefinitions>

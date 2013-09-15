@@ -32,6 +32,8 @@ namespace LangInformGUI
 
         public static ViewModel vm;
 
+        TabItem activeActivityTab;
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DirectoryInfo dir = new DirectoryInfo("..\\..\\..\\");
@@ -49,6 +51,7 @@ namespace LangInformGUI
         {
             MenuItem item = sender as MenuItem;
             var parent = ((ContextMenu)item.Parent).PlacementTarget as TextBlock;
+            StopEverythingAndSetToDefaults();
             if (item.Header.ToString() == "Add Language")
             {
                 string newLanguageName = MetroInputBox.Show(this, "Please enter new Language name", "");
@@ -144,6 +147,93 @@ namespace LangInformGUI
             }
         }
 
+        private void mainTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender == e.OriginalSource)
+                e.Handled = true;
+            TabItem tab = e.AddedItems[0] as TabItem;
+            activeActivityTab = tab;
+            if (tab.Header.ToString() == "Scene")
+            {
+
+            }
+            else
+            {
+                StopPlayAll(playAllTimer, currentSceneDot);
+            }
+        }
+
+        private List<T> MixItems<T>(List<T> items)
+        {
+            List<T> _items = new List<T>();
+            List<int> randomNumbers = new List<int>();
+            for (int i = 1; i <= items.Count; i++)
+            {
+                int rnd;
+                while (true)
+                {
+                    rnd = random.Next(0, items.Count);
+                    if (!randomNumbers.Contains(rnd))
+                    {
+                        randomNumbers.Add(rnd);
+                        break;
+                    }
+                }
+                _items.Add(items[rnd]);
+            }
+            return _items;
+        }
+
+        /// <summary>
+        /// Sets active activity to default
+        /// </summary>
+        private void StopEverythingAndSetToDefaults()
+        {
+            if (activeActivityTab != null)
+            {
+                if (activeActivityTab.Header.ToString() == "Scene")
+                {
+                    StopPlayAll(playAllTimer, currentSceneDot);
+                    sceneLearn.IsChecked = true;
+                }
+            }
+        }
+
+        public TReturn RunThis<TReturn>(Func<TReturn> function, int runAfter)
+        {
+            TReturn output = default(TReturn);
+            if (runAfter < 0) runAfter = 0;
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(runAfter);
+            timer.Tick += new EventHandler((s, e) => {
+                timer.Stop();
+                output = function.Invoke();
+            });
+            timer.Start();
+            return output;
+        }
+
+        public void RunThis(Action action, int runAfter)
+        { 
+            if (runAfter < 0) runAfter = 0;
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(runAfter);
+            timer.Tick += new EventHandler((s, e) => {
+                timer.Stop();
+                action.Invoke();
+            });
+            timer.Start();
+        }
+
+
+        #region Scene stuff
+
+        TabItem activeSceneTab;
+        DispatcherTimer playAllTimer;
+        Border currentSceneDot;
+        SceneActivity sceneActivity = SceneActivity.Learn;
+        List<KeyValuePair<Border, PracticeResult<SceneItem>>> practiceItems;
+        Grid SceneGrdFront;
         private void CreateSceneTabs(Lesson lesson)
         {
             TabControl scenesTab = new TabControl();
@@ -170,7 +260,7 @@ namespace LangInformGUI
                     {
                         Border dot = new Border() { CornerRadius = new CornerRadius((sceneItem.IsRound ? 90 : 0)), VerticalAlignment = VerticalAlignment.Top, HorizontalAlignment = HorizontalAlignment.Left };
                         dot.Tag = sceneItem;
-                        dot.MouseLeftButtonDown += dot_MouseLeftButtonDown;
+                        dot.MouseLeftButtonDown += dot_Click;
                         dot.Width = sceneItem.Size * height / 100;
                         dot.Height = sceneItem.Size * height / 100;
                         double x = ((sceneItem.XPos * width) / 100) - (dot.Width / 2);
@@ -202,28 +292,142 @@ namespace LangInformGUI
             }
         }
 
-        TabItem activeSceneTab;
-
-        void scenesTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SceneActivityChange()
         {
-            activeSceneTab = e.AddedItems[0] as TabItem;
+            try
+            {
+                Scene scene = activeSceneTab.Tag as Scene;
+                var grdBack = activeSceneTab.Content as Grid;
+                SceneGrdFront = grdBack.Children[1] as Grid;
+
+                StopPlayAll(playAllTimer, currentSceneDot);
+                if (sceneActivity == SceneActivity.PlayAll)
+                {
+
+                    List<Border> borders = new List<Border>();
+                    foreach (var item in SceneGrdFront.Children)
+                    {
+                        var border = item as Border;
+                        if (border != null)
+                            borders.Add(border);
+                    }
+                    PlayAll(borders);
+                }
+                else if (sceneActivity == SceneActivity.Practice)
+                {
+                    StartPractice();
+                }
+            }
+            catch
+            {
+                //will fail before all the controls loaded
+            }
         }
 
-        void dot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sceneLearn.IsChecked == true)
+            {
+                sceneActivity = SceneActivity.Learn;
+            }
+            else if (scenePractice.IsChecked == true)
+            {
+                sceneActivity = SceneActivity.Practice;
+            }
+            else if (scenePlayAll.IsChecked == true)
+            {
+                sceneActivity = SceneActivity.PlayAll;
+            }
+            SceneActivityChange();
+        }
+
+        private void dot_Click(object sender, MouseButtonEventArgs e)
         {
             var dot = sender as Border;
             SceneItem sceneItem = dot.Tag as SceneItem;
             if (sceneActivity == SceneActivity.Learn)
             {
-                SetSceneDotToDefault(currentDot, -1, true);
-                currentDot = dot;
-                sceneItem.Phrase.Play();
+                SetSceneDotToDefault(currentSceneDot, -1, true);
+                currentSceneDot = dot;
+                HighlightTheSceneDot(dot, -1, null, true);
+            }
+            else if (sceneActivity == SceneActivity.Practice)
+            {
+                ContinuePractice(dot);
             }
         }
 
-        /// <summary>
-        /// Moving the dots when picture resized
-        /// </summary>
+        private void ContinuePractice(Border selectedDot)
+        {
+            var currentItem = practiceItems.FirstOrDefault(i => i.Value.Status == PracticeStatus.Asking);
+            currentItem.Value.Item.Phrase.StopPlaying();
+            KeyValuePair<Border, PracticeResult<SceneItem>> nextPlayingItem;
+            if (currentItem.Key != selectedDot)
+            {
+                HighlightTheSceneDot(selectedDot, 1000, new SolidColorBrush(Colors.Red));
+                currentItem.Value.WrongAnswersCount++;
+                if (currentItem.Value.WrongAnswersCount == 3)
+                {
+                    currentItem.Value.WrongAnswersCount = 0;
+                    HighlightTheSceneDot(currentItem.Key, -1, new SolidColorBrush(Colors.Yellow), true, 1000);
+                    return;
+                }
+                nextPlayingItem = currentItem;
+            }
+            else
+            {
+                HighlightTheSceneDot(selectedDot, 1000, new SolidColorBrush(Colors.Green));
+                currentItem.Value.Status = PracticeStatus.Asked;
+                nextPlayingItem = practiceItems.FirstOrDefault(i => i.Value.Status == PracticeStatus.NotAsked);
+                if (nextPlayingItem.Value == null)
+                {
+                    MessageResult result = MetroMessage.Show(this, "practice finished", "Do you want to redo the practice?", MessageButtons.YesNo, MessageIcon.Question);
+                    if (result == MessageResult.Yes)
+                    {
+                        StartPractice();
+                    }
+                    else
+                    {
+                        StopEverythingAndSetToDefaults();
+                    }
+                    return;
+                }
+            }
+            Action action = new Action(() => {
+                nextPlayingItem.Value.Status = PracticeStatus.Asking;
+                nextPlayingItem.Value.Item.Phrase.Play();
+            });
+            RunThis(action, 1000);
+            
+        }
+
+        private void StartPractice()
+        {
+            Dictionary<Border, PracticeResult<SceneItem>> borders = new Dictionary<Border, PracticeResult<SceneItem>>();
+            foreach (var item in SceneGrdFront.Children)
+            {
+                var border = item as Border;
+                if (border != null)
+                    borders.Add(border, new PracticeResult<SceneItem>(border.Tag as SceneItem));
+            }
+            practiceItems = MixItems<KeyValuePair<Border, PracticeResult<SceneItem>>>(borders.ToList());
+            if (practiceItems.Count >= 1)
+            {
+                var firstItem = practiceItems[0];
+                firstItem.Value.Status = PracticeStatus.Asking;
+                firstItem.Value.Item.Phrase.Play();
+            }
+        }
+
+        private void scenesTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender == e.OriginalSource)
+                e.Handled = true;
+            activeSceneTab = e.AddedItems[0] as TabItem;
+        }
+
+
+
         private void MoveTheDots(Grid grd, Image img)
         {
             var width = img.ActualWidth;
@@ -246,31 +450,7 @@ namespace LangInformGUI
             var a = MetroInputBox.Show(this, "title", "[this is test]");
         }
 
-        SceneActivity sceneActivity = SceneActivity.Learn;
-
-        void SceneActivityChange()
-        {
-            StopPlayAll(playAllTimer, currentDot);
-            if (sceneActivity == SceneActivity.PlayAll)
-            {
-                Scene scene = activeSceneTab.Tag as Scene;
-                var grdBack = activeSceneTab.Content as Grid;
-                var grdFront = grdBack.Children[1] as Grid;
-                List<Border> borders = new List<Border>();
-                foreach (var item in grdFront.Children)
-                {
-                    var border = item as Border;
-                    if (border != null)
-                        borders.Add(border);
-                }
-                PlayAll(borders);
-            }
-        }
-
-        DispatcherTimer playAllTimer;
-        Border currentDot;
-
-        void PlayAll(List<Border> items)
+        private void PlayAll(List<Border> items)
         {
             var sortedItems = items;
             int counter = 0;
@@ -294,20 +474,11 @@ namespace LangInformGUI
                     counter = 0;
                 }
                 var sceneItem = sortedItems[counter].Tag as SceneItem;
-                currentDot = sortedItems[counter];
+                currentSceneDot = sortedItems[counter];
                 sceneItem.Phrase.Play();
                 if (showPlaying.IsChecked)
                 {
-                    int previous = counter - 1;
-                    if (previous < 0) previous = items.Count - 1;
-                    DoubleAnimation anim = new DoubleAnimation();
-                    anim.From = 0;
-                    anim.To = 1;
-                    anim.RepeatBehavior = RepeatBehavior.Forever;
-                    anim.Duration = TimeSpan.FromMilliseconds(700);
-                    anim.AutoReverse = true;
-                    sortedItems[counter].Background = new SolidColorBrush(Colors.Red);
-                    sortedItems[counter].BeginAnimation(Border.OpacityProperty, anim);
+                    HighlightTheSceneDot(sortedItems[counter]);
                 }
                 playAllTimer.Interval = sceneItem.Phrase.SoundLength + TimeSpan.FromMilliseconds(500);
                 SetSceneDotToDefault(sortedItems[counter], Convert.ToInt32((sceneItem.Phrase.SoundLength + TimeSpan.FromMilliseconds(400)).TotalMilliseconds));
@@ -318,7 +489,7 @@ namespace LangInformGUI
 
         }
 
-        void SetSceneDotToDefault(Border dot, int after = -1, bool stopPlaying = false)
+        private void SetSceneDotToDefault(Border dot, int after = -1, bool stopPlaying = false)
         {
             if (dot == null) return;
             if (after <= -1)
@@ -329,6 +500,7 @@ namespace LangInformGUI
             timer.Interval = TimeSpan.FromMilliseconds(after);
             timer.Tick += new EventHandler((s, e) =>
             {
+                timer.Stop();
                 if (stopPlaying)
                 {
                     SceneItem sceneItem = dot.Tag as SceneItem;
@@ -337,59 +509,98 @@ namespace LangInformGUI
                 dot.BeginAnimation(Border.OpacityProperty, null);
                 dot.Opacity = 0.4;
                 dot.Background = new SolidColorBrush(Colors.Green);
-                timer.Stop();
             });
             timer.Start();
 
         }
 
-        void StopPlayAll(DispatcherTimer playAllTimer, Border dot)
+        private void StopPlayAll(DispatcherTimer playAllTimer, Border dot)
         {
             if (playAllTimer == null || dot == null) return;
             playAllTimer.Stop();
             var sceneItem = dot.Tag as SceneItem;
-            sceneItem.Phrase.StopPlaying();
-            dot.BeginAnimation(Border.OpacityProperty, null);
-            dot.Background = new SolidColorBrush(Colors.Green);
-            dot.Opacity = .4;
+            SetSceneDotToDefault(dot, -1, true);
+            //sceneItem.Phrase.StopPlaying();
+            //dot.BeginAnimation(Border.OpacityProperty, null);
+            //dot.Background = new SolidColorBrush(Colors.Green);
+            //dot.Opacity = .4;
         }
 
-        private List<T> MixItems<T>(List<T> items)
+        /// <summary>
+        /// Highlights the dot for specific time
+        /// </summary>
+        /// <param name="dot">Dot</param>
+        /// <param name="length">Length of the highlighting</param>
+        private void HighlightTheSceneDot(Border dot, int length = -1, SolidColorBrush color = null, bool shouldPlay = false, int playAfter = -1)
         {
-            List<T> _items = new List<T>();
-            List<int> randomNumbers = new List<int>();
-            for (int i = 1; i <= items.Count; i++)
+            if (dot == null || !(dot.Tag is SceneItem))
+                return;
+            if (color == null)
             {
-                int rnd;
-                while (true)
+                color = new SolidColorBrush(Colors.Red);
+            }
+            SceneItem item = dot.Tag as SceneItem;
+            if (length == -1)
+                length = (int)item.Phrase.SoundLength.TotalMilliseconds;
+            DispatcherTimer timer = new DispatcherTimer();
+            if (playAfter == -1) playAfter = 1;
+            timer.Interval = TimeSpan.FromMilliseconds(playAfter);
+            timer.Tick += new EventHandler((s, e) =>
+            {
+                timer.Stop();
+                if (shouldPlay)
                 {
-                    rnd = random.Next(0, items.Count);
-                    if (!randomNumbers.Contains(rnd))
-                    {
-                        randomNumbers.Add(rnd);
-                        break;
-                    }
+                    item.Phrase.Play();
                 }
-                _items.Add(items[rnd]);
-            }
-            return _items;
+                DoubleAnimation animation = new DoubleAnimation();
+                animation.From = 0;
+                animation.To = 1;
+                animation.Duration = TimeSpan.FromMilliseconds(700);
+                animation.AutoReverse = true;
+                animation.RepeatBehavior = RepeatBehavior.Forever;
+                dot.Background = color;
+                dot.BeginAnimation(Border.OpacityProperty, animation);
+                SetSceneDotToDefault(dot, length);
+            });
+            timer.Start();
         }
 
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+
+        #endregion
+
+
+
+    }
+
+    public enum PracticeStatus
+    {
+        NotAsked = 0,
+        Asking = 1,
+        Asked = 2
+    }
+
+    public class PracticeResult<TItemType>
+    {
+        public PracticeResult(TItemType item)
         {
-            if (sceneLearn.IsChecked == true)
-            {
-                sceneActivity = SceneActivity.Learn;
-            }
-            else if (scenePractice.IsChecked == true)
-            {
-                sceneActivity = SceneActivity.Practice;
-            }
-            else if (scenePlayAll.IsChecked == true)
-            {
-                sceneActivity = SceneActivity.PlayAll;
-            }
-            SceneActivityChange();
+            Item = item;
+            Status = PracticeStatus.NotAsked;
+        }
+
+        public TItemType Item { get; private set; }
+
+        public PracticeStatus Status
+        {
+            get;
+            set;
+        }
+
+        public int WrongAnswersCount { get; set; }
+
+        public void Reset()
+        {
+            Status = PracticeStatus.NotAsked;
+            WrongAnswersCount = 0;
         }
     }
 
