@@ -7,6 +7,7 @@ using System.IO;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using NAudio.Wave;
+using System.Collections.ObjectModel;
 
 namespace LangInformModel
 {
@@ -70,18 +71,31 @@ namespace LangInformModel
         public string Name { get; set; }
         public string Description { get; set; }
 
-        private List<Level> _levels;
+        public int InsertLevel(Level level)
+        {
+            int result = ModelManager.Db.Insert(level, typeof(Level));
+            ModelManager.Db.Insert(new LanguageToLevel() { LanguageId = this.Id, LevelId = level.ID }, typeof(LanguageToLevel));
+            IsLevelsDirty = true;
+            return result;
+        }
         [Ignore]
-        public IList<Level> Levels
+        public bool IsLevelsDirty { get; set; }
+
+        private ObservableCollection<Level> _levels;
+        [Ignore]
+        public ObservableCollection<Level> Levels
         {
             get
             {
-                if (_levels == null)
+                if (IsLevelsDirty || _levels == null)
                 {
                     try
                     {
-                        _levels = ModelManager.Db.Query<Level>
+                        var tempLevels = ModelManager.Db.Query<Level>
                             ("select lev.Id, lev.Name, lev.Description from languagetolevel as ll inner join level as lev on ll.levelid=lev.id where ll.languageid='" + this.Id.ToString() + "'");
+                        tempLevels.ForEach((a) => { a.SetLanguage(this); });
+                        _levels = new ObservableCollection<Level>(tempLevels);
+                        IsLevelsDirty = false;
                     }
                     catch (Exception ex)
                     {
@@ -106,20 +120,46 @@ namespace LangInformModel
         public string Name { get; set; }
         public string Description { get; set; }
 
-        List<Unit> _units = null;
+        public int InsertUnit(Unit unit)
+        {
+            int result = ModelManager.Db.Insert(unit, typeof(Unit));
+            ModelManager.Db.Insert(new LevelToUnit() { LevelId = this.ID, UnitId = unit.Id }, typeof(LevelToUnit));
+            IsUnitsDirty = true;
+            return result;
+        }
+
         [Ignore]
-        public IList<Unit> Units
+        public bool IsUnitsDirty { get; set; }
+
+        ObservableCollection<Unit> _units = null;
+        [Ignore]
+        public ObservableCollection<Unit> Units
         {
             get
             {
-                if (_units == null)
+                if (IsUnitsDirty || _units == null)
                 {
-                    _units = ModelManager.Db.Query<Unit>("select u.Id, u.Name, u.Description from LevelToUnit as lu inner join unit as u on lu.unitid=u.id where lu.Levelid='" + this.ID + "'");
+                    var tempUnits = ModelManager.Db.Query<Unit>("select u.Id, u.Name, u.Description from LevelToUnit as lu inner join unit as u on lu.unitid=u.id where lu.Levelid='" + this.ID + "'");
+                    tempUnits.ForEach((u) =>
+                    {
+                        u.SetLevel(this);
+                    });
+                    _units = new ObservableCollection<Unit>(tempUnits);
                 }
                 return _units;
             }
         }
-        //public Language Language { get; set; }
+
+        public void SetLanguage(Language language)
+        {
+            _language = language;
+        }
+        Language _language;
+        [Ignore]
+        public Language Language
+        {
+            get { return _language; }
+        }
     }
 
     public class LevelToUnit
@@ -136,20 +176,42 @@ namespace LangInformModel
         public string Description { get; set; }
         //public string LevelId { get; set; }
 
-        List<Lesson> _lessons = null;
+        public int InsertLesson(Lesson lesson)
+        {
+            int result = ModelManager.Db.Insert(lesson, typeof(Lesson));
+            ModelManager.Db.Insert(new UnitToLesson() { UnitId = this.Id, LessonId = lesson.Id }, typeof(UnitToLesson));
+            IsLessonsDirty = true;
+            return result;
+        }
         [Ignore]
-        public IList<Lesson> Lessons
+        public bool IsLessonsDirty { get; set; }
+
+        ObservableCollection<Lesson> _lessons = null;
+        [Ignore]
+        public ObservableCollection<Lesson> Lessons
         {
             get
             {
-                if (_lessons == null)
+                if (IsLessonsDirty || _lessons == null)
                 {
-                    _lessons = ModelManager.Db.Query<Lesson>("select l.Id, l.Name, l.Description from unittolesson as ul inner join lesson as l on ul.LessonId = l.id where ul.UnitId = '" + this.Id + "'");
+                    var tempLessons = ModelManager.Db.Query<Lesson>("select l.Id, l.Name, l.Description from unittolesson as ul inner join lesson as l on ul.LessonId = l.id where ul.UnitId = '" + this.Id + "'");
+                    tempLessons.ForEach((l) =>
+                    {
+                        l.SetUnit(this);
+                    });
+                    _lessons = new ObservableCollection<Lesson>(tempLessons);
                 }
                 return _lessons;
             }
         }
-        //public Level Level { get; set; }
+        public void SetLevel(Level level)
+        {
+            _level = level;
+        }
+
+        Level _level;
+        [Ignore]
+        public Level Level { get { return _level; } }
     }
 
     public class UnitToLesson
@@ -164,7 +226,16 @@ namespace LangInformModel
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        //public string UnitId { get; set; }
+
+
+        public void SetUnit(Unit unit)
+        {
+            _unit = unit;
+        }
+
+        Unit _unit;
+        [Ignore]
+        public Unit Unit { get { return _unit; } }
 
         List<Scene> _scenes = null;
         [Ignore]
@@ -174,8 +245,13 @@ namespace LangInformModel
             {
                 if (_scenes == null)
                 {
-                    _scenes = ModelManager.Db.Query<Scene>("select s.id, s.Name, s.Description, s.PictureId from LessonToActivity as ls " +
+                    var tempScenes = ModelManager.Db.Query<Scene>("select s.id, s.Name, s.Description, s.PictureId from LessonToActivity as ls " +
                         "inner join Scene as s on ls.SceneId = s.Id where ls.LessonId = '" + this.Id + "' and ls.SceneId is not null");
+                    tempScenes.ForEach((l) =>
+                    {
+                        l.SetLesson(this);
+                    });
+                    _scenes = new List<Scene>(tempScenes);
                 }
                 return _scenes;
             }
@@ -189,23 +265,33 @@ namespace LangInformModel
             {
                 if (_vocabularies == null)
                 {
-                    _vocabularies = ModelManager.Db.Query<Vocabulary>("select v.id, v.Name, v.Description from LessonToActivity as ls " +
+                    var tempVocabularies = ModelManager.Db.Query<Vocabulary>("select v.id, v.Name, v.Description from LessonToActivity as ls " +
                         "inner join Vocabulary as v on ls.VocabularyId = v.Id where ls.LessonId = '" + this.Id + "' and ls.VocabularyId is not null;");
+                    tempVocabularies.ForEach((l) =>
+                    {
+                        l.SetLesson(this);
+                    });
+                    _vocabularies = new List<Vocabulary>(tempVocabularies);
                 }
                 return _vocabularies;
             }
         }
 
-        List<SentenceBuilding> _sentenceBuildings = null;
+        ObservableCollection<SentenceBuilding> _sentenceBuildings = null;
         [Ignore]
-        public IList<SentenceBuilding> SentenceBuildings
+        public ObservableCollection<SentenceBuilding> SentenceBuildings
         {
             get
             {
                 if (_sentenceBuildings == null)
                 {
-                    _sentenceBuildings = ModelManager.Db.Query<SentenceBuilding>("select s.id, s.Name, s.Description from LessonToActivity as ls " +
+                    var tempSents = ModelManager.Db.Query<SentenceBuilding>("select s.id, s.Name, s.Description from LessonToActivity as ls " +
                         "inner join SentenceBuilding as s on ls.SentBuildingId = s.Id where ls.LessonId = '" + this.Id + "' and ls.SentBuildingId is not null;");
+                    tempSents.ForEach((l) =>
+                    {
+                        l.SetLesson(this);
+                    });
+                    _sentenceBuildings = new ObservableCollection<SentenceBuilding>(tempSents);
                 }
                 return _sentenceBuildings;
             }
@@ -246,19 +332,33 @@ namespace LangInformModel
             }
         }
 
-        List<SceneItem> _sceneItems;
+        ObservableCollection<SceneItem> _sceneItems;
         [Ignore]
-        public IList<SceneItem> SceneItems
+        public ObservableCollection<SceneItem> SceneItems
         {
             get
             {
                 if (_sceneItems == null)
                 {
-                    _sceneItems = ModelManager.Db.Query<SceneItem>("select * from SceneItem where SceneId = '" + Id.ToString() + "';");
+                    var tempSceneItems = ModelManager.Db.Query<SceneItem>("select * from SceneItem where SceneId = '" + Id.ToString() + "';");
+                    tempSceneItems.ForEach((s) =>
+                    {
+                        s.SetScene(this);
+                    });
+                    _sceneItems = new ObservableCollection<SceneItem>(tempSceneItems);
                 }
                 return _sceneItems;
             }
         }
+
+
+        public void SetLesson(Lesson lesson)
+        {
+            _lesson = lesson;
+        }
+        Lesson _lesson;
+        [Ignore]
+        public Lesson Lesson { get { return _lesson; } }
 
     }
 
@@ -279,6 +379,7 @@ namespace LangInformModel
         public double YPos { get { return _yPos; } set { _yPos = value; NotifyPropertyChanged(); } }
         public double Size { get; set; }
         public bool IsRound { get; set; }
+        public int Order { get; set; }
         public Guid SceneId { get; set; }
         public Guid PhraseId { get; set; }
         Phrase _phrase;
@@ -299,6 +400,15 @@ namespace LangInformModel
             }
         }
 
+        public void SetScene(Scene scene)
+        {
+            _scene = scene;
+        }
+
+        Scene _scene;
+
+        [Ignore]
+        public Scene Scene { get { return _scene; } }
 
 
         public override string ToString()
@@ -320,6 +430,8 @@ namespace LangInformModel
                 PropertyChanged(this, e);
             }
         }
+
+
 
     }
 
@@ -386,6 +498,20 @@ namespace LangInformModel
         public string Description { get; set; }
 
         public IList<Word> Words = new List<Word>();
+
+        public void SetLesson(Lesson lesson)
+        {
+            _lesson = lesson;
+        }
+        Lesson _lesson;
+        [Ignore]
+        public Lesson Lesson
+        {
+            get
+            {
+                return _lesson;
+            }
+        }
     }
 
     public class VocabularyToWord
@@ -404,7 +530,25 @@ namespace LangInformModel
         public byte[] Sound { get; set; }
         public int SoundVol { get; set; }
 
-        public IList<Meaning> Meanings = new List<Meaning>();
+        public void SetVocabulary(Vocabulary vocabulary)
+        {
+            _vocabulary = vocabulary;
+        }
+
+        Vocabulary _vocabulary;
+        [Ignore]
+        public Vocabulary Vocabulary { get { return _vocabulary; } }
+
+
+        ObservableCollection<Meaning> _meanings = null;
+        [Ignore]
+        public ObservableCollection<Meaning> Meanings
+        {
+            get
+            {
+                return _meanings;
+            }
+        }
     }
 
     public class WordToMeaning
@@ -434,6 +578,14 @@ namespace LangInformModel
         public string Description { get; set; }
 
         public IList<SentenceBuildingItem> SentenceBuildingItems = new List<SentenceBuildingItem>();
+
+        public void SetLesson(Lesson lesson)
+        {
+            _lesson = lesson;
+        }
+        Lesson _lesson;
+        [Ignore]
+        public Lesson Lesson { get { return _lesson; } }
     }
 
     public class SentenceBuildingItemPicture

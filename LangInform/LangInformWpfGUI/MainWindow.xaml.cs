@@ -58,8 +58,7 @@ namespace LangInformGUI
                 if (!string.IsNullOrEmpty(newLanguageName))
                 {
                     string description = MetroInputBox.Show(this, "Description of the new language", "");
-                    vm.InsertData(new Language() { Name = newLanguageName, Description = description }, typeof(Language));
-                    vm.IsLanguagesDirty = true;
+                    vm.InsertLanguage(new Language() { Name = newLanguageName, Description = description });
                 }
             }
             else if (item.Header.ToString() == "Delete this Language")
@@ -69,6 +68,7 @@ namespace LangInformGUI
                 {
                     var obj = parent.DataContext;
                     vm.DeleteData(obj);
+                    vm.IsLanguagesDirty = true;
                 }
             }
             else if (item.Header.ToString() == "Add Level")
@@ -81,9 +81,18 @@ namespace LangInformGUI
                     {
                         string description = MetroInputBox.Show(this, "Description of the new level", "");
                         var level = new Level() { ID = Guid.NewGuid(), Name = newLevelName, Description = description };
-                        vm.InsertData(level, typeof(Level));
-                        vm.InsertData(new LanguageToLevel() { LanguageId = language.Id, LevelId = level.ID }, typeof(LanguageToLevel));
+                        language.InsertLevel(level);
                     }
+                }
+            }
+            else if (item.Header.ToString() == "Delete this Level")
+            {
+                MessageResult result = MetroMessage.Show(this, "Deleting level", "Are you sure you want to delete level \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
+                if (result == MessageResult.Yes)
+                {
+                    var obj = parent.DataContext as Level;
+                    vm.DeleteData(obj);
+                    obj.Language.IsLevelsDirty = true;
                 }
             }
             else if (item.Header.ToString() == "Add Unit")
@@ -126,6 +135,7 @@ namespace LangInformGUI
             {
                 MessageBox.Show("Please be patient! This feature is not implemented yet. Thanks!");
             }
+            treeLessons.ItemsSource = vm.Languages;
         }
 
         private void btnTest_Click(object sender, RoutedEventArgs e)
@@ -159,7 +169,8 @@ namespace LangInformGUI
             }
             else
             {
-                StopPlayAll(playAllTimer, currentSceneDot);
+                //StopEverythingAndSetToDefaults();
+                SceneDefaults();
             }
         }
 
@@ -234,6 +245,12 @@ namespace LangInformGUI
         SceneActivity sceneActivity = SceneActivity.Learn;
         List<KeyValuePair<Border, PracticeResult<SceneItem>>> practiceItems;
         Grid SceneGrdFront;
+        private void SceneDefaults()
+        {
+            StopPlayAll(playAllTimer, currentSceneDot);
+            sceneLearn.IsChecked = true;
+        }
+
         private void CreateSceneTabs(Lesson lesson)
         {
             TabControl scenesTab = new TabControl();
@@ -381,23 +398,27 @@ namespace LangInformGUI
                 nextPlayingItem = practiceItems.FirstOrDefault(i => i.Value.Status == PracticeStatus.NotAsked);
                 if (nextPlayingItem.Value == null)
                 {
-                    MessageResult result = MetroMessage.Show(this, "practice finished", "Do you want to redo the practice?", MessageButtons.YesNo, MessageIcon.Question);
-                    if (result == MessageResult.Yes)
+                    Action action1 = new Action(() =>
                     {
-                        StartPractice();
-                    }
-                    else
-                    {
-                        StopEverythingAndSetToDefaults();
-                    }
+                        MessageResult result = MetroMessage.Show(this, "practice finished", "Do you want to redo the practice?", MessageButtons.YesNo, MessageIcon.Question);
+                        if (result == MessageResult.Yes)
+                        {
+                            StartPractice();
+                        }
+                        else
+                        {
+                            StopEverythingAndSetToDefaults();
+                        }
+                    });
+                    RunThis(action1, (int)currentItem.Value.Item.Phrase.SoundLength.TotalMilliseconds);
                     return;
                 }
             }
-            Action action = new Action(() => {
+            Action action2 = new Action(() => {
                 nextPlayingItem.Value.Status = PracticeStatus.Asking;
                 nextPlayingItem.Value.Item.Phrase.Play();
             });
-            RunThis(action, 1000);
+            RunThis(action2, 1000);
             
         }
 

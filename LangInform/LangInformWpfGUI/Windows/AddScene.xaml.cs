@@ -261,9 +261,9 @@ namespace LangInformGUI
             {
                 counter++;
                 var dot = point as Border;
-
+                var sceneItem = dot.Tag as SceneItem;
+                sceneItem.Order = counter;
                 dot.Child = new TextBlock() { Text = counter.ToString(), FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
-
             }
         }
 

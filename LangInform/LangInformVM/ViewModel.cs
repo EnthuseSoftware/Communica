@@ -28,17 +28,27 @@ namespace LangInformVM
             return db.Insert(obj, type);
         }
 
+        public int InsertLanguage(object obj)
+        {
+            int result = db.Insert(obj, typeof(Language));
+            IsLanguagesDirty = true;
+            var languages = Languages;
+            return result;
+        }
+
         public int DeleteData(object obj)
         {
             return db.Delete(obj);
         }
 
-        public bool IsLanguagesDirty { get; set; }
+
 
         public List<T> GetData<T>(string query) where T: new()
         {
             return db.Query<T>(query);
         }
+
+        public bool IsLanguagesDirty { get; set; }
 
         private ObservableCollection<Language> _languages = null;
         public ObservableCollection<Language> Languages
