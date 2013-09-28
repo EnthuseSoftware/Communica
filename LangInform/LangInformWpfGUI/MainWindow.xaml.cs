@@ -261,10 +261,19 @@ namespace LangInformGUI
                 TabItem sceneTab = new TabItem() { Header = scene.Name };
                 sceneTab.DataContext = scene;
                 sceneTab.Tag = scene;
+                
                 //grid that will contain the image and the grid that contains points.
                 Grid sceneBack = new Grid();
 
                 Image sceneImage = new Image() { Source = Assistant.ByteToBitmapSource(scene.ScenePicture.Picture), DataContext = scene };
+                var menuItem = new MenuItem() { Header = "Edit scene" };
+                menuItem.Click += new RoutedEventHandler((s, e) =>
+                {
+                    sceneImage.Source = null;
+                    EditScene(scene);
+                });
+                sceneTab.ContextMenu = new System.Windows.Controls.ContextMenu();
+                sceneTab.ContextMenu.Items.Add(menuItem); 
                 sceneImage.Loaded += new RoutedEventHandler((s, args) =>
                 {
                     Image image = s as Image;
@@ -307,6 +316,12 @@ namespace LangInformGUI
                 sceneTab.Content = sceneBack;
                 scenesTab.Items.Add(sceneTab);
             }
+        }
+
+        void EditScene(Scene scene)
+        {
+            AddScene addScene = new AddScene(scene.Lesson, scene.Id);
+            addScene.ShowDialog();
         }
 
         private void SceneActivityChange()

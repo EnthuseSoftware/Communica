@@ -28,6 +28,19 @@ namespace LangInformGUI
             MyPoints = new ObservableCollection<SceneItem>();
         }
 
+        public AddScene(Lesson lesson, Guid SceneId)
+        {
+            InitializeComponent();
+            
+            var existingScene = lesson.Scenes.FirstOrDefault(s => s.Id == SceneId);
+            scene = existingScene;
+            sceneImage = new Image();
+            MyPoints = existingScene.SceneItems;
+            //sceneImage.Source = Assistant.ByteToBitmapSource(existingScene.ScenePicture.Picture);
+            //sceneImage.Tag = existingScene.ScenePicture.Id;
+        }
+
+        Scene scene;
         Lesson _lesson;
         public ObservableCollection<SceneItem> MyPoints { get; set; }
         ViewModel vm = MainWindow.vm;
@@ -467,6 +480,17 @@ namespace LangInformGUI
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var scenes = _lesson.Scenes;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            //var sc = _lesson.Scenes.FirstOrDefault();
+            sceneImage.Source = Assistant.ByteToBitmapSource(scene.ScenePicture.Picture);
+        }
+
+        private void sceneImage_Loaded(object sender, RoutedEventArgs e)
+        {
+            int a = 1;
         }
     }
 }
