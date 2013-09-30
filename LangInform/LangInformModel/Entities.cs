@@ -343,6 +343,7 @@ namespace LangInformModel
                     var tempSceneItems = ModelManager.Db.Query<SceneItem>("select * from SceneItem where SceneId = '" + Id.ToString() + "';");
                     tempSceneItems.ForEach((s) =>
                     {
+                        s.AlreadyInDb = true;
                         s.SetScene(this);
                     });
                     _sceneItems = new ObservableCollection<SceneItem>(tempSceneItems);
@@ -360,6 +361,11 @@ namespace LangInformModel
         [Ignore]
         public Lesson Lesson { get { return _lesson; } }
 
+        public static Scene GetScene(Guid id, MainEntities context)
+        {
+            Scene scene = context.Query<Scene>("SELECT * FROM Scene where Id = '" + id.ToString() + "'").FirstOrDefault();
+            return scene;
+        }
     }
 
     public class ScenePicture
@@ -377,11 +383,21 @@ namespace LangInformModel
         double _yPos;
         public double XPos { get { return _xPos; } set { _xPos = value; NotifyPropertyChanged(); } }
         public double YPos { get { return _yPos; } set { _yPos = value; NotifyPropertyChanged(); } }
-        public double Size { get; set; }
+        double size;
+        public double Size { get { return size; } set { size = value; NotifyPropertyChanged(); } }
         public bool IsRound { get; set; }
         public int Order { get; set; }
         public Guid SceneId { get; set; }
-        public Guid PhraseId { get; set; }
+        Guid phraseId;
+        public Guid PhraseId { get { return phraseId; } set { phraseId = value; NotifyPropertyChanged(); } }
+
+
+        [Ignore]
+        public bool HasChanges { get; set; }
+
+        [Ignore]
+        public bool AlreadyInDb { get; set; }
+
         Phrase _phrase;
         [Ignore]
         public Phrase Phrase
@@ -391,6 +407,7 @@ namespace LangInformModel
                 if (_phrase == null)
                 {
                     _phrase = ModelManager.Db.Query<Phrase>("select * from Phrase where Id = '" + PhraseId.ToString() + "';").FirstOrDefault();
+                    _phrase.AlreadyInDb = true;
                 }
                 return _phrase;
             }
@@ -420,6 +437,7 @@ namespace LangInformModel
 
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
+            HasChanges = true;
             OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
         }
 
@@ -435,14 +453,36 @@ namespace LangInformModel
 
     }
 
-    public class Phrase
+    public class Phrase : INotifyPropertyChanged
     {
         [PrimaryKey]
         public Guid Id { get; set; }
         public string Text { get; set; }
 
         byte[] _sound;
-        public byte[] Sound { get { return _sound; } set { _sound = value; if (_sound != null) { PrepareAudio(); } } }
+        public byte[] Sound { get { return _sound; } set { _sound = value; NotifyPropertyChanged(); if (_sound != null) { PrepareAudio(); } } }
+
+        [Ignore]
+        public bool AlreadyInDb { get; set; }
+
+        [Ignore]
+        public bool HasChanges { get; private set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            HasChanges = true;
+            OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, e);
+            }
+        }
 
         #region NAudio stuff
 

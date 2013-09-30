@@ -21,31 +21,35 @@ namespace LangInformGUI
     /// </summary>
     public partial class AddScene : Window
     {
+
+        Border sampleDot;
+        Image img;
+        Scene scene;
+        Lesson _lesson;
+        ViewModel vm = MainWindow.vm;
+        Border newCreatedDot;
+        Border _selectedDot;
+        bool alreadyExist;
+        public ObservableCollection<SceneItem> SceneItems { get; set; }
+        
         public AddScene(Lesson lesson)
         {
             InitializeComponent();
             _lesson = lesson;
-            MyPoints = new ObservableCollection<SceneItem>();
+            SceneItems = new ObservableCollection<SceneItem>();
         }
 
-        public AddScene(Lesson lesson, Guid SceneId)
+        public AddScene(Scene existingScene, Image image)
         {
             InitializeComponent();
-            
-            var existingScene = lesson.Scenes.FirstOrDefault(s => s.Id == SceneId);
+            _lesson = existingScene.Lesson;
+            sceneImage.Source = image.Source;
             scene = existingScene;
-            sceneImage = new Image();
-            MyPoints = existingScene.SceneItems;
-            //sceneImage.Source = Assistant.ByteToBitmapSource(existingScene.ScenePicture.Picture);
-            //sceneImage.Tag = existingScene.ScenePicture.Id;
+            SceneItems = existingScene.SceneItems;
+            sceneImage.Tag = existingScene.ScenePicture;
+            alreadyExist = true;
         }
-
-        Scene scene;
-        Lesson _lesson;
-        public ObservableCollection<SceneItem> MyPoints { get; set; }
-        ViewModel vm = MainWindow.vm;
-        Border newCreatedDot;
-        Border _selectedDot;
+        
 
         /// <summary>
         /// Gets the file path and shows the image
@@ -123,10 +127,10 @@ namespace LangInformGUI
         /// <param name="e"></param>
         private void Dots_Click(object sender, MouseButtonEventArgs e)
         {
-            Border selectedBorder = (Border)sender;
+            sampleDot = (Border)sender;
             DeSelectAll();
-            selectedBorder.BorderThickness = new Thickness(2, 2, 2, 2);
-            CreateNewDot(selectedBorder);
+            sampleDot.BorderThickness = new Thickness(2, 2, 2, 2);
+            //CreateNewDot(selectedBorder.Height, selectedBorder.CornerRadius.BottomLeft);
         }
 
         /// <summary>
@@ -138,8 +142,8 @@ namespace LangInformGUI
         {
             MenuItem menu = (MenuItem)sender;
             var border = menu.Tag as Border;
-            var point = MyPoints.FirstOrDefault(p => p.ToString() == border.Tag.ToString());
-            MyPoints.Remove(point);
+            var point = SceneItems.FirstOrDefault(p => p.ToString() == border.Tag.ToString());
+            SceneItems.Remove(point);
             grdPoints.Children.Remove(border);
             EnumerateTheDots();
         }
@@ -151,7 +155,7 @@ namespace LangInformGUI
             var point = border.Tag as SceneItem;
             if (point.Phrase != null)
             {
-                StopAllPlaying(MyPoints.ToList());
+                StopAllPlaying(SceneItems.ToList());
                 point.Phrase.Play();
             }
         }
@@ -161,14 +165,14 @@ namespace LangInformGUI
             MenuItem menu = (MenuItem)sender;
             var dot = menu.Tag as Border;
             var point = dot.Tag as SceneItem;
-            int oldIndex = MyPoints.IndexOf(point);
+            int oldIndex = SceneItems.IndexOf(point);
             string number = MetroInputBox.Show(this, "resetting the dot numbers", "Please enter number you want to set");
             if (!string.IsNullOrEmpty(number))
             {
                 int newIndex = Convert.ToInt32(number);
-                if (newIndex >= 1 && newIndex <= MyPoints.Count)
+                if (newIndex >= 1 && newIndex <= SceneItems.Count)
                 {
-                    MyPoints.Move(oldIndex, newIndex - 1);
+                    SceneItems.Move(oldIndex, newIndex - 1);
                     grdPoints.Children.Remove(dot);
                     grdPoints.Children.Insert(newIndex - 1, dot);
                     EnumerateTheDots();
@@ -176,7 +180,7 @@ namespace LangInformGUI
             }
             else
             {
-                MetroMessage.Show(this, "resetting the dot numbers", "Please enter integer numbers between 0 and " + MyPoints.Count + ".", MessageButtons.OK, MessageIcon.Exclamation);
+                MetroMessage.Show(this, "resetting the dot numbers", "Please enter integer numbers between 0 and " + SceneItems.Count + ".", MessageButtons.OK, MessageIcon.Exclamation);
             }
         }
 
@@ -225,25 +229,40 @@ namespace LangInformGUI
 
         private void grdLayer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (newCreatedDot == null) return;
+            if (sampleDot == null)
+            {
+                MetroMessage.Show(this, "add scene", "Please select one of the samples below!");
+                return;
+            }
+            System.Windows.Point p = Mouse.GetPosition(grdLayer);
+            var sceneItem = CreateSceneItem(p.X, p.Y, sampleDot.Height, (sampleDot.CornerRadius.BottomLeft == 0 ? false : true));
+            CreateNewDotAndPlace(sceneItem);
+            SceneItems.Add(sceneItem);
+
+            EnumerateTheDots();
+            //CreateNewDot(newCreatedDot.Height, newCreatedDot.CornerRadius.BottomLeft);//!!!This method needs to be reviewed
+        }
+
+        public void CreateNewSceneItemAndPlaceTheBorder(Border border, double xPos, double yPos)
+        {
+            if (border == null) return;
             System.Windows.Point p = Mouse.GetPosition(grdLayer);
             var width = sceneImage.ActualWidth;
             var height = sceneImage.ActualHeight;
-
             SceneItem point = new SceneItem()
             {
                 XPos = (p.X * 100) / width,
                 YPos = (p.Y * 100) / height,
-                Id = (Guid)newCreatedDot.Tag,
-                Size = Math.Ceiling((newCreatedDot.Width * 100) / height),
-                IsRound = (newCreatedDot.CornerRadius.BottomLeft > 0 ? true : false)
+                Id = (Guid)border.Tag,
+                Size = Math.Ceiling((border.Width * 100) / height),
+                IsRound = (border.CornerRadius.BottomLeft > 0 ? true : false)
             };
 
-            newCreatedDot.Margin = new Thickness((point.XPos * width / 100) - newCreatedDot.Width / 2, (point.YPos * height / 100) - newCreatedDot.Height / 2, 0, 0);
+            border.Margin = new Thickness((point.XPos * width / 100) - border.Width / 2, (point.YPos * height / 100) - border.Height / 2, 0, 0);
 
-            newCreatedDot.Tag = point;
-            grdPoints.Children.Add(newCreatedDot);
-            SelectBorder(newCreatedDot);
+            border.Tag = point;
+            grdPoints.Children.Add(border);
+            SelectBorder(border);
             string fname = "";
             if (chkImmediate.IsChecked == true)
             {
@@ -259,50 +278,16 @@ namespace LangInformGUI
             }
             else
             {
-                newCreatedDot.Background = new SolidColorBrush(Colors.Yellow);
-            }
-
-            MyPoints.Add(point);
-            EnumerateTheDots();
-            CreateNewDot(newCreatedDot);//!!!This method needs to be reviewed
-        }
-
-        private void EnumerateTheDots()
-        {
-            int counter = 0;
-            foreach (var point in grdPoints.Children)
-            {
-                counter++;
-                var dot = point as Border;
-                var sceneItem = dot.Tag as SceneItem;
-                sceneItem.Order = counter;
-                dot.Child = new TextBlock() { Text = counter.ToString(), FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+                border.Background = new SolidColorBrush(Colors.Yellow);
             }
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            listPoints.DataContext = this;
-            listPoints.SetBinding(ListBox.ItemsSourceProperty, new Binding("MyPoints"));
-        }
-
-        void DeSelectAll()
-        {
-            foreach (var child in stcBorders.Children)
-            {
-                if (child is Border)
-                {
-                    ((Border)child).BorderThickness = new Thickness(0, 0, 0, 0);
-                }
-            }
-        }
-
-        void CreateNewDot(Border sample)
+        void CreateNewDot(double size, double cornerRadius)
         {
             Border border = new Border() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left };
-            border.Height = sample.Height;
-            border.Width = sample.Width;
-            border.CornerRadius = sample.CornerRadius;
+            border.Height = size;
+            border.Width = size;
+            border.CornerRadius = new CornerRadius(cornerRadius);
             border.Background = new SolidColorBrush(Colors.Green);
             border.Opacity = .4;
             border.VerticalAlignment = VerticalAlignment.Top;
@@ -337,6 +322,117 @@ namespace LangInformGUI
             border.ContextMenu = menu;
             newCreatedDot = border;
         }
+
+        SceneItem CreateSceneItem(double xPos, double yPos, double size, bool isRound)
+        {
+            var width = sceneImage.ActualWidth;
+            var height = sceneImage.ActualHeight;
+            SceneItem point = new SceneItem()
+            {
+                XPos = (xPos * 100) / width,
+                YPos = (yPos * 100) / height,
+                Id = Guid.NewGuid(),
+                Size = size,
+                IsRound = isRound
+            };
+
+            string fname = "";
+            if (chkImmediate.IsChecked == true)
+            {
+                OpenFileDialog fopen = new OpenFileDialog();
+                fopen.Filter = "WAV(*.WAV)|*.WAV";
+                fopen.ShowDialog();
+                fname = fopen.FileName;
+            }
+            if (!string.IsNullOrEmpty(fname) && new FileInfo(fname).Exists)
+            {
+                point.Phrase = new Phrase() { Id = Guid.NewGuid(), Sound = Assistant.SoundToByte(fname) };
+                point.PhraseId = point.Phrase.Id;
+            }
+            return point;
+        }
+
+        public void CreateNewDotAndPlace(SceneItem sceneItem)
+        {
+            var width = sceneImage.ActualWidth;
+            var height = sceneImage.ActualHeight;
+
+            Border border = new Border()
+            {
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
+                Height = (sceneItem.Size * height) / 100,
+                Width = (sceneItem.Size*height)/100,
+                CornerRadius = new CornerRadius((sceneItem.IsRound ? 90 : 0)),
+                Background = new SolidColorBrush(Colors.Green),
+                Opacity = .4,
+                VerticalAlignment = VerticalAlignment.Top,
+                Tag = Guid.NewGuid()
+            };
+
+            border.MouseLeftButtonDown += border_MouseLeftButtonDown;
+            System.Windows.Controls.ContextMenu menu = new System.Windows.Controls.ContextMenu();
+
+            MenuItem item1 = new MenuItem() { Header = "Change sound file", Tag = border };
+            item1.Click += ChangeSoundFile_Click;
+            menu.Items.Add(item1);
+
+            MenuItem item2 = new MenuItem() { Header = "Delete point", Tag = border };
+            item2.Click += DeleteDot_Click;
+            menu.Items.Add(item2);
+
+            MenuItem item3 = new MenuItem() { Header = "Play", Tag = border };
+            item3.Click += PlayAudio_Click;
+            menu.Items.Add(item3);
+
+            MenuItem item4 = new MenuItem() { Header = "Reset the order", Tag = border };
+            item4.Click += ResetTheDotNumber_Click;
+            menu.Items.Add(item4);
+            border.ContextMenu = menu;
+
+            border.Margin = new Thickness((sceneItem.XPos * width / 100) - border.Width / 2, (sceneItem.YPos * height / 100) - border.Height / 2, 0, 0);
+
+            border.Tag = sceneItem;
+            //add it to grid
+            grdPoints.Children.Add(border);
+            //Heighlight the border
+            SelectBorder(border);
+            if(sceneItem.Phrase==null)
+            {
+                border.Background = new SolidColorBrush(Colors.Yellow);
+            }
+        }
+
+
+        private void EnumerateTheDots()
+        {
+            int counter = 0;
+            foreach (var point in grdPoints.Children)
+            {
+                counter++;
+                var dot = point as Border;
+                var sceneItem = dot.Tag as SceneItem;
+                sceneItem.Order = counter;
+                dot.Child = new TextBlock() { Text = counter.ToString(), FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            listPoints.DataContext = this;
+            listPoints.SetBinding(ListBox.ItemsSourceProperty, new Binding("SceneItems"));
+        }
+
+        void DeSelectAll()
+        {
+            foreach (var child in stcBorders.Children)
+            {
+                if (child is Border)
+                {
+                    ((Border)child).BorderThickness = new Thickness(0, 0, 0, 0);
+                }
+            }
+        }
+
 
         void border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -376,19 +472,21 @@ namespace LangInformGUI
             }
             //check all points
             string sceneName = "";
-            while (true)
+            if (!alreadyExist)
             {
-                sceneName = MetroInputBox.Show(this, "add scene", "Please enter scene name");
-                if (string.IsNullOrEmpty(sceneName))
+                while (true)
                 {
-                    var res = MetroMessage.Show(this, "add acene", "Scene name cannot be empty. Do you want to enter?", MessageButtons.YesNo, MessageIcon.Exclamation);
-                    if (res == MessageResult.No) return;
+                    sceneName = MetroInputBox.Show(this, "add scene", "Please enter scene name");
+                    if (string.IsNullOrEmpty(sceneName))
+                    {
+                        var res = MetroMessage.Show(this, "add acene", "Scene name cannot be empty. Do you want to enter?", MessageButtons.YesNo, MessageIcon.Exclamation);
+                        if (res == MessageResult.No) return;
+                    }
+                    if (sceneName != "")
+                        break;
                 }
-                if (sceneName != "")
-                    break;
             }
-            Scene scene = new Scene() { Id = Guid.NewGuid(), Name = sceneName };
-            foreach (SceneItem point in MyPoints)
+            foreach (SceneItem point in SceneItems)
             {
                 if (point.Phrase == null)
                 {
@@ -411,21 +509,42 @@ namespace LangInformGUI
                 vm.InsertData(scenePicture, typeof(ScenePicture));
             }
             //Saving the Scene
-            scene.PictureId = pictureId;
-            vm.InsertData(scene, typeof(Scene));
+            if (scene == null)
+            {
+                scene = new Scene() { Id = Guid.NewGuid(), Name = sceneName };
+                scene.PictureId = pictureId;
+                vm.InsertData(scene, typeof(Scene));
+            }
+            
 
             //Insert into LessonToActivity
-            var lessonToActivity = new LessonToActivity() { LessonId = _lesson.Id, SceneId = scene.Id };
-            vm.InsertData(lessonToActivity, typeof(LessonToActivity));
-
-            //Saving the SceneItems and Phrase
-            foreach (SceneItem sceneItem in MyPoints)
+            if (!alreadyExist)
             {
-                Phrase phrase = sceneItem.Phrase;
-                vm.InsertData(phrase, typeof(Phrase));
-                sceneItem.PhraseId = phrase.Id;
-                sceneItem.SceneId = scene.Id;
-                vm.InsertData(sceneItem, typeof(SceneItem));
+                var lessonToActivity = new LessonToActivity() { LessonId = _lesson.Id, SceneId = scene.Id };
+                vm.InsertData(lessonToActivity, typeof(LessonToActivity));
+            }
+            //Saving the SceneItems and Phrase
+            foreach (SceneItem sceneItem in SceneItems)
+            {
+                if (!sceneItem.AlreadyInDb)
+                {
+                    Phrase phrase = sceneItem.Phrase;
+                    vm.InsertData(phrase, typeof(Phrase));
+                    sceneItem.PhraseId = phrase.Id;
+                    sceneItem.SceneId = scene.Id;
+                    vm.InsertData(sceneItem, typeof(SceneItem));
+                }
+                else
+                {
+                    if (sceneItem.HasChanges)
+                    {
+                        ModelManager.Db.Update(sceneItem);
+                        if (sceneItem.Phrase.HasChanges)
+                        {
+                            ModelManager.Db.Update(sceneItem.Phrase);
+                        }
+                    }
+                }
             }
 
         }
@@ -484,13 +603,16 @@ namespace LangInformGUI
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //var sc = _lesson.Scenes.FirstOrDefault();
-            sceneImage.Source = Assistant.ByteToBitmapSource(scene.ScenePicture.Picture);
+            
         }
 
         private void sceneImage_Loaded(object sender, RoutedEventArgs e)
         {
-            int a = 1;
+            foreach (SceneItem item in scene.SceneItems)
+            {
+                CreateNewDotAndPlace(item);
+            }
+            EnumerateTheDots();
         }
     }
 }

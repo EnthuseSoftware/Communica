@@ -269,8 +269,7 @@ namespace LangInformGUI
                 var menuItem = new MenuItem() { Header = "Edit scene" };
                 menuItem.Click += new RoutedEventHandler((s, e) =>
                 {
-                    sceneImage.Source = null;
-                    EditScene(scene);
+                    EditScene(scene, sceneImage);
                 });
                 sceneTab.ContextMenu = new System.Windows.Controls.ContextMenu();
                 sceneTab.ContextMenu.Items.Add(menuItem); 
@@ -318,9 +317,9 @@ namespace LangInformGUI
             }
         }
 
-        void EditScene(Scene scene)
+        void EditScene(Scene scene, Image image)
         {
-            AddScene addScene = new AddScene(scene.Lesson, scene.Id);
+            AddScene addScene = new AddScene(scene, image);
             addScene.ShowDialog();
         }
 
