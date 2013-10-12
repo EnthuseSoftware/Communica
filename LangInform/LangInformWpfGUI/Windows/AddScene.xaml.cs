@@ -26,7 +26,7 @@ namespace LangInformGUI
         Image img;
         Scene scene;
         Lesson _lesson;
-        ViewModel vm = MainWindow.vm;
+        BaseViewModel vm = MainWindow.vm;
         Border newCreatedDot;
         Border _selectedDot;
         bool alreadyExist;
@@ -45,7 +45,7 @@ namespace LangInformGUI
             _lesson = existingScene.Lesson;
             sceneImage.Source = image.Source;
             scene = existingScene;
-            SceneItems = existingScene.SceneItems;
+            SceneItems = new ObservableCollection<SceneItem>(existingScene.SceneItems.OrderBy(s=>s.Order).ToList());
             sceneImage.Tag = existingScene.ScenePicture;
             alreadyExist = true;
         }
@@ -144,6 +144,7 @@ namespace LangInformGUI
             var border = menu.Tag as Border;
             var point = SceneItems.FirstOrDefault(p => p.ToString() == border.Tag.ToString());
             SceneItems.Remove(point);
+            ModelManager.Db.Delete(point);
             grdPoints.Children.Remove(border);
             EnumerateTheDots();
         }
@@ -243,86 +244,6 @@ namespace LangInformGUI
             //CreateNewDot(newCreatedDot.Height, newCreatedDot.CornerRadius.BottomLeft);//!!!This method needs to be reviewed
         }
 
-        public void CreateNewSceneItemAndPlaceTheBorder(Border border, double xPos, double yPos)
-        {
-            if (border == null) return;
-            System.Windows.Point p = Mouse.GetPosition(grdLayer);
-            var width = sceneImage.ActualWidth;
-            var height = sceneImage.ActualHeight;
-            SceneItem point = new SceneItem()
-            {
-                XPos = (p.X * 100) / width,
-                YPos = (p.Y * 100) / height,
-                Id = (Guid)border.Tag,
-                Size = Math.Ceiling((border.Width * 100) / height),
-                IsRound = (border.CornerRadius.BottomLeft > 0 ? true : false)
-            };
-
-            border.Margin = new Thickness((point.XPos * width / 100) - border.Width / 2, (point.YPos * height / 100) - border.Height / 2, 0, 0);
-
-            border.Tag = point;
-            grdPoints.Children.Add(border);
-            SelectBorder(border);
-            string fname = "";
-            if (chkImmediate.IsChecked == true)
-            {
-                OpenFileDialog fopen = new OpenFileDialog();
-                fopen.Filter = "WAV(*.WAV)|*.WAV";
-                fopen.ShowDialog();
-                fname = fopen.FileName;
-            }
-            if (!string.IsNullOrEmpty(fname) && new FileInfo(fname).Exists)
-            {
-                point.Phrase = new Phrase() { Id = Guid.NewGuid(), Sound = Assistant.SoundToByte(fname) };
-                point.PhraseId = point.Phrase.Id;
-            }
-            else
-            {
-                border.Background = new SolidColorBrush(Colors.Yellow);
-            }
-        }
-
-        void CreateNewDot(double size, double cornerRadius)
-        {
-            Border border = new Border() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left };
-            border.Height = size;
-            border.Width = size;
-            border.CornerRadius = new CornerRadius(cornerRadius);
-            border.Background = new SolidColorBrush(Colors.Green);
-            border.Opacity = .4;
-            border.VerticalAlignment = VerticalAlignment.Top;
-            border.Tag = Guid.NewGuid();
-            border.MouseLeftButtonDown += border_MouseLeftButtonDown;
-            System.Windows.Controls.ContextMenu menu = new System.Windows.Controls.ContextMenu();
-
-            System.Windows.Controls.MenuItem item1 = new System.Windows.Controls.MenuItem();
-            item1.Header = "Change sound file";
-            item1.Tag = border;
-            item1.Click += ChangeSoundFile_Click;
-            menu.Items.Add(item1);
-
-            System.Windows.Controls.MenuItem item2 = new System.Windows.Controls.MenuItem();
-            item2.Header = "Delete point";
-            item2.Tag = border;
-            item2.Click += DeleteDot_Click;
-            menu.Items.Add(item2);
-
-            System.Windows.Controls.MenuItem item3 = new System.Windows.Controls.MenuItem();
-            item3.Header = "Play";
-            item3.Tag = border;
-            item3.Click += PlayAudio_Click;
-            menu.Items.Add(item3);
-
-            System.Windows.Controls.MenuItem item4 = new System.Windows.Controls.MenuItem();
-            item4.Header = "Reset the order";
-            item4.Tag = border;
-            item4.Click += ResetTheDotNumber_Click;
-            menu.Items.Add(item4);
-
-            border.ContextMenu = menu;
-            newCreatedDot = border;
-        }
-
         SceneItem CreateSceneItem(double xPos, double yPos, double size, bool isRound)
         {
             var width = sceneImage.ActualWidth;
@@ -332,7 +253,7 @@ namespace LangInformGUI
                 XPos = (xPos * 100) / width,
                 YPos = (yPos * 100) / height,
                 Id = Guid.NewGuid(),
-                Size = size,
+                Size = (size*100)/height,
                 IsRound = isRound
             };
 
@@ -412,7 +333,10 @@ namespace LangInformGUI
                 var dot = point as Border;
                 var sceneItem = dot.Tag as SceneItem;
                 sceneItem.Order = counter;
-                dot.Child = new TextBlock() { Text = counter.ToString(), FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+                var textBlock = new TextBlock() { FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+                textBlock.DataContext = sceneItem;
+                textBlock.SetBinding(TextBlock.TextProperty, new Binding("Order"));
+                dot.Child = textBlock;
             }
         }
 
@@ -546,7 +470,11 @@ namespace LangInformGUI
                     }
                 }
             }
-
+            var result = MetroMessage.Show(this, "saving the scene", "Saving the scene sucessfully finished. Do you want to close this form?", MessageButtons.YesNo, MessageIcon.Question);
+            if (result == MessageResult.Yes)
+            {
+                this.Close();
+            }
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -608,7 +536,7 @@ namespace LangInformGUI
 
         private void sceneImage_Loaded(object sender, RoutedEventArgs e)
         {
-            foreach (SceneItem item in scene.SceneItems)
+            foreach (SceneItem item in SceneItems)
             {
                 CreateNewDotAndPlace(item);
             }

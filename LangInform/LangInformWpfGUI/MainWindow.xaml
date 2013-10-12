@@ -44,7 +44,7 @@
                         <MenuItem Header="Add Scene" Click="MenuItem_Click"/>
                         <MenuItem Header="Add Vocabulary" Click="MenuItem_Click"/>
                         <MenuItem Header="Add Sentence building" Click="MenuItem_Click"/>
-                        <MenuItem Header="Delete this Level" Click="MenuItem_Click"/>
+                        <MenuItem Header="Delete this Lesson" Click="MenuItem_Click"/>
                     </ContextMenu>
                 </TextBlock.ContextMenu>
             </TextBlock>
@@ -216,8 +216,8 @@
                         <ColumnDefinition Width="338*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal" >
-                        <Button x:Name="btnLoad" Margin="3" Content="Load Test" Click="btnLoad_Click" />
-                        <Button Name="btnTest" Content="Test" Margin="0,3" Width="65" Click="btnTest_Click" />
+                        <Button x:Name="btnLoad" Margin="3" Content="Load Test" Click="btnLoad_Click" Loaded="btnLoad_Loaded" />
+                        <Button Name="btnTest" Content="Test" Margin="0,3" Width="65" Click="btnTest_Click" Loaded="btnLoad_Loaded" />
                     </StackPanel>
                     <Grid Height="15" Grid.Column="1" Name="mainTrackPlaceholder">
                         <Controls:CustomSlider x:Name="mainTrack"/>

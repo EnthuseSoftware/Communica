@@ -21,7 +21,7 @@ namespace LangInformGUI
     /// </summary>
     public partial class VocabularySettings : Window
     {
-        public VocabularySettings(OldViewModel viewModel)
+        public VocabularySettings(/*OldViewModel viewModel*/)
         {
             InitializeComponent();
             //_viewModel = viewModel;
@@ -29,7 +29,7 @@ namespace LangInformGUI
         }
 
         Level level = null;
-        OldViewModel _viewModel;
+        //OldViewModel _viewModel;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -73,7 +73,7 @@ namespace LangInformGUI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.SaveChanges();
+            //_viewModel.SaveChanges();
         }
     }
 }

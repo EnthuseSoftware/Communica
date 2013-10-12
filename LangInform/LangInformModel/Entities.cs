@@ -20,6 +20,7 @@ namespace LangInformModel
             FileInfo f = new FileInfo(dbPath);
             if (!f.Exists)
             {
+                this.CreateTable<User>();
                 this.CreateTable<Language>();
                 this.CreateTable<LanguageToLevel>();
                 this.CreateTable<Level>();
@@ -64,6 +65,17 @@ namespace LangInformModel
         }
     }
 
+    public class User
+    {
+        [PrimaryKey]
+        public Guid Id { get; set; }
+
+        public Guid LastOpenedNode { get; set; }
+
+        public Guid LastOpenedScene { get; set; }
+
+    }
+
     public class Language
     {
         [PrimaryKey]
@@ -74,7 +86,7 @@ namespace LangInformModel
         public int InsertLevel(Level level)
         {
             int result = ModelManager.Db.Insert(level, typeof(Level));
-            ModelManager.Db.Insert(new LanguageToLevel() { LanguageId = this.Id, LevelId = level.ID }, typeof(LanguageToLevel));
+            ModelManager.Db.Insert(new LanguageToLevel() { LanguageId = this.Id, LevelId = level.Id }, typeof(LanguageToLevel));
             IsLevelsDirty = true;
             return result;
         }
@@ -116,14 +128,14 @@ namespace LangInformModel
     public class Level
     {
         [PrimaryKey]
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
         public int InsertUnit(Unit unit)
         {
             int result = ModelManager.Db.Insert(unit, typeof(Unit));
-            ModelManager.Db.Insert(new LevelToUnit() { LevelId = this.ID, UnitId = unit.Id }, typeof(LevelToUnit));
+            ModelManager.Db.Insert(new LevelToUnit() { LevelId = this.Id, UnitId = unit.Id }, typeof(LevelToUnit));
             IsUnitsDirty = true;
             return result;
         }
@@ -139,7 +151,7 @@ namespace LangInformModel
             {
                 if (IsUnitsDirty || _units == null)
                 {
-                    var tempUnits = ModelManager.Db.Query<Unit>("select u.Id, u.Name, u.Description from LevelToUnit as lu inner join unit as u on lu.unitid=u.id where lu.Levelid='" + this.ID + "'");
+                    var tempUnits = ModelManager.Db.Query<Unit>("select u.Id, u.Name, u.Description from LevelToUnit as lu inner join unit as u on lu.unitid=u.id where lu.Levelid='" + this.Id.ToString() + "'");
                     tempUnits.ForEach((u) =>
                     {
                         u.SetLevel(this);
@@ -237,13 +249,15 @@ namespace LangInformModel
         [Ignore]
         public Unit Unit { get { return _unit; } }
 
+        [Ignore]
+        public bool IsScenesDirty { get; set; }
         List<Scene> _scenes = null;
         [Ignore]
         public IList<Scene> Scenes
         {
             get
             {
-                if (_scenes == null)
+                if (IsScenesDirty || _scenes == null)
                 {
                     var tempScenes = ModelManager.Db.Query<Scene>("select s.id, s.Name, s.Description, s.PictureId from LessonToActivity as ls " +
                         "inner join Scene as s on ls.SceneId = s.Id where ls.LessonId = '" + this.Id + "' and ls.SceneId is not null");
@@ -252,6 +266,7 @@ namespace LangInformModel
                         l.SetLesson(this);
                     });
                     _scenes = new List<Scene>(tempScenes);
+                    IsScenesDirty = false;
                 }
                 return _scenes;
             }
@@ -386,7 +401,9 @@ namespace LangInformModel
         double size;
         public double Size { get { return size; } set { size = value; NotifyPropertyChanged(); } }
         public bool IsRound { get; set; }
-        public int Order { get; set; }
+
+        int order;
+        public int Order { get { return order; } set { order = value; NotifyPropertyChanged();} }
         public Guid SceneId { get; set; }
         Guid phraseId;
         public Guid PhraseId { get { return phraseId; } set { phraseId = value; NotifyPropertyChanged(); } }
@@ -407,7 +424,8 @@ namespace LangInformModel
                 if (_phrase == null)
                 {
                     _phrase = ModelManager.Db.Query<Phrase>("select * from Phrase where Id = '" + PhraseId.ToString() + "';").FirstOrDefault();
-                    _phrase.AlreadyInDb = true;
+                    if (_phrase != null)
+                        _phrase.AlreadyInDb = true;
                 }
                 return _phrase;
             }

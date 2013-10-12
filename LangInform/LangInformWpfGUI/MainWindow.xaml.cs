@@ -30,15 +30,17 @@ namespace LangInformGUI
 
         Random random;
 
-        public static ViewModel vm;
+        public static BaseViewModel vm;
 
         TabItem activeActivityTab;
-
+        User user;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+
             DirectoryInfo dir = new DirectoryInfo("..\\..\\..\\");
             FileInfo databaseFile = dir.GetFiles().FirstOrDefault(f => f.Name == "LangData.3db");
-            vm = new ViewModel(databaseFile.FullName);
+            vm = new BaseViewModel(databaseFile.FullName);
+            user = ModelManager.Db.Query<User>("SELECT * FROM User").FirstOrDefault();
             treeLessons.ItemsSource = vm.Languages;
             //temporary
             var lesson = vm.GetData<Lesson>("SELECT * FROM Lesson WHERE Name='Lesson 2'").FirstOrDefault();
@@ -80,7 +82,7 @@ namespace LangInformGUI
                     if (language != null)
                     {
                         string description = MetroInputBox.Show(this, "Description of the new level", "");
-                        var level = new Level() { ID = Guid.NewGuid(), Name = newLevelName, Description = description };
+                        var level = new Level() { Id = Guid.NewGuid(), Name = newLevelName, Description = description };
                         language.InsertLevel(level);
                     }
                 }
@@ -106,7 +108,7 @@ namespace LangInformGUI
                         string description = MetroInputBox.Show(this, "Description of the new unit", "");
                         var unit = new Unit() { Id = Guid.NewGuid(), Name = newUnitName, Description = description };
                         vm.InsertData(unit, typeof(Unit));
-                        vm.InsertData(new LevelToUnit() { LevelId = level.ID, UnitId = unit.Id }, typeof(LevelToUnit));
+                        vm.InsertData(new LevelToUnit() { LevelId = level.Id, UnitId = unit.Id }, typeof(LevelToUnit));
                     }
                 }
             }
@@ -131,9 +133,37 @@ namespace LangInformGUI
                 AddScene addScene = new AddScene(parent.DataContext as Lesson);
                 addScene.ShowDialog();
             }
+            else if (item.Header.ToString() == "Delete this Unit")
+            {
+                MessageResult result = MetroMessage.Show(this, "Deleting unit", "Are you sure you want to delete unit \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
+                if (result == MessageResult.Yes)
+                {
+                    var obj = parent.DataContext as Unit;
+                    vm.DeleteData(obj);
+                    obj.Level.IsUnitsDirty = true;
+                }
+            }
+            else if (item.Header.ToString() == "Delete this Lesson")
+            {
+                MessageResult result = MetroMessage.Show(this, "Deleting lesson", "Are you sure you want to delete lesson \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
+                if (result == MessageResult.Yes)
+                {
+                    try
+                    {
+                        var obj = parent.DataContext as Lesson;
+                        vm.DeleteData(obj);
+                        obj.Unit.IsLessonsDirty = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        MetroMessage.Show(this,"error","For some reason couldn't delete the lesson.");
+                    }
+                    
+                }
+            }
             else
             {
-                MessageBox.Show("Please be patient! This feature is not implemented yet. Thanks!");
+                MessageBox.Show("This feature is not implemented yet. Thanks!");
             }
             treeLessons.ItemsSource = vm.Languages;
         }
@@ -145,6 +175,16 @@ namespace LangInformGUI
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            try
+            {
+                var selectedNode = treeLessons.SelectedItem;
+                user.LastOpenedNode = ((dynamic)selectedNode).Id;
+                ModelManager.Db.Update(user);
+            }
+            catch (Exception)
+            {
+                //nothing for now
+            }
             vm.CloseSession();
         }
 
@@ -216,7 +256,8 @@ namespace LangInformGUI
             if (runAfter < 0) runAfter = 0;
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(runAfter);
-            timer.Tick += new EventHandler((s, e) => {
+            timer.Tick += new EventHandler((s, e) =>
+            {
                 timer.Stop();
                 output = function.Invoke();
             });
@@ -225,11 +266,12 @@ namespace LangInformGUI
         }
 
         public void RunThis(Action action, int runAfter)
-        { 
+        {
             if (runAfter < 0) runAfter = 0;
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(runAfter);
-            timer.Tick += new EventHandler((s, e) => {
+            timer.Tick += new EventHandler((s, e) =>
+            {
                 timer.Stop();
                 action.Invoke();
             });
@@ -253,6 +295,7 @@ namespace LangInformGUI
 
         private void CreateSceneTabs(Lesson lesson)
         {
+            grdScene.Children.Clear();
             TabControl scenesTab = new TabControl();
             grdScene.Children.Add(scenesTab);
             scenesTab.SelectionChanged += scenesTab_SelectionChanged;
@@ -261,7 +304,7 @@ namespace LangInformGUI
                 TabItem sceneTab = new TabItem() { Header = scene.Name };
                 sceneTab.DataContext = scene;
                 sceneTab.Tag = scene;
-                
+
                 //grid that will contain the image and the grid that contains points.
                 Grid sceneBack = new Grid();
 
@@ -271,8 +314,14 @@ namespace LangInformGUI
                 {
                     EditScene(scene, sceneImage);
                 });
+                var menuItem1 = new MenuItem() { Header = "Delete Scene" };
+                menuItem1.Click += new RoutedEventHandler((s, e) =>
+                {
+                    MessageBox.Show("This feature is not availbale yet.");
+                });
                 sceneTab.ContextMenu = new System.Windows.Controls.ContextMenu();
-                sceneTab.ContextMenu.Items.Add(menuItem); 
+                sceneTab.ContextMenu.Items.Add(menuItem);
+                sceneTab.ContextMenu.Items.Add(menuItem1);
                 sceneImage.Loaded += new RoutedEventHandler((s, args) =>
                 {
                     Image image = s as Image;
@@ -317,10 +366,19 @@ namespace LangInformGUI
             }
         }
 
+        void DeleteScene(Scene scene)
+        {
+
+        }
+
         void EditScene(Scene scene, Image image)
         {
+            SceneDefaults();
             AddScene addScene = new AddScene(scene, image);
             addScene.ShowDialog();
+            scene.Lesson.IsScenesDirty = true;
+            var scenes = scene.Lesson.Scenes;
+            CreateSceneTabs(scene.Lesson);
         }
 
         private void SceneActivityChange()
@@ -428,12 +486,13 @@ namespace LangInformGUI
                     return;
                 }
             }
-            Action action2 = new Action(() => {
+            Action action2 = new Action(() =>
+            {
                 nextPlayingItem.Value.Status = PracticeStatus.Asking;
                 nextPlayingItem.Value.Item.Phrase.Play();
             });
             RunThis(action2, 1000);
-            
+
         }
 
         private void StartPractice()
@@ -487,9 +546,12 @@ namespace LangInformGUI
 
         private void PlayAll(List<Border> items)
         {
-            var sortedItems = items;
+            var sortedItems = items.OrderBy(s => ((SceneItem)s.Tag).Order).ToList();
             int counter = 0;
-            sortedItems = MixItems<Border>(items);
+            if (playRandomly.IsChecked)
+            {
+                sortedItems = MixItems<Border>(items);
+            }
             playAllTimer = new DispatcherTimer();
             playAllTimer.Interval = TimeSpan.FromMilliseconds(500);
             playAllTimer.Tick += new EventHandler((s, e) =>
@@ -600,8 +662,12 @@ namespace LangInformGUI
             timer.Start();
         }
 
-
         #endregion
+
+        private void btnLoad_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((Button)sender).Visibility = System.Windows.Visibility.Hidden;
+        }
 
 
 
