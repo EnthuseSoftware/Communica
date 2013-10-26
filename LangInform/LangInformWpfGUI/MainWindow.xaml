@@ -91,7 +91,7 @@
                 </StackPanel>
                 <Grid Grid.Row="1" x:Name="grdLessonUI">
                     <TabControl SelectionChanged="mainTab_SelectionChanged">
-                        <TabItem Header="Scene" x:Name="mainTabScene" HorizontalAlignment="Right" Width="47">
+                        <TabItem Header="Scene" x:Name="mainTabScene" DataContext="{Binding Path=SelectedLesson}" HorizontalAlignment="Right" Width="47">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="131*"/>
@@ -99,6 +99,13 @@
                                 </Grid.ColumnDefinitions>
                                 <Border BorderBrush="#FF92D050" BorderThickness="5">
                                     <Grid x:Name="grdScene">
+                                        <TabControl Name="myScenes" ItemsSource="{Binding Path=Scenes}">
+                                            <TabControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TabItem Header="{Binding Path=Name}"/>
+                                                </DataTemplate>
+                                            </TabControl.ItemTemplate>
+                                        </TabControl>
                                     </Grid>
                                 </Border>
                                 <Expander  Width="auto" Grid.Column="1" ExpandDirection="Left">

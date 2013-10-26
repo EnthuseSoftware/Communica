@@ -46,7 +46,7 @@ namespace LangInformGUI.Windows
             }
         }
 
-        BaseViewModel vm = MainWindow.vm;
+        ViewModel vm = MainWindow.vm;
 
         List<ScenePicture> pictures;
 

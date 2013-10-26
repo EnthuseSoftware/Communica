@@ -1,6 +1,7 @@
 ﻿using LangInformModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -16,19 +17,22 @@ namespace LangInformVM
         {
             Model = model;
         }
-        public MainEntities Model { get; private set; }
+        protected MainEntities Model { get; private set; }
 
-        Language language;
-        public Language SelectedLanguage { get { return language; } set { language = value; NotifyPropertyChanged();} }
+        public ObservableCollection<Language> Languages { get { return new ObservableCollection<Language>(Model.Query<Language>("SELECT * FROM LANGUAGE;")); } }
 
-        Level level;
-        public Level SelectedLevel { get { return level; } set { level = value; NotifyPropertyChanged(); } }
 
-        Unit unit;
-        public Unit Unit { get { return unit; } set { unit = value; NotifyPropertyChanged(); } }
+        Language selectedLanguage;
+        public Language SelectedLanguage { get { return selectedLanguage; } set { selectedLanguage = value; NotifyPropertyChanged();} }
 
-        Lesson lesson;
-        public Lesson Lesson { get { return lesson; } set { lesson = value; NotifyPropertyChanged(); } }
+        Level selectedLevel;
+        public Level SelectedLevel { get { return selectedLevel; } set { selectedLevel = value; NotifyPropertyChanged(); } }
+
+        Unit selectedUnit;
+        public Unit Unit { get { return selectedUnit; } set { selectedUnit = value; NotifyPropertyChanged(); } }
+
+        Lesson selectedLesson;
+        public Lesson SelectedLesson { get { return selectedLesson; } set { selectedLesson = value; NotifyPropertyChanged(); } }
 
 
 

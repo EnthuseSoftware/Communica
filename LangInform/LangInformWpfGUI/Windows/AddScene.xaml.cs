@@ -26,7 +26,7 @@ namespace LangInformGUI
         Image img;
         Scene scene;
         Lesson _lesson;
-        BaseViewModel vm = MainWindow.vm;
+        ViewModel vm = MainWindow.vm;
         Border newCreatedDot;
         Border _selectedDot;
         bool alreadyExist;
@@ -391,7 +391,7 @@ namespace LangInformGUI
         {
             if (_lesson == null || _lesson.Id == null)
             {
-                MetroMessage.Show(this, "No Lesson selected", "Lesson is not selected.");
+                MetroMessage.Show(this, "No SelectedLesson selected", "SelectedLesson is not selected.");
                 return;
             }
             //check all points
