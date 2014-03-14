@@ -10,9 +10,9 @@ using System.Text;
 
 namespace LangInformVM
 {
-    public class ViewModel
+    public class BaseViewModel : INotifyPropertyChanged
     {
-        public ViewModel(string dataPath)
+        public BaseViewModel(string dataPath)
         {
             db = new MainEntities(dataPath);
             IsLanguagesDirty = true;
@@ -58,7 +58,7 @@ namespace LangInformVM
             {
                 if (IsLanguagesDirty || _languages == null)
                 {
-                    _languages = new ObservableCollection<Language>(db.Query<Language>("select * from selectedLanguage"));
+                    _languages = new ObservableCollection<Language>(db.Query<Language>("select * from language"));
                 }
                 return _languages;
             }

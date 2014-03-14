@@ -18,8 +18,8 @@ namespace LangInformVM
 
     //    //MainEntities entities = null;//new MainEntities();
 
-    //    SelectedLesson _currentLesson;
-    //    public SelectedLesson CurrentLesson
+    //    Lesson _currentLesson;
+    //    public Lesson CurrentLesson
     //    {
     //        get { return _currentLesson; }
     //        set

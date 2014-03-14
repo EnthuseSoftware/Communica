@@ -25,7 +25,7 @@ namespace LangInformGUI
         {
             InitializeComponent();
             //_viewModel = viewModel;
-            //selectedLevel = viewModel.CurrentLesson.Unit.Level;
+            //level = viewModel.CurrentLesson.Unit.Level;
         }
 
         Level level = null;

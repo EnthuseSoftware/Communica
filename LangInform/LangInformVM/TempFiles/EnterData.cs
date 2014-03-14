@@ -15,15 +15,15 @@ namespace LangInformVM
         //public void InsertLanguage()
         //{
         //    Converter con = new Converter();
-        //    var selectedLanguage = entities.Languages.FirstOrDefault();
-        //    var selectedLevel = selectedLanguage.Levels.FirstOrDefault(l => l.Name == "Level 1");
-        //    if (selectedLevel != null)
+        //    var language = entities.Languages.FirstOrDefault();
+        //    var level = language.Levels.FirstOrDefault(l => l.Name == "Level 1");
+        //    if (level != null)
         //    {
-        //        var selectedUnit = selectedLevel.Units.FirstOrDefault();
+        //        var unit = level.Units.FirstOrDefault();
         //        var dirs = new DirectoryInfo("C:\\lang").GetDirectories();
         //        foreach (DirectoryInfo l in dirs)
         //        {
-        //            SelectedLesson _lesson = new SelectedLesson() { Name = l.Name, Id = Guid.NewGuid().ToString() };
+        //            Lesson _lesson = new Lesson() { Name = l.Name, Id = Guid.NewGuid().ToString() };
         //            foreach (var dir in l.GetDirectories())
         //            {
         //                var vocab = new Vocabulary() { Id = Guid.NewGuid().ToString(), Name = dir.Name, LessonId = _lesson.Id };
@@ -46,7 +46,7 @@ namespace LangInformVM
         //                vocab.Words = list.ToList();
         //                _lesson.Vocabularies.Add(vocab);
         //            }
-        //            //add Scene to the selectedLesson
+        //            //add Scene to the lesson
         //            foreach (var file in l.GetFiles("*.jpeg"))
         //            {
         //                var scene = new Scene()
@@ -58,12 +58,12 @@ namespace LangInformVM
         //                };
         //                _lesson.Scenes.Add(scene);
         //            }
-        //            selectedUnit.Lessons.Add(_lesson);
+        //            unit.Lessons.Add(_lesson);
         //        }
 
 
 
-        //        selectedLevel.Units.Add(selectedUnit);
+        //        level.Units.Add(unit);
         //    }
         //    try
         //    {

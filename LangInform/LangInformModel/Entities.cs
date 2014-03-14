@@ -381,11 +381,6 @@ namespace LangInformModel
             Scene scene = context.Query<Scene>("SELECT * FROM Scene where Id = '" + id.ToString() + "'").FirstOrDefault();
             return scene;
         }
-
-        public override string ToString()
-        {
-            return this.Name;
-        }
     }
 
     public class ScenePicture

@@ -30,9 +30,7 @@ namespace LangInformGUI
 
         Random random;
 
-        public static ViewModel vm;
-
-        public BaseViewModel vm2;
+        public static BaseViewModel vm;
 
         TabItem activeActivityTab;
         User user;
@@ -41,17 +39,12 @@ namespace LangInformGUI
 
             DirectoryInfo dir = new DirectoryInfo("..\\..\\..\\");
             FileInfo databaseFile = dir.GetFiles().FirstOrDefault(f => f.Name == "LangData.3db");
-            
-            vm = new ViewModel(databaseFile.FullName);
-            vm2 = new BaseViewModel(ModelManager.Db);
+            vm = new BaseViewModel(databaseFile.FullName);
             user = ModelManager.Db.Query<User>("SELECT * FROM User").FirstOrDefault();
-            
-            this.DataContext = vm2;
-            treeLessons.ItemsSource = vm2.Languages;
-            
+            treeLessons.ItemsSource = vm.Languages;
             //temporary
             var lesson = vm.GetData<Lesson>("SELECT * FROM Lesson WHERE Name='Lesson 2'").FirstOrDefault();
-            //AddScene addScene = new AddScene(selectedLesson);
+            //AddScene addScene = new AddScene(lesson);
             //addScene.ShowDialog();
             //end temporary
         }
@@ -66,13 +59,13 @@ namespace LangInformGUI
                 string newLanguageName = MetroInputBox.Show(this, "Please enter new Language name", "");
                 if (!string.IsNullOrEmpty(newLanguageName))
                 {
-                    string description = MetroInputBox.Show(this, "Description of the new selectedLanguage", "");
+                    string description = MetroInputBox.Show(this, "Description of the new language", "");
                     vm.InsertLanguage(new Language() { Name = newLanguageName, Description = description });
                 }
             }
             else if (item.Header.ToString() == "Delete this Language")
             {
-                MessageResult result = MetroMessage.Show(this, "Deleting selectedLanguage", "Are you sure you want to delete selectedLanguage \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
+                MessageResult result = MetroMessage.Show(this, "Deleting language", "Are you sure you want to delete language \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
                 if (result == MessageResult.Yes)
                 {
                     var obj = parent.DataContext;
@@ -88,7 +81,7 @@ namespace LangInformGUI
                     Language language = parent.DataContext as Language;
                     if (language != null)
                     {
-                        string description = MetroInputBox.Show(this, "Description of the new selectedLevel", "");
+                        string description = MetroInputBox.Show(this, "Description of the new level", "");
                         var level = new Level() { Id = Guid.NewGuid(), Name = newLevelName, Description = description };
                         language.InsertLevel(level);
                     }
@@ -96,7 +89,7 @@ namespace LangInformGUI
             }
             else if (item.Header.ToString() == "Delete this Level")
             {
-                MessageResult result = MetroMessage.Show(this, "Deleting selectedLevel", "Are you sure you want to delete selectedLevel \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
+                MessageResult result = MetroMessage.Show(this, "Deleting level", "Are you sure you want to delete level \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
                 if (result == MessageResult.Yes)
                 {
                     var obj = parent.DataContext as Level;
@@ -112,22 +105,22 @@ namespace LangInformGUI
                     Level level = parent.DataContext as Level;
                     if (level != null)
                     {
-                        string description = MetroInputBox.Show(this, "Description of the new selectedUnit", "");
+                        string description = MetroInputBox.Show(this, "Description of the new unit", "");
                         var unit = new Unit() { Id = Guid.NewGuid(), Name = newUnitName, Description = description };
                         vm.InsertData(unit, typeof(Unit));
                         vm.InsertData(new LevelToUnit() { LevelId = level.Id, UnitId = unit.Id }, typeof(LevelToUnit));
                     }
                 }
             }
-            else if (item.Header.ToString() == "Add SelectedLesson")
+            else if (item.Header.ToString() == "Add Lesson")
             {
-                string newUnitName = MetroInputBox.Show(this, "Please enter new SelectedLesson name", "");
+                string newUnitName = MetroInputBox.Show(this, "Please enter new Lesson name", "");
                 if (!string.IsNullOrEmpty(newUnitName))
                 {
                     Unit unit = parent.DataContext as Unit;
                     if (unit != null)
                     {
-                        string description = MetroInputBox.Show(this, "Description of the new selectedLesson", "");
+                        string description = MetroInputBox.Show(this, "Description of the new lesson", "");
                         var lesson = new Lesson() { Id = Guid.NewGuid(), Name = newUnitName, Description = description };
                         vm.InsertData(lesson, typeof(Lesson));
                         vm.InsertData(new UnitToLesson() { UnitId = unit.Id, LessonId = lesson.Id }, typeof(UnitToLesson));
@@ -142,7 +135,7 @@ namespace LangInformGUI
             }
             else if (item.Header.ToString() == "Delete this Unit")
             {
-                MessageResult result = MetroMessage.Show(this, "Deleting selectedUnit", "Are you sure you want to delete selectedUnit \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
+                MessageResult result = MetroMessage.Show(this, "Deleting unit", "Are you sure you want to delete unit \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
                 if (result == MessageResult.Yes)
                 {
                     var obj = parent.DataContext as Unit;
@@ -150,9 +143,9 @@ namespace LangInformGUI
                     obj.Level.IsUnitsDirty = true;
                 }
             }
-            else if (item.Header.ToString() == "Delete this SelectedLesson")
+            else if (item.Header.ToString() == "Delete this Lesson")
             {
-                MessageResult result = MetroMessage.Show(this, "Deleting selectedLesson", "Are you sure you want to delete selectedLesson \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
+                MessageResult result = MetroMessage.Show(this, "Deleting lesson", "Are you sure you want to delete lesson \"" + parent.Text + "\"?", MessageButtons.YesNo, MessageIcon.Question);
                 if (result == MessageResult.Yes)
                 {
                     try
@@ -163,7 +156,7 @@ namespace LangInformGUI
                     }
                     catch (Exception ex)
                     {
-                        MetroMessage.Show(this,"error","For some reason couldn't delete the selectedLesson.");
+                        MetroMessage.Show(this,"error","For some reason couldn't delete the lesson.");
                     }
                     
                 }
@@ -200,8 +193,7 @@ namespace LangInformGUI
             if (e.NewValue is Lesson)
             {
                 Lesson selectedLesson = e.NewValue as Lesson;
-                vm2.SelectedLesson = selectedLesson;
-                //CreateSceneTabs(selectedLesson);
+                CreateSceneTabs(selectedLesson);
             }
         }
 

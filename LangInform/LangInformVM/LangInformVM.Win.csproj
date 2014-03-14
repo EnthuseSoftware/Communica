@@ -56,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseViewModel.cs" />
-    <Compile Include="SceneViewModel.cs" />
     <Compile Include="TempFiles\Converter.cs" />
     <Compile Include="TempFiles\EnterData.cs" />
     <Compile Include="TempFiles\OldViewModel.cs" />
