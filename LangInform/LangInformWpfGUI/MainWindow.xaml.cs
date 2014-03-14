@@ -329,6 +329,7 @@ namespace LangInformGUI
                     var height = image.ActualHeight;
 
                     var grid = image.Tag as Grid;
+                    grid.Children.Clear();
                     //add the points
                     foreach (SceneItem sceneItem in scene.SceneItems)
                     {
